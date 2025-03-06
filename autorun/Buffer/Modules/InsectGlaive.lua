@@ -57,9 +57,8 @@ function Module.init_hooks()
         local managed = sdk.to_managed_object(args[2])
         if not managed:get_type_definition():is_a("app.cHunterWp10Handling") then return end
 
-        if Module.data.red and Module.data.white and Module.data.orange then 
-            managed:get_field("TrippleUpTimer"):set_field("_Value", 89.0)
-        elseif Module.data.red then 
+        
+        if Module.data.red then 
             managed:get_field("ExtractTimer")[0]:set_field("_Value", 89.0)
         end
         if Module.data.white then 
@@ -67,6 +66,9 @@ function Module.init_hooks()
         end
         if Module.data.orange then 
             managed:get_field("ExtractTimer")[2]:set_field("_Value", 89.0)
+        end
+        if Module.data.red and Module.data.white and Module.data.orange then 
+            managed:get_field("TrippleUpTimer"):set_field("_Value", 89.0)
         end
         
         if Module.data.infinite_air_dashes then 
