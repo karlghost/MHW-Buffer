@@ -70,7 +70,7 @@ function Module.init_hooks()
         end
         
         if Module.data.infinite_air_dashes then 
-            managed:get_field("AirDashCount"):set_field("_Value", 2)
+            managed:set_field("_EmStepCount", 2)
         end
 
 
