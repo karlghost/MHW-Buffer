@@ -18,6 +18,17 @@ function Module.init()
     Module.init_hooks()
 end
 
+local function update_field(field_name, managed, new_value)
+    if Module.old == nil then Module.old = {} end
+    if Module.old[field_name] == nil then Module.old[field_name] = managed:get_field(field_name) end
+    if new_value >= 0 then 
+        managed:set_field(field_name, new_value) 
+    else
+        managed:set_field(field_name, Module.old[field_name])
+        Module.old[field_name] = nil
+    end 
+end
+
 function Module.init_hooks()
     
     -- Weapon changes
@@ -26,9 +37,7 @@ function Module.init_hooks()
         if not managed:get_type_definition():is_a("app.cHunterWp07Handling") then return end
 
         -- Shell level
-        if Module.data.shell_level ~= -1 then 
-            managed:set_field("_ShellLevel", Module.data.shell_level) 
-        end
+        update_field("_ShellLevel", managed, Module.data.shell_level)
 
         -- Infinite wyvernshots
         if Module.data.infinite_wyvern_fire then 
