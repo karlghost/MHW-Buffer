@@ -226,12 +226,12 @@ function Module.init_hooks()
 
     end, function(retval) end)
 
-    sdk.hook(sdk.find_type_definition("app.cWeaponKireaji"):get_method("update"), function(args)
+    sdk.hook(sdk.find_type_definition("app.cWeaponKireaji"):get_method("consumeKireaji"), function(args)
         local managed = sdk.to_managed_object(args[2])
         local weapon_sharpness = managed:get_field("_Kireaji")
 
         if Module.data.unlimited_sharpness then
-            weapon_sharpness:resetKireaji()
+            return sdk.PreHookResult.SKIP_ORIGINAL
         end
        
     end, function(retval) end)
