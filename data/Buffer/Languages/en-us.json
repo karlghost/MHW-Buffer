@@ -1,0 +1,161 @@
+{
+    "_IMPORTANT_NOTE": "If multiple items have the same value but control different things, you need to make them different by using spaces",
+    
+    
+    "window":{
+        "toggle_button": "Toggle Buffer GUI",
+        "title": "Modifiers & Settings",
+        "settings": "Settings",
+        "language": "Language",
+        "font_size": "Font Size",
+        "font_size_apply": "Apply",
+        "about": "About",
+        "author": "Author",
+        "translator": "Translator",
+        "version": "Version"
+    },
+    "base": {
+        "disabled": "Disabled"        
+    },
+    
+    "character": {
+        "title": "Character",
+        "stamina": {
+            "title": "Stamina",
+            "max": "Max stamina",
+            "unlimited": "Unlimited stamina"
+        },
+        "health": {
+            "title": "Health",
+            "max": "Max health",
+            "unlimited": "Unlimited health",
+            "healing": "Healing",
+            "healing_tooltip": "Any missing health will become recoverable."
+        },
+        "blights_and_conditions":{
+            "title": "Blights & Conditions",
+            "tooltip": "Prevent blights and conditions",
+            "blights": {
+                "title": "Blights",
+                "fire": "Fire",
+                "water": "Water",
+                "ice": "Ice",
+                "thunder": "Thunder",
+                "dragon": "Dragon",
+                "all": "All"
+            },
+            "conditions":{
+                "title": "Conditions",
+                "poison": "Poison",
+                "sleep": "Sleep",
+                "paralyze": "Paralyze",
+                "blast": "Blast",
+                "stun": "Stun",
+                "defense_down": "Defense Down",
+                "bleed": "Bleed",
+                "stench": "Stench",
+                "sticky": "Sticky",
+                "frenzy": "Frenzy",
+                "frozen": "Frozen",
+                "all": "All "
+            }            
+        },
+        "item_buffs": {
+            "title": "Item Buffs",
+            "might_pill": "Might pill",
+            "adamant_pill": "Adamant pill",
+            "demon_powder": "Demon powder",
+            "hardshell_powder": "Hardshell powder",
+            "cool_drink": "Cool drink",
+            "hot_drink": "Hot drink",
+            "dash_juice": "Dash juice",
+            "imunizer": "Imunizer"
+        },
+        "unlimited_sharpness": "Unlimited Sharpness"
+    },
+
+    "great_sword": {
+        "title": "Great Sword",
+        "true_charge_boost": "True Charge boost",
+        "true_charge_boost_tooltip": "Inital hit of true charge bonus",
+        "instant_charge": "Instant charge"
+    },
+    "sword_and_shield": {
+        "title": "Sword & Shield"
+    },
+    "dual_blades": {
+        "title": "Dual Blades",
+        "demon_gauge": "Full demon guage",
+        "demon_boost": "Activate demon boost"
+    },
+    "long_sword": {
+        "title": "Long Sword",
+        "aura_level": "Aura level",
+        "aura_level_tooltip": "If setting to 1 from 0, you will need to fill the gauge to activate the aura",
+        "max_aura_gauge": "Max aura gauge",
+        "max_spirit_gauge": "Max spirit gauge"
+    },
+    "insect_glaive": {
+        "title": "Insect Glaive",
+        "kinsect": {
+            "title": "Kinsect",
+            "power": "Power",
+            "speed": "Speed",
+            "recovery": "Recovery",
+            "unlimited_stamina": "Unlimited Stamina"
+        },
+        "red": "Red",
+        "orange": "Orange",
+        "white": "White",
+        "infinite_air_dashes": "Infinite air dashes"
+    },
+
+    "hammer": {
+        "title": "Hammer",
+        "instant_charge": "Instant charge"
+    },
+    "hunting_horn": {
+        "title": "Hunting Horn"
+    },
+    
+    "lance": {
+        "title": "Lance",
+        "counter_charge_level": "Counter charge level",
+        "rush_level": "Rush level",
+        "infinite_backstep": "Infinite backstep"
+    },
+    "gunlance": {
+        "title": "Gunlance",
+        "shell_level": "Shell level",
+        "infinite_wyvern_fire": "Infinite wyvern fire",
+        "infinite_backstep": "Infinite backstep",
+        "instant_charge": "Instant charge ", 
+        "instant_charge_tooltip": "Will require being held for a moment, then letting go to fire",
+        "free_charge_shot": "Free charge shot"
+    },
+
+    "bow": {
+        "title": "Bow"
+    },
+    "light_bowgun": {
+        "title": "Light Bowgun"
+    },
+    "heavy_bowgun": {
+        "title": "Heavy Bowgun"
+    },
+
+    "charge_blade": {
+        "title": "Charge Blade",
+        "max_phials": "Max phials",
+        "overcharge_phials": "Overcharge phials",
+        "shield_enhanced": "Shield enhanced",
+        "sword_enhanced": "Sword enhanced",
+        "axe_enhanced": "Axe enhanced"
+    },
+    "switch_axe": {
+        "title": "Switch Axe",
+        "max_charge": "Max charge",
+        "max_sword_charge": "Max sword charge",
+        "powered_axe": "Powered axe"
+    }
+}

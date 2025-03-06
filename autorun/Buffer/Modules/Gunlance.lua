@@ -1,0 +1,109 @@
+local utils, config, language
+local Module = {
+    title = "gunlance",
+    data = {
+        shell_level = -1,
+        infinite_wyvern_fire = false,
+        infinite_backstep = false,
+        instant_charge = false,
+        free_charge_shot = false
+    }
+}
+
+function Module.init()
+    utils = require("Buffer.Misc.Utils")
+    config = require("Buffer.Misc.Config")
+    language = require("Buffer.Misc.Language")
+
+    Module.init_hooks()
+end
+
+function Module.init_hooks()
+    
+    -- Weapon changes
+    sdk.hook(sdk.find_type_definition("app.cHunterWp07Handling"):get_method("update"), function(args) 
+        local managed = sdk.to_managed_object(args[2])
+        if not managed:get_type_definition():is_a("app.cHunterWp07Handling") then return end
+
+        -- Shell level
+        if Module.data.shell_level ~= -1 then 
+            managed:set_field("_ShellLevel", Module.data.shell_level) 
+        end
+
+        -- Infinite wyvernshots
+        if Module.data.infinite_wyvern_fire then 
+            managed:get_field("_RyuugekiGauge"):set_field("_Value", 2)
+        end
+
+        -- Infinite backstep
+        if Module.data.infinite_backstep then 
+            managed:set_field("_StepCount", 0) 
+        end
+
+        -- Instant charge
+        if Module.data.instant_charge then 
+            managed:set_field("_ChargeShotElapsedTimer", 2.6)
+        end
+
+        -- Free charge shot
+        if Module.data.free_charge_shot then 
+            managed:set_field("_ChargeShotBulletNum", 0)
+        end
+
+    end, function(retval) end)
+end
+
+function Module.draw()
+    local changed, any_changed = false, false
+    local languagePrefix = Module.title .. "."
+
+    if imgui.collapsing_header(language.get(languagePrefix .. "title")) then
+        imgui.indent(10)
+       
+        imgui.begin_table(languagePrefix.."title", 3, nil, nil, nil)
+        imgui.table_next_row()
+        imgui.table_next_column()
+
+        changed, Module.data.instant_charge = imgui.checkbox(language.get(languagePrefix .. "instant_charge"), Module.data.instant_charge)
+        utils.tooltip(language.get(languagePrefix .. "instant_charge_tooltip"))
+        any_changed = any_changed or changed
+
+        imgui.table_next_column()
+
+        changed, Module.data.free_charge_shot = imgui.checkbox(language.get(languagePrefix .. "free_charge_shot"), Module.data.free_charge_shot)
+        any_changed = any_changed or changed
+        
+        imgui.end_table()
+
+        changed, Module.data.shell_level = imgui.slider_int(language.get(languagePrefix .. "shell_level"), Module.data.shell_level, -1, 6, Module.data.shell_level == -1 and language.get("base.disabled") or "%d")
+        any_changed = any_changed or changed
+        
+        changed, Module.data.infinite_wyvern_fire = imgui.checkbox(language.get(languagePrefix .. "infinite_wyvern_fire"), Module.data.infinite_wyvern_fire)
+        any_changed = any_changed or changed
+
+        changed, Module.data.infinite_backstep = imgui.checkbox(language.get(languagePrefix .. "infinite_backstep"), Module.data.infinite_backstep)
+        any_changed = any_changed or changed
+        
+        if any_changed then config.save_section(Module.create_config_section()) end
+        imgui.unindent(10)
+        imgui.separator()
+        imgui.spacing()
+    end
+end
+
+function Module.reset()
+    -- Implement reset functionality if needed
+end
+
+function Module.create_config_section()
+    return {
+        [Module.title] = Module.data
+    }
+end
+
+function Module.load_from_config(config_section)
+    if not config_section then return end
+    utils.mergeTables(Module.data, config_section)
+end
+
+return Module
