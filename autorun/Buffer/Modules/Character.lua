@@ -85,74 +85,85 @@ function Module.init_hooks()
         
         -- Health
         local health = managed:get_field("_Health")
-        local health_manager = health:get_field("<HealthMgr>k__BackingField")
-        if Module.data.health.unlimited then 
-            health_manager:set_Health(health_manager:get_MaxHealth())
-        end
-        if Module.data.health.healing then 
-            health:set_field("_RedHealth", health_manager:get_MaxHealth())
-        end
-        
-        local meal_effects = managed:get_field("_MealEffect")
-        if Module.data.health.max then
-            if meal_effects:get_field("_IsEffectActive") ~= true then
-                meal_effects:set_field("_IsEffectActive", true)
+        if health ~= nil then
+            local health_manager = health:get_field("<HealthMgr>k__BackingField")
+
+            if Module.data.health.unlimited then 
+                health_manager:set_Health(health_manager:get_MaxHealth())
             end
-            if meal_effects:get_field("_MaxHealthAdd") < 100 then
-                meal_effects:set_field("_MaxHealthAdd", 100)
+            if Module.data.health.healing then 
+                health:set_field("_RedHealth", health_manager:get_MaxHealth())
+            end
+        end
+
+        local meal_effects = managed:get_field("_MealEffect")
+        if meal_effects ~= nil then
+            if Module.data.health.max then
+                if meal_effects:get_field("_IsEffectActive") ~= true then
+                    meal_effects:set_field("_IsEffectActive", true)
+                end
+                if meal_effects:get_field("_MaxHealthAdd") < 100 then
+                    meal_effects:set_field("_MaxHealthAdd", 100)
+                end
             end
         end
 
         -- Stamina
         local stamina = managed:get_field("_Stamina")
-        if Module.data.stamina.unlimited then 
-            stamina:set_field("_RequestHealStaminaMax", true)
-        end
-        if Module.data.stamina.max then 
-            -- Meal Effect Not working
-            -- if meal_effects:get_field("_IsEffectActive") ~= true then
-            --     meal_effects:set_field("_IsEffectActive", true)
-            -- end
-            -- if meal_effects:get_field("_MaxStaminaAdd") < 50 then
-            --     meal_effects:set_field("_MaxStaminaAdd", 50)
-            -- end
-            stamina:set_field("_RequestAddMaxStamina", 1) -- Probably not the best way to do this
+
+        if stamina ~= nil then
+            if Module.data.stamina.unlimited then 
+                stamina:set_field("_RequestHealStaminaMax", true)
+            end
+
+            if Module.data.stamina.max then 
+                -- Meal Effect Not working
+                -- if meal_effects:get_field("_IsEffectActive") ~= true then
+                --     meal_effects:set_field("_IsEffectActive", true)
+                -- end
+                -- if meal_effects:get_field("_MaxStaminaAdd") < 50 then
+                --     meal_effects:set_field("_MaxStaminaAdd", 50)
+                -- end
+                    stamina:set_field("_RequestAddMaxStamina", 1) -- Probably not the best way to do this
+            end
         end
 
         -- Item Buffs
         local item_buffs = managed:get_field("_ItemBuff")
-        if Module.data.item_buffs.dash_juice then
-            item_buffs:set_field("_DashJuice_Timer", 600)
-        end
-        if Module.data.item_buffs.hot_drink then
-            item_buffs:set_field("_HotDrink_Timer", 600)
-        end
-        if Module.data.item_buffs.cool_drink then
-            item_buffs:set_field("_CoolerDrink_Timer", 600)
-        end
-        if Module.data.item_buffs.imunizer then
-            item_buffs:set_field("_Immunizer_Timer", 300)
-        end
-        if Module.data.item_buffs.might_pill then
-            item_buffs:set_field("_Kairiki_G_Timer", 90)
-        end
-        if Module.data.item_buffs.adamant_pill then
-            item_buffs:set_field("_Nintai_G_Timer", 90)
-        end
-        -- if Module.data.item_buffs.mega_demondrug then -- Not working, unsure why
-        --     local demon_drug = item_buffs:get_field("_KijinDrink_G")
-        --     demon_drug:set_field("_Timer", 1800)
+        if item_buffs ~= nil then
+            if Module.data.item_buffs.dash_juice then
+                item_buffs:set_field("_DashJuice_Timer", 600)
+            end
+            if Module.data.item_buffs.hot_drink then
+                item_buffs:set_field("_HotDrink_Timer", 600)
+            end
+            if Module.data.item_buffs.cool_drink then
+                item_buffs:set_field("_CoolerDrink_Timer", 600)
+            end
+            if Module.data.item_buffs.imunizer then
+                item_buffs:set_field("_Immunizer_Timer", 300)
+            end
+            if Module.data.item_buffs.might_pill then
+                item_buffs:set_field("_Kairiki_G_Timer", 90)
+            end
+            if Module.data.item_buffs.adamant_pill then
+                item_buffs:set_field("_Nintai_G_Timer", 90)
+            end
+            -- if Module.data.item_buffs.mega_demondrug then -- Not working, unsure why
+            --     local demon_drug = item_buffs:get_field("_KijinDrink_G")
+            --     demon_drug:set_field("_Timer", 1800)
 
-        -- end
-        -- if Module.data.item_buffs.mega_armorskin then -- Not working, unsure why
-        --     local armor_skin = item_buffs:get_field("_KoukaDrink_G")
-        --     armor_skin:set_field("_Timer", 1800)
-        -- end
-        if Module.data.item_buffs.demon_powder then
-            item_buffs:set_field("_KijinPowder_Timer", 180)
-        end
-        if Module.data.item_buffs.hardshell_powder then
-            item_buffs:set_field("_KoukaPowder_Timer", 180)
+            -- end
+            -- if Module.data.item_buffs.mega_armorskin then -- Not working, unsure why
+            --     local armor_skin = item_buffs:get_field("_KoukaDrink_G")
+            --     armor_skin:set_field("_Timer", 1800)
+            -- end
+            if Module.data.item_buffs.demon_powder then
+                item_buffs:set_field("_KijinPowder_Timer", 180)
+            end
+            if Module.data.item_buffs.hardshell_powder then
+                item_buffs:set_field("_KoukaPowder_Timer", 180)
+            end
         end
 
 
