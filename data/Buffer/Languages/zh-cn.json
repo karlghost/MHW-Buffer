@@ -105,7 +105,8 @@
         "red": "红色精华",
         "orange": "橙色精华",
         "white": "白色精华",
-        "infinite_air_dashes": "无限空中冲刺"
+        "infinite_air_dashes": "无限空中冲刺",
+        "max_charge": "Max charge"
     },
     "hammer": {
         "title": "锤子",

@@ -107,7 +107,8 @@
         "red": "Red",
         "orange": "Orange",
         "white": "White",
-        "infinite_air_dashes": "Infinite air dashes"
+        "infinite_air_dashes": "Infinite air dashes",
+        "max_charge": "Max charge"
     },
 
     "hammer": {

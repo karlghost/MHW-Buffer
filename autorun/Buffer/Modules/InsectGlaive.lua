@@ -12,6 +12,7 @@ local Module = {
         white = false,
         orange = false,
         infinite_air_dashes = false,
+        max_charge = false,
     }
 }
 
@@ -75,6 +76,10 @@ function Module.init_hooks()
             managed:set_field("_EmStepCount", 2)
         end
 
+        if Module.data.max_charge and managed:get_field("_ChargeTimer") > 0 then 
+            managed:set_field("_ChargeTimer", 100.0)
+        end
+
 
     end, function(retval) end)
 end
@@ -124,6 +129,10 @@ function Module.draw()
         imgui.end_table()
 
         changed, Module.data.infinite_air_dashes = imgui.checkbox(language.get(languagePrefix .. "infinite_air_dashes"), Module.data.infinite_air_dashes)
+        any_changed = any_changed or changed
+
+        
+        changed, Module.data.max_charge = imgui.checkbox(language.get(languagePrefix .. "max_charge"), Module.data.max_charge)
         any_changed = any_changed or changed
 
         if any_changed then config.save_section(Module.create_config_section()) end
