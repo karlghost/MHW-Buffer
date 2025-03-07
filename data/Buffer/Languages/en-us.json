@@ -29,7 +29,7 @@
             "title": "Health",
             "max": "Max health",
             "unlimited": "Unlimited health",
-            "unlimited_tooltip": "It will appear as though everyone has unlimited health on your screen, but they will still take damage properly on their end.",
+            "unlimited_tooltip": "It will appear as though everyone has unlimited health on your screen,\n but they will still take damage properly on their end.",
             "healing": "Healing",
             "healing_tooltip": "Any missing health will become recoverable."
         },
