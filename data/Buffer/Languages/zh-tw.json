@@ -1,6 +1,6 @@
 {
     "_IMPORTANT_NOTE": "如果多個項目具有相同的值但控制不同的東西，您需要通過使用空格使它們不同",
-    "_USE_FONT": "NotoSansSC-Bold.otf",
+    "_USE_FONT": "NotoSansSC-Regular.otf",
     "_TRANSLATOR": "Github Copilot",
     "window": {
         "toggle_button": "切換緩衝 GUI",
