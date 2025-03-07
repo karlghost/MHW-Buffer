@@ -251,6 +251,7 @@ function Module.draw()
             any_changed = any_changed or changed
 
             changed, Module.data.health.unlimited = imgui.checkbox(language.get(languagePrefix .. "unlimited"), Module.data.health.unlimited)
+            utils.tooltip(language.get(languagePrefix .. "unlimited_tooltip"))
             any_changed = any_changed or changed
             
             changed, Module.data.health.healing = imgui.checkbox(language.get(languagePrefix .. "healing"), Module.data.health.healing)
