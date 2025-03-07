@@ -1,5 +1,7 @@
 {
     "_IMPORTANT_NOTE": "若多个条目具有相同值但控制不同功能，请使用空格加以区分",
+    "_USE_FONT": "NotoSansSC-Regular.otf",
+    "_TRANSLATOR": "Jeffrey13131",
     "window":{
         "toggle_button": "切换功能面板",
         "title": "修改项与设置",
