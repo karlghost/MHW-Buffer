@@ -13,7 +13,7 @@ local character = require("Buffer.Modules.Character")
 
 -- Weapon Modules
 local greatSword = require("Buffer.Modules.GreatSword")
--- local swordAndShield = require("Buffer.Modules.SwordAndShield")
+local swordAndShield = require("Buffer.Modules.SwordAndShield")
 local dualBlades = require("Buffer.Modules.DualBlades")
 local longSword = require("Buffer.Modules.LongSword")
 local hammer = require("Buffer.Modules.Hammer")
@@ -30,7 +30,7 @@ local insectGlaive = require("Buffer.Modules.InsectGlaive")
 local modules = {
     character,
     greatSword,
-    -- swordAndShield,
+    swordAndShield,
     dualBlades,
     longSword,
     hammer,
