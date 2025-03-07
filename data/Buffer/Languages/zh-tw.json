@@ -136,13 +136,24 @@
     },
 
     "bow": {
-        "title": "弓"
+        "title": "弓",
+        "charge_level": "充能等級",
+        "all_arrow_types": "所有箭類型",
+        "unlimited_bottles": "無限瓶",
+        "max_trick_arrow_gauge": "最大技巧箭計量表"
     },
     "light_bowgun": {
-        "title": "輕弩"
+        "title": "輕弩",
+        "max_special_ammo": "最大特殊彈藥",
+        "max_rapid_shot": "最大速射",
+        "max_eagle_shot_charge": "最大鷹擊充能"
     },
     "heavy_bowgun": {
-        "title": "重弩"
+        "title": "重弩",
+        "max_special_ammo": "最大特殊彈藥",
+        "max_wyvern_howl": "最大龍吼",
+        "max_gatling_hits": "最大加特林命中",
+        "max_gatling_hits_tooltip": "僅影響龍心點火"
     },
 
     "charge_blade": {

@@ -131,13 +131,24 @@
         "free_charge_shot": "免蓄力射击"
     },
     "bow": {
-        "title": "弓"
+        "title": "弓",
+        "charge_level": "Charge level",
+        "all_arrow_types": "All arrow types",
+        "unlimited_bottles": "Unlimited bottles",
+        "max_trick_arrow_gauge": "Max trick arrow gauge"
     },
     "light_bowgun": {
-        "title": "轻弩"
+        "title": "轻弩",
+        "max_special_ammo": "Max special ammo",
+        "max_rapid_shot": "Max rapid shot",
+        "max_eagle_shot_charge": "Max eagle shot charge"
     },
     "heavy_bowgun": {
-        "title": "重弩"
+        "title": "重弩",
+        "max_special_ammo": "Max special ammo",
+        "max_wyvern_howl": "Max wyvern howl",
+        "max_gatling_hits": "Max gatling hits",
+        "max_gatling_hits_tooltip": "Only affects Wyvernheart Ignition"
     },
     "charge_blade": {
         "title": "充能斧",
