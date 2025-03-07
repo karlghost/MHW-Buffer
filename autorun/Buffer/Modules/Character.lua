@@ -171,23 +171,33 @@ function Module.init_hooks()
         local conditions = managed:get_field("_BadConditions")
         if Module.data.blights_and_conditions.conditions.poison or Module.data.blights_and_conditions.conditions.all then
             local poison = conditions:get_field("_Poison")
-            poison:set_field("_IsImmune", true)
+            if poison:get_field("_DurationTimer") > 0 then
+                poison:set_field("_DurationTimer", 0)
+            end
         end
         if Module.data.blights_and_conditions.conditions.stench or Module.data.blights_and_conditions.conditions.all then
             local stench = conditions:get_field("_Stench")
-            stench:set_field("_IsImmune", true)
+            if stench:get_field("_DurationTimer") > 0 then
+                stench:set_field("_DurationTimer", 0)
+            end
         end
         if Module.data.blights_and_conditions.conditions.blast or Module.data.blights_and_conditions.conditions.all then
             local blast = conditions:get_field("_Blast")
-            blast:set_field("_IsImmune", true)
+            if blast:get_field("_CureAccumerator") > 0 then
+                blast:set_field("_CureAccumerator", 0)
+            end
         end
         if Module.data.blights_and_conditions.conditions.bleed or Module.data.blights_and_conditions.conditions.all then
             local bleed = conditions:get_field("_Bleed")
-            bleed:set_field("_IsImmune", true)
+            if bleed:get_field("_CureTimer") > 0 then
+                bleed:set_field("_CureTimer", 0)
+            end
         end
         if Module.data.blights_and_conditions.conditions.defense_down or Module.data.blights_and_conditions.conditions.all then
             local def_Down = conditions:get_field("_DefDown")
-            def_Down:set_field("_IsImmune", true)
+            if def_Down:get_field("_DurationTimer") > 0 then
+                def_Down:set_field("_DurationTimer", 0)
+            end
         end
         if Module.data.blights_and_conditions.conditions.frenzy or Module.data.blights_and_conditions.conditions.all then -- Not far enough into story to know, will probably affect armor buff
             local frenzy = conditions:get_field("_Frenzy")
@@ -195,43 +205,67 @@ function Module.init_hooks()
         end
         if Module.data.blights_and_conditions.conditions.stun or Module.data.blights_and_conditions.conditions.all then
             local stun = conditions:get_field("_Stun")
-            stun:set_field("_IsImmune", true)
+            if stun:get_field("_ReduceTimer") < 6 then -- Maybe a Jewel or skill lowers this - not far enough to know
+                stun:set_field("_ReduceTimer", 6)
+            end
         end
         if Module.data.blights_and_conditions.conditions.paralyze or Module.data.blights_and_conditions.conditions.all then
-            local paralyze = conditions:get_field("_Paralyze")
-            paralyze:set_field("_IsImmune", true)
+            local paralyze = conditions:get_field("_Paralyze") -- Effect still plays
+            if paralyze:get_field("_DurationTime") > 0 then
+                paralyze:set_field("_DurationTime", 0)
+                paralyze:set_field("_IsRestrainted", false)
+            end
         end
         if Module.data.blights_and_conditions.conditions.sleep or Module.data.blights_and_conditions.conditions.all then
-            local sleep = conditions:get_field("_Sleep")
-            sleep:set_field("_IsImmune", true)
+            local sleep = conditions:get_field("_Sleep") -- Effect probably still plays
+            if sleep:get_field("_DurationTime") > 0 then
+                sleep:set_field("_DurationTime", 0)
+                sleep:set_field("_IsRestrainted", false)
+            end
         end
         if Module.data.blights_and_conditions.conditions.sticky or Module.data.blights_and_conditions.conditions.all then
-            local sticky = conditions:get_field("_Sticky")
-            sticky:set_field("_IsImmune", true)
+            local sticky = conditions:get_field("_Sticky") -- Effect probably still plays
+            if sticky:get_field("_DurationTime") > 0 then
+                sticky:set_field("_DurationTime", 0)
+                sticky:set_field("_IsRestrainted", false)
+            end
         end
         if Module.data.blights_and_conditions.conditions.frozen or Module.data.blights_and_conditions.conditions.all then
-            local frozen = conditions:get_field("_Frozen")
-            frozen:set_field("_IsImmune", true)
+            local frozen = conditions:get_field("_Frozen") -- Effect probably still plays
+            if frozen:get_field("_DurationTime") > 0 then
+                frozen:set_field("_DurationTime", 0)
+                frozen:set_field("_IsRestrainted", false)
+            end
         end
         if Module.data.blights_and_conditions.blights.fire or Module.data.blights_and_conditions.blights.all then
             local fire = conditions:get_field("_Fire")
-            fire:set_field("_IsImmune", true)
+            if fire:get_field("_DurationTimer") > 0 then
+                fire:set_field("_DurationTimer", 0)
+            end
         end
         if Module.data.blights_and_conditions.blights.thunder or Module.data.blights_and_conditions.blights.all then
             local electric = conditions:get_field("_Elec")
-            electric:set_field("_IsImmune", true)
+            if electric:get_field("_DurationTimer") > 0 then
+                electric:set_field("_DurationTimer", 0)
+            end
         end
         if Module.data.blights_and_conditions.blights.water or Module.data.blights_and_conditions.blights.all then
             local water = conditions:get_field("_Water")
-            water:set_field("_IsImmune", true)
+            if water:get_field("_DurationTimer") > 0 then
+                water:set_field("_DurationTimer", 0)
+            end
         end
         if Module.data.blights_and_conditions.blights.ice or Module.data.blights_and_conditions.blights.all then
             local ice = conditions:get_field("_Ice")
-            ice:set_field("_IsImmune", true)
+            if ice:get_field("_DurationTimer") > 0 then
+                ice:set_field("_DurationTimer", 0)
+            end
         end
         if Module.data.blights_and_conditions.blights.dragon or Module.data.blights_and_conditions.blights.all then
             local dragon = conditions:get_field("_Dragon")
-            dragon:set_field("_IsImmune", true)
+            if dragon:get_field("_DurationTimer") > 0 then
+                dragon:set_field("_DurationTimer", 0)
+            end
         end
 
 
