@@ -95,20 +95,23 @@ re.on_draw_ui(function()
                         for k, v in pairs(bindings.keys) do
                             imgui.table_next_row()
                             imgui.table_next_column()
-                            -- local keys = bindings.get_button_names(v.input)
-                            -- local data = v.data
-                            -- local title = bindings.get_formatted_title(data.path)
-                            -- imgui.text("   " .. title)
-                            -- imgui.table_next_column()
-                            -- local key_string = ""
-                            -- for index, key in pairs(keys) do
-                            --     key_string = key_string .. key.name
-                            --     if index < #keys then key_string = key_string .. " + " end
-                            -- end
-                            -- imgui.text("   [ " .. key_string .. " ]     ")
+                            local btns = bindings.get_keys_with_name(v.input)
+                            local data = v.data
+                            
+                            local title = bindings.get_formatted_title(data.path)
+                            imgui.text("   " .. title)
+                            imgui.table_next_column()
+                            local bind_string = ""
+                            
+                            for i, bind in pairs(btns) do
+                                bind_string = bind_string .. bind.name
+                                if i < #btns then bind_string = bind_string .. " + " end
+                            end
+
+                            imgui.text("   [ " .. bind_string .. " ]     ")
                             imgui.table_next_column()
                             if imgui.button(language.get(languagePrefix .. "remove").. " "..tostring(k)) then 
-                                bindings.remove(3, k) end
+                                bindings.remove(2, k) end
                             imgui.same_line()
                             imgui.text("  ")
                         end
@@ -117,7 +120,7 @@ re.on_draw_ui(function()
                         imgui.separator()
                     end
 
-                    if imgui.button("   " .. language.get(languagePrefix .. "add_keyboard"), "", false) then bindings.popup_open(3) end
+                    if imgui.button("   " .. language.get(languagePrefix .. "add_keyboard"), "", false) then bindings.popup_open(2) end
                     imgui.spacing()
                     imgui.end_menu()
                 end

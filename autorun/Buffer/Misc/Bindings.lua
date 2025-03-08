@@ -35,32 +35,43 @@ end
 
 -- 1 = Gamepad | 2 = Keyboard
 function bindings.get_device()
-   if bindings.is_controller() then return 1 end
-   if bindings.id_keyboard() then return 3 end
-   return 0
+    if bindings.is_controller() then
+        return 1
+    end
+    if bindings.id_keyboard() then
+        return 3
+    end
+    return 0
 end
 
 -- Add a new binding
 -- If device is gamepad(1)
--- If device is mouse(2)
--- If device is a keyboard(3)
+-- If device is a keyboard(2)
 function bindings.add(device, input, path, on)
     local binding_table = nil
     if device == 1 then
         binding_table = bindings.btns
+        if binding_table then
+            table.insert(binding_table, {
+                ["input"] = bindings.get_button_code(input),
+                ["data"] = {
+                    path = path,
+                    on = on
+                }
+            })
+        end
     elseif device == 2 then
         binding_table = bindings.keys
-    end
-    if binding_table then
         table.insert(binding_table, {
-            ["input"] = bindings.get_button_code(input),
+            ["input"] = bindings.get_key_codes_from_code_with_name(input),
             ["data"] = {
                 path = path,
                 on = on
             }
         })
-        bindings.save_to_file()
     end
+
+    bindings.save_to_file()
 end
 
 -- Remove a binding from the device's table (Sometimes doesn't work... will need to debug)
@@ -68,7 +79,7 @@ function bindings.remove(device, index)
     local binding_table = nil
     if device == 1 then
         binding_table = bindings.btns
-    elseif device == 3 then
+    elseif device == 2 then
         binding_table = bindings.keys
     end
     if binding_table then
@@ -120,7 +131,6 @@ function bindings.is_controller()
     return bindings.get_current_button_code() > 0
 end
 
-
 -- Get the previous buttons
 function bindings.get_previous_button_code()
     return previous_buttons
@@ -134,7 +144,9 @@ function bindings.get_current_button_code()
         main_pad = pad_manager:get_MainPad()
     end
     local current = main_pad:get_KeyOn()
-    if current == 0 then return -1 end
+    if current == 0 then
+        return -1
+    end
     return current
 end
 
@@ -146,7 +158,9 @@ end
 -- Convert the list of buttons back to a code
 function bindings.get_button_code(arr_btns)
     local code = 0
-    for _, btn in pairs(arr_btns) do code = code + btn.code end
+    for _, btn in pairs(arr_btns) do
+        code = code + btn.code
+    end
     return code
 end
 
@@ -166,14 +180,20 @@ function bindings.is_buttons_triggered(arr_btns)
     local matches = 0
     for _, required_code in pairs(arr_btns) do
         local found = false
-        for _, current_code in pairs(current) do if current_code == required_code then found = true end end
+        for _, current_code in pairs(current) do
+            if current_code == required_code then
+                found = true
+            end
+        end
         for _, previous_code in pairs(previous) do
             if previous_code == required_code then
                 found = true
                 matches = matches + 1
             end
         end
-        if not found then return false end
+        if not found then
+            return false
+        end
     end
 
     return matches + 1 == #arr_btns
@@ -182,7 +202,11 @@ end
 -- Is the button being pressed
 function bindings.is_button_down(code)
     local current = bindings.get_current_buttons()
-    for _, btn in pairs(current) do if btn.code == code then return true end end
+    for _, btn in pairs(current) do
+        if btn.code == code then
+            return true
+        end
+    end
     return false
 end
 
@@ -207,19 +231,31 @@ function bindings.get_button_names(code)
         end
 
         -- If we couldn't find a bigger code, then we must have all the possible ones
-        if largest.code == 0 then break end
+        if largest.code == 0 then
+            break
+        end
 
         -- Remove the largest and add it to the list of btns
         code = code - largest.code
-        table.insert(btns, {name=largest.name, code=largest.code})
+        table.insert(btns, {
+            name = largest.name,
+            code = largest.code
+        })
     end
-    if #btns > 0 then return btns 
-    elseif code ~= 0 and code ~= -1 then table.insert(btns, {name="Unknown", code=init_code}) return btns
-    else return btns end
+    if #btns > 0 then
+        return btns
+    elseif code ~= 0 and code ~= -1 then
+        table.insert(btns, {
+            name = "Unknown",
+            code = init_code
+        })
+        return btns
+    else
+        return btns
+    end
 end
 
 -- ======= Keyboard ==========
-
 
 -- Keys currently being pressed
 local previous_keys = {}
@@ -227,7 +263,7 @@ local triggered_keys = {}
 
 -- Check if the keyboard is being used
 function bindings.is_keyboard()
-    return false
+    return #bindings.get_current_keys() > 0
 end
 
 -- Get the previous keys
@@ -235,46 +271,110 @@ function bindings.get_previous_keys()
     return previous_keys
 end
 
--- Get current keys pressed
-function bindings.get_current_key_code()
+-- Get current keys as an array of {name, code}
+function bindings.get_current_keys_with_name()
     if mouse_keyboard_manager == nil then
         mouse_keyboard_manager = sdk.get_managed_singleton("ace.MouseKeyboardManager")
     end
     if main_mouse_keyboard == nil then
         main_mouse_keyboard = mouse_keyboard_manager:get_MainMouseKeyboard()
     end
-    local keys_field = main_mouse_keyboard:get_field("_Keys")
-    
+    local key_list = main_mouse_keyboard:get_field("_Keys")
+    local keys = {}
+    for key_name, key_code in pairs(key_bindings) do
+        key_list:get_Item(key_code)
+        if key_list:get_Item(key_code):get_field("_On") then
+            table.insert(keys, {
+                name = key_name,
+                code = key_code
+            })
+        end
+    end
+    return keys
 end
 
--- Get current keys as a list of array {name, code}
+-- Get current keys as an array of code
 function bindings.get_current_keys()
-    return bindings.get_key_names(bindings.get_current_keys())
-end
-
--- Convert the list of keys back to a code
-function bindings.get_key_code(arr_keys)
-   
-end
-
--- Is the code being triggered
-function bindings.is_key_code_triggered(code)
-   
+    local keys = bindings.get_current_keys_with_name()
+    local key_codes = {}
+    for _, key in pairs(keys) do
+        table.insert(key_codes, key.code)
+    end
+    return key_codes
 end
 
 -- Is the keys being triggered
-function bindings.is_keys_triggered(arr_keys)
-    
+function bindings.is_key_codes_triggered(arr_key)
+    local current = bindings.get_current_keys()
+    local previous = bindings.get_previous_keys()
+
+    -- if current has all keys needed, and old has all but one, then return true
+    local matches = 0
+    for _, required_code in pairs(arr_key) do
+        local found = false
+        for _, current_code in pairs(current) do
+            if current_code == required_code then
+                found = true
+            end
+        end
+        for _, previous_code in pairs(previous) do
+            if previous_code == required_code then
+                found = true
+                matches = matches + 1
+            end
+        end
+        if not found then
+            return false
+        end
+    end
+    return matches + 1 == #arr_key
+end
+function bindings.is_key_code_triggered(code)
+    local keys = {}
+    table.insert(keys, code)
+    return bindings.is_key_codes_triggered(keys)
+end
+
+-- Get the key names
+function bindings.get_keys_with_name(arr_key)
+    local keys = {}
+    for _, key in pairs(arr_key) do
+        table.insert(keys, {
+            name = bindings.get_key_name(key),
+            code = key
+        })
+    end
+    return keys
 end
 
 -- Is the key being pressed
 function bindings.is_key_down(code)
-  
+    local current = bindings.get_current_keys()
+    for _, key in pairs(current) do
+        if key == code then
+            return true
+        end
+    end
+    return false
 end
 
 -- This function will return an array of {name, code} for each key
-function bindings.get_key_names(code)
-    
+function bindings.get_key_name(code)
+    for key_name, key_code in pairs(key_bindings) do
+        if key_code == code then
+            return key_name
+        end
+    end
+    return "Unknown"
+end
+
+-- Get an array of key codes
+function bindings.get_key_codes_from_code_with_name(keys)
+    local key_codes = {}
+    for _, key in pairs(keys) do
+        table.insert(key_codes, key.code)
+    end
+    return key_codes
 end
 
 -- =========================================
@@ -282,41 +382,46 @@ end
 -- Checks the bindings
 function bindings.update()
     if bindings.is_controller() then
-        for btn, input_data in pairs(bindings.btns) do 
-            if bindings.is_button_code_triggered(input_data.input) and not triggered_buttons[btn] then 
+        for _, input_data in pairs(bindings.btns) do
+            if bindings.is_button_code_triggered(input_data.input) and not triggered_buttons[input_data.input] then
                 bindings.perform(input_data.data)
-                triggered_buttons[btn] = true
-            end 
+                triggered_buttons[input_data.input] = true
+            end
         end
     end
-    
+
     if bindings.is_keyboard() then
-        for key, input_data in pairs(bindings.keys) do 
-            if bindings.is_key_code_triggered(input_data.input) and not triggered_keys[key] then 
+        for _, input_data in pairs(bindings.keys) do
+            -- if bindings.is_key_codes_triggered(input_data.input) and not triggered_keys[json.stringify(input_data.input)] then 
+            if bindings.is_key_codes_triggered(input_data.input) then
                 bindings.perform(input_data.data)
-                triggered_keys[key] = true
-            end 
+                -- triggered_keys[json.stringify(input_data.input)] = true
+            end
         end
     end
 
     bindings.popup_update()
 
-    if not bindings.is_controller() then triggered_buttons = {} end
-    if bindings.is_controller() then
+    -- Check if resetting controller
+    if not bindings.is_controller() then
+        triggered_buttons = {}
+    else
         local current_buttons = bindings.get_current_button_code()
-        for i, triggered_buttons in pairs(triggered_buttons) do
-            if not bindings.is_button_down(triggered_buttons) then triggered_buttons[i] = nil end
+        if not triggered_buttons[current_buttons] then
+            triggered_buttons[current_buttons] = nil
         end
     end
-    if not bindings.is_keyboard() then triggered_keys = {} end
-    if bindings.is_keyboard() then
-        local current_keys = bindings.get_current_key_code()
-        for i, triggered_keys in pairs(triggered_keys) do
-            if not bindings.is_key_down(triggered_keys) then triggered_keys[i] = nil end
-        end
-    end
+
+    -- Check if resetting keyboard
+    -- if not bindings.is_keyboard() then triggered_keys = {}
+    -- else 
+    --     local current_keys = bindings.get_key_codes(bindings.get_current_keys())
+    --     for i, triggered_keys in pairs(triggered_keys) do
+    --         if not bindings.is_key_down(triggered_keys) then triggered_keys[i] = nil end
+    --     end
+    -- end
     previous_buttons = bindings.get_current_button_code()
-    previous_keys = bindings.get_current_key_code()
+    previous_keys = bindings.get_current_keys()
 end
 
 -- Draw anything the bindings need
@@ -329,11 +434,16 @@ function bindings.perform(data)
     local path = utils.split(data.path, ".")
     local on_value = data.on
 
-    local enabled_text, disabled_text = "<COL YEL>".. language.get("window.bindings.enabled").."</COL>", "<COL RED>"..language.get("window.bindings.disabled").."</COL>"
+    local enabled_text, disabled_text = "<COL YEL>" .. language.get("window.bindings.enabled") .. "</COL>",
+        "<COL RED>" .. language.get("window.bindings.disabled") .. "</COL>"
 
     -- Find module
     local module_index
-    for key, value in pairs(modules) do if modules[key].title == path[1] then module_index = key end end
+    for key, value in pairs(modules) do
+        if modules[key].title == path[1] then
+            module_index = key
+        end
+    end
     table.remove(path, 1)
     table.remove(path, 1)
 
@@ -346,7 +456,8 @@ function bindings.perform(data)
             target = target[path[i]]
         end
         target[path[#path]] = not target[path[#path]]
-        utils.send_message(bindings.get_formatted_title(data.path) .. " " .. (target[path[#path]] and enabled_text or disabled_text))
+        utils.send_message(bindings.get_formatted_title(data.path) .. " " ..
+                               (target[path[#path]] and enabled_text or disabled_text))
     end
 
     local function toggle_number(module_data, path, on_value)
@@ -363,13 +474,12 @@ function bindings.perform(data)
         end
     end
 
-    print(json.dump_string(path))
     if type(on_value) == "boolean" then
         toggle_boolean(modules[module_index].data, path, on_value)
     elseif type(on_value) == "number" then
         toggle_number(modules[module_index].data, path, on_value)
     end
-    
+
 end
 -- ================= Popup =====================
 
@@ -377,9 +487,12 @@ end
 function bindings.popup_update()
     if popup.open then
         if popup.listening then
-            local current = popup.device == 1 and bindings.get_current_buttons() or bindings.get_current_keys()
+            local current = popup.device == 1 and bindings.get_current_buttons() or
+                                bindings.get_current_keys_with_name()
             if #current > 0 then
-                if not popup.binding then popup.binding = {} end
+                if not popup.binding then
+                    popup.binding = {}
+                end
                 popup.binding = current
             elseif #current == 0 and popup.binding and #popup.binding > 0 then
                 popup.listening = false
@@ -388,7 +501,7 @@ function bindings.popup_update()
     end
 end
 
--- Open the popup for the given device (1 = Gamepad, 3 = Keyboard)
+-- Open the popup for the given device (1 = Gamepad, 2 = Keyboard)
 function bindings.popup_open(device)
     bindings.popup_reset()
     popup.open = true
@@ -418,7 +531,9 @@ function bindings.popup_draw()
     if popup.open then
         local popup_size = Vector2f.new(350, 135)
         -- If a path has been chosen, make the window taller
-        if popup.path ~= nil then popup_size.y = 175 end
+        if popup.path ~= nil then
+            popup_size.y = 175
+        end
         imgui.set_next_window_size(popup_size, 1 + 256)
         imgui.begin_window("buffer_bindings", nil, 1)
         imgui.indent(10)
@@ -437,7 +552,9 @@ function bindings.popup_draw()
 
         -- If no path has been chosen use the default text from the language file, otherwise display the path selected
         local bindings_text = language.get("window.bindings.choose_modification")
-        if popup.path ~= nil then bindings_text = bindings.get_formatted_title(popup.path) end
+        if popup.path ~= nil then
+            bindings_text = bindings.get_formatted_title(popup.path)
+        end
         if imgui.begin_menu(bindings_text) then
             for _, module in pairs(modules) do
                 if imgui.begin_menu(language.get(module.title .. ".title")) then
@@ -460,9 +577,11 @@ function bindings.popup_draw()
                 imgui.text(language.get("window.bindings.on_value") .. ": ")
                 imgui.same_line()
                 local changed, on_value = imgui.input_text("     ", popup.on)
-                if changed and on_value ~= "" and tonumber(on_value) then popup.on = tonumber(on_value) end
+                if changed and on_value ~= "" and tonumber(on_value) then
+                    popup.on = tonumber(on_value)
+                end
 
-            -- On value for booleans, read only
+                -- On value for booleans, read only
             elseif type(popup.on) == "boolean" then
                 imgui.text(language.get("window.bindings.on_value") .. ": ")
                 imgui.same_line()
@@ -479,13 +598,17 @@ function bindings.popup_draw()
         -- If some inputs have been pressed, display them in a readable format
         if popup.binding and utils.getLength(popup.binding) > 0 then
             listening_button_text = ""
-            
+
             for i, binding in pairs(popup.binding) do
                 listening_button_text = listening_button_text .. binding.name
-                if i < #popup.binding then listening_button_text = listening_button_text .. " + " end
+                if i < #popup.binding then
+                    listening_button_text = listening_button_text .. " + "
+                end
             end
-           
-            if popup.listening then listening_button_text = listening_button_text .. " + ..." end
+
+            if popup.listening then
+                listening_button_text = listening_button_text .. " + ..."
+            end
 
             -- If no inputs pressed use default listening from language file
         elseif popup.listening then
@@ -500,7 +623,9 @@ function bindings.popup_draw()
         imgui.spacing()
         imgui.spacing()
 
-        if imgui.button(language.get("window.bindings.cancel")) then bindings.popup_close() end
+        if imgui.button(language.get("window.bindings.cancel")) then
+            bindings.popup_close()
+        end
         if popup.path and popup.binding then
             imgui.same_line()
             if imgui.button(language.get("window.bindings.save")) then
@@ -538,8 +663,12 @@ function bindings.popup_draw_menu(menu, language_path)
         elseif type(value) == "boolean" or type(value) == "number" then
             if imgui.menu_item(language.get(language_path .. "." .. key), nil, false, true) then
                 popup.path = language_path .. "." .. key
-                if type(value) == "number" then popup.on = tonumber(1) end
-                if type(value) == "boolean" then popup.on = true end
+                if type(value) == "number" then
+                    popup.on = tonumber(1)
+                end
+                if type(value) == "boolean" then
+                    popup.on = true
+                end
             end
         end
     end
