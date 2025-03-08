@@ -82,7 +82,9 @@ function Module.init_hooks()
     sdk.hook(sdk.find_type_definition("app.cHunterStatus"):get_method("update"), function(args)
         local managed = sdk.to_managed_object(args[2])
         if not managed:get_type_definition():is_a("app.cHunterStatus") then return end
-        
+
+        if managed:get_IsMaster() == false then return end
+
         -- Health
         local health = managed:get_field("_Health")
         if health ~= nil then
@@ -102,8 +104,8 @@ function Module.init_hooks()
                 if meal_effects:get_field("_IsEffectActive") ~= true then
                     meal_effects:set_field("_IsEffectActive", true)
                 end
-                if meal_effects:get_field("_MaxHealthAdd") < 100 then
-                    meal_effects:set_field("_MaxHealthAdd", 100)
+                if meal_effects:get_field("_MaxHealthAdd") < 50 then
+                    meal_effects:set_field("_MaxHealthAdd", 50)
                 end
             end
         end
@@ -296,7 +298,6 @@ function Module.draw()
             any_changed = any_changed or changed
 
             changed, Module.data.health.unlimited = imgui.checkbox(language.get(languagePrefix .. "unlimited"), Module.data.health.unlimited)
-            utils.tooltip(language.get(languagePrefix .. "unlimited_tooltip"))
             any_changed = any_changed or changed
             
             changed, Module.data.health.healing = imgui.checkbox(language.get(languagePrefix .. "healing"), Module.data.health.healing)
