@@ -105,7 +105,7 @@
         "red": "红灯",
         "orange": "橙灯",
         "white": "白灯",
-        "infinite_air_dashes": "无限空中冲刺",
+        "infinite_air_attacks": "无限空中冲刺",
         "max_charge": "最大充能"
     },
     "hammer": {

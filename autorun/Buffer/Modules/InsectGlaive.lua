@@ -11,7 +11,7 @@ local Module = {
         red = false,
         white = false,
         orange = false,
-        infinite_air_dashes = false,
+        infinite_air_attacks = false,
         max_charge = false,
     }
 }
