@@ -21,6 +21,8 @@ function Module.init_hooks()
     sdk.hook(sdk.find_type_definition("app.cHunterWp00Handling"):get_method("update"), function(args) 
         local managed = sdk.to_managed_object(args[2])
         if not managed:get_type_definition():is_a("app.cHunterWp00Handling") then return end
+        if not managed:get_Hunter() then return end
+        if not managed:get_Hunter():get_IsMaster() then return end
 
         -- True charge boost
         if Module.data.true_charge_boost then 

@@ -39,24 +39,24 @@ local function update_field(key, field_name, managed, new_value)
 end
 
 function Module.init_hooks()
-    -- Kinsect changes
-    sdk.hook(sdk.find_type_definition("app.Wp10Insect"):get_method("update"), function(args) 
-        local managed = sdk.to_managed_object(args[2])
-        if not managed:get_type_definition():is_a("app.Wp10Insect") then return end
-
-        update_field("kinsect", "_PowerLv", managed, Module.data.kinsect.power)
-        update_field("kinsect", "_SpeedLv", managed, Module.data.kinsect.speed)
-        update_field("kinsect", "_RecoveryLv", managed, Module.data.kinsect.recovery)
-
-        if Module.data.kinsect.unlimited_stamina then 
-            managed:get_field("Stamina"):set_field("_Value", 100.0)
-        end
-    end, function(retval) end)
 
     -- Weapon changes
     sdk.hook(sdk.find_type_definition("app.cHunterWp10Handling"):get_method("update"), function(args) 
         local managed = sdk.to_managed_object(args[2])
         if not managed:get_type_definition():is_a("app.cHunterWp10Handling") then return end
+        if not managed:get_Hunter() then return end
+        if not managed:get_Hunter():get_IsMaster() then return end
+
+        if Module.data.kinsect.power > -1 or Module.data.kinsect.speed > -1 or Module.data.kinsect.recovery > -1 then 
+            local kinsect = managed:get_Insect()
+            update_field("kinsect", "_PowerLv", kinsect, Module.data.kinsect.power)
+            update_field("kinsect", "_SpeedLv", kinsect, Module.data.kinsect.speed)
+            update_field("kinsect", "_RecoveryLv", kinsect, Module.data.kinsect.recovery)
+            
+            if Module.data.kinsect.unlimited_stamina then 
+                managed:get_field("Stamina"):set_field("_Value", 100.0)
+            end
+        end
 
         
         if Module.data.red then 
