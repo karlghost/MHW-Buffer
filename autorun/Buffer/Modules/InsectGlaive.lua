@@ -55,7 +55,7 @@ function Module.init_hooks()
             update_field("kinsect", "_RecoveryLv", kinsect, Module.data.kinsect.recovery)
             
             if Module.data.kinsect.unlimited_stamina then 
-                managed:get_field("Stamina"):set_field("_Value", 100.0)
+                kinsect:get_field("Stamina"):set_field("_Value", 100.0)
             end
         end
 
