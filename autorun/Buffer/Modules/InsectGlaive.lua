@@ -47,6 +47,7 @@ function Module.init_hooks()
         if not managed:get_Hunter() then return end
         if not managed:get_Hunter():get_IsMaster() then return end
 
+        -- Kinsect
         if Module.data.kinsect.power > -1 or Module.data.kinsect.speed > -1 or Module.data.kinsect.recovery > -1 then 
             local kinsect = managed:get_Insect()
             update_field("kinsect", "_PowerLv", kinsect, Module.data.kinsect.power)
@@ -58,7 +59,7 @@ function Module.init_hooks()
             end
         end
 
-        
+        -- Extracts
         if Module.data.red then 
             managed:get_field("ExtractTimer")[0]:set_field("_Value", 89.0)
         end
@@ -71,11 +72,13 @@ function Module.init_hooks()
         if Module.data.red and Module.data.white and Module.data.orange then 
             managed:get_field("TrippleUpTimer"):set_field("_Value", 89.0)
         end
-        
+
+        -- Air attacks
         if Module.data.infinite_air_dashes then 
             managed:set_field("_EmStepCount", 2)
         end
 
+        -- Charge attack
         if Module.data.max_charge and managed:get_field("_ChargeTimer") > 0 then 
             managed:set_field("_ChargeTimer", 100.0)
         end
