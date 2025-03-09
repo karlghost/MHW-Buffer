@@ -39,7 +39,7 @@ function bindings.get_device()
         return 1
     end
     if bindings.id_keyboard() then
-        return 3
+        return 2
     end
     return 0
 end
