@@ -27,7 +27,8 @@
             "save": "Save",
             "cancel": "Cancel",
             "enabled": "has been enabled.",
-            "disabled": "has been disabled."
+            "disabled": "has been disabled.",
+            "set_to": "has been set to %d."
         }
     },
     "base": {
