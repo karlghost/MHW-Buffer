@@ -33,17 +33,6 @@ function bindings.init(module_list)
     -- bindings.add(2, {8, 80}, "miscellaneous.data.ammo_and_coatings.unlimited_ammo", true) -- BACKSPACE + P
 end
 
--- 1 = Gamepad | 2 = Keyboard
-function bindings.get_device()
-    if bindings.is_controller() then
-        return 1
-    end
-    if bindings.id_keyboard() then
-        return 2
-    end
-    return 0
-end
-
 -- Add a new binding
 -- If device is gamepad(1)
 -- If device is a keyboard(2)
@@ -308,26 +297,35 @@ function bindings.is_key_codes_triggered(arr_key)
     local current = bindings.get_current_keys()
     local previous = bindings.get_previous_keys()
 
-    -- if current has all keys needed, and old has all but one, then return true
+    -- Check if in current all keys are pressed, and in previous either none or all but one
     local matches = 0
-    for _, required_code in pairs(arr_key) do
-        local found = false
-        for _, current_code in pairs(current) do
-            if current_code == required_code then
-                found = true
-            end
-        end
-        for _, previous_code in pairs(previous) do
-            if previous_code == required_code then
-                found = true
+    local previous_matches = 0
+    for _, key in pairs(arr_key) do
+        for _, current_key in pairs(current) do
+            if current_key == key then
                 matches = matches + 1
             end
         end
-        if not found then
-            return false
+        for _, previous_key in pairs(previous) do
+            if previous_key == key then
+                previous_matches = previous_matches + 1
+            end
         end
     end
-    return matches + 1 == #arr_key
+
+    -- If not all current keys match the trigger
+    if matches ~= #arr_key then
+        return false
+    end
+
+    -- If no previous keys were found
+    if #previous_keys == 0 then
+        return true
+    end
+
+    -- If all but one key is the same
+    return previous_matches + 1 == #arr_key
+   
 end
 function bindings.is_key_code_triggered(code)
     local keys = {}
@@ -392,34 +390,32 @@ function bindings.update()
 
     if bindings.is_keyboard() then
         for _, input_data in pairs(bindings.keys) do
-            -- if bindings.is_key_codes_triggered(input_data.input) and not triggered_keys[json.stringify(input_data.input)] then 
             if bindings.is_key_codes_triggered(input_data.input) then
                 bindings.perform(input_data.data)
-                -- triggered_keys[json.stringify(input_data.input)] = true
             end
         end
     end
 
     bindings.popup_update()
 
-    -- Check if resetting controller
     if not bindings.is_controller() then
         triggered_buttons = {}
     else
-        local current_buttons = bindings.get_current_button_code()
-        if not triggered_buttons[current_buttons] then
-            triggered_buttons[current_buttons] = nil
+        for code, _ in pairs(triggered_buttons) do
+            local btns_in_trigger = bindings.get_button_names(code)
+            local found_unpressed = false
+            for _, btn in pairs(btns_in_trigger) do
+                if not bindings.is_button_down(btn.code) then
+                    found_unpressed = true
+                end
+            end
+            if found_unpressed then
+                triggered_buttons[code] = nil
+            end
         end
     end
-
-    -- Check if resetting keyboard
-    -- if not bindings.is_keyboard() then triggered_keys = {}
-    -- else 
-    --     local current_keys = bindings.get_key_codes(bindings.get_current_keys())
-    --     for i, triggered_keys in pairs(triggered_keys) do
-    --         if not bindings.is_key_down(triggered_keys) then triggered_keys[i] = nil end
-    --     end
-    -- end
+    
+    -- Update previous data
     previous_buttons = bindings.get_current_button_code()
     previous_keys = bindings.get_current_keys()
 end
@@ -433,9 +429,11 @@ end
 function bindings.perform(data)
     local path = utils.split(data.path, ".")
     local on_value = data.on
-
-    local enabled_text, disabled_text = "<COL YEL>" .. language.get("window.bindings.enabled") .. "</COL>",
-        "<COL RED>" .. language.get("window.bindings.disabled") .. "</COL>"
+    local enabled_text = "<COL YEL>" .. language.get("window.bindings.enabled") .. "</COL>"
+    local disabled_text = "<COL RED>" .. language.get("window.bindings.disabled") .. "</COL>"
+    if type(on_value) == "number" then
+        enabled_text = "<COL YEL>" .. string.gsub(language.get("window.bindings.set_to"), "%%d", on_value) .. "</COL>"
+    end
 
     -- Find module
     local module_index
@@ -444,11 +442,8 @@ function bindings.perform(data)
             module_index = key
         end
     end
-    table.remove(path, 1)
-    table.remove(path, 1)
-
-    -- I have to do it this way because otherwise it changes it by value and not by reference which means the module remains unchanged...
-    --     unless Lua has another option I don't know about - I'm open to suggestions
+    table.remove(path, 1) -- Remove Module name
+    table.remove(path, 1) -- Remove "data" from path
 
     local function toggle_boolean(module_data, path, on_value)
         local target = module_data
@@ -456,8 +451,7 @@ function bindings.perform(data)
             target = target[path[i]]
         end
         target[path[#path]] = not target[path[#path]]
-        utils.send_message(bindings.get_formatted_title(data.path) .. " " ..
-                               (target[path[#path]] and enabled_text or disabled_text))
+        utils.send_message(bindings.get_formatted_title(data.path) .. " " .. (target[path[#path]] and enabled_text or disabled_text))
     end
 
     local function toggle_number(module_data, path, on_value)
@@ -487,13 +481,27 @@ end
 function bindings.popup_update()
     if popup.open then
         if popup.listening then
-            local current = popup.device == 1 and bindings.get_current_buttons() or
-                                bindings.get_current_keys_with_name()
+            -- Get Currently pressed
+            local current = popup.device == 1 and bindings.get_current_buttons() or bindings.get_current_keys_with_name()
+
+            -- If currently pressing buttons
             if #current > 0 then
                 if not popup.binding then
                     popup.binding = {}
                 end
-                popup.binding = current
+
+                -- Add the new inputs to the binding list
+                for _, input in pairs(current) do
+                    local in_list = false
+                    for _, binding in pairs(popup.binding) do
+                        if binding.code == input.code then
+                            in_list = true
+                        end
+                    end
+                    if not in_list then
+                        table.insert(popup.binding, input)
+                    end
+                end
             elseif #current == 0 and popup.binding and #popup.binding > 0 then
                 popup.listening = false
             end
