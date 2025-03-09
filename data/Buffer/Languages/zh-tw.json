@@ -107,7 +107,8 @@
         "red": "紅色",
         "orange": "橙色",
         "white": "白色",
-        "infinite_air_attacks": "無限空中攻擊"
+        "infinite_air_attacks": "無限空中攻擊",
+        "max_charge": "最大充能"
     },
 
     "hammer": {
