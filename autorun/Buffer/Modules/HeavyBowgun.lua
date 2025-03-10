@@ -48,7 +48,7 @@ function Module.init_hooks()
         -- Snipe Ammo (FocusBlast: WyvernHowl)
         if Module.data.max_wyvern_howl then
             local snipe_ammo = managed:get_field("_SnipeAmmo")
-            snipe_ammo:set_field("_ChargeTimer", snipe_ammo:get_field("_ChargeTime")-0.1) -- Setting just below as it seems to glitch out and give an extra shot
+            snipe_ammo:set_field("_ChargeTimer", snipe_ammo:get_field("_ChargeTime")) 
             -- snipe_ammo:set_field("_CurrentAmmo", snipe_ammo:get_field("_MaxAmmo")) -- DOESN'T WORK
         end
 

@@ -74,7 +74,7 @@ function Module.init_hooks()
         end
 
         -- Air attacks
-        if Module.data.infinite_air_dashes then 
+        if Module.data.infinite_air_attacks then 
             managed:set_field("_EmStepCount", 2)
         end
 
@@ -131,7 +131,7 @@ function Module.draw()
 
         imgui.end_table()
 
-        changed, Module.data.infinite_air_dashes = imgui.checkbox(language.get(languagePrefix .. "infinite_air_dashes"), Module.data.infinite_air_dashes)
+        changed, Module.data.infinite_air_attacks = imgui.checkbox(language.get(languagePrefix .. "infinite_air_attacks"), Module.data.infinite_air_attacks)
         any_changed = any_changed or changed
 
         
