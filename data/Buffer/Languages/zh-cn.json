@@ -1,5 +1,4 @@
 {
-    "_IMPORTANT_NOTE": "若多个条目具有相同值但控制不同功能，请使用空格加以区分",
     "_USE_FONT": "NotoSansSC-Regular.otf",
     "_TRANSLATOR": "Jeffrey13131",
     "window":{
@@ -110,7 +109,7 @@
     },
     "hammer": {
         "title": "锤子",
-        "instant_charge": "立即蓄力 "
+        "instant_charge": "立即蓄力"
     },
     "hunting_horn": {
         "title": "狩猎笛"
@@ -126,7 +125,7 @@
         "shell_level": "炮击等级",
         "infinite_wyvern_fire": "无限龙击炮",
         "infinite_backstep": "无限后撤步",
-        "instant_charge": "立即蓄力 ",
+        "instant_charge": "立即蓄力",
         "instant_charge_tooltip": "需保持蓄力片刻后松开方可发射",
         "free_charge_shot": "免蓄力射击"
     },
