@@ -107,7 +107,8 @@
         "orange": "Orange",
         "white": "Weiss",
         "infinite_air_attacks": "Unbegrenzte Luftangriffe",
-        "max_charge": "Maximale Aufladung"
+        "fast_charge": "Schnelle Aufladung",
+        "charge_time": "Aufladezeit %"
     },
 
     "hammer": {

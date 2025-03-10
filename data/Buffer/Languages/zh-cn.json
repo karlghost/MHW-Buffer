@@ -105,7 +105,8 @@
         "orange": "橙灯",
         "white": "白灯",
         "infinite_air_attacks": "无限空中攻击",
-        "max_charge": "最大充能"
+        "fast_charge": "快速充能",
+        "charge_time": "充能时间%"
     },
     "hammer": {
         "title": "锤子",

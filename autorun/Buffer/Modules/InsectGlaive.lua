@@ -12,7 +12,8 @@ local Module = {
         white = false,
         orange = false,
         infinite_air_attacks = false,
-        max_charge = false,
+        fast_charge = false,
+        charge_time = 0,
     }
 }
 
@@ -79,7 +80,7 @@ function Module.init_hooks()
         end
 
         -- Charge attack
-        if Module.data.max_charge and managed:get_field("_ChargeTimer") > 0 then 
+        if Module.data.fast_charge and managed:get_field("_ChargeTimer") > Module.data.charge_time/50 then
             managed:set_field("_ChargeTimer", 100.0)
         end
 
@@ -136,7 +137,10 @@ function Module.draw()
         any_changed = any_changed or changed
 
         
-        changed, Module.data.max_charge = imgui.checkbox(language.get(languagePrefix .. "max_charge"), Module.data.max_charge)
+        changed, Module.data.fast_charge = imgui.checkbox(language.get(languagePrefix .. "fast_charge"), Module.data.fast_charge)
+        any_changed = any_changed or changed
+
+        changed, Module.data.charge_time = imgui.slider_int(language.get(languagePrefix .. "charge_time"), Module.data.charge_time, 0, 100, "%d")
         any_changed = any_changed or changed
 
         if any_changed then config.save_section(Module.create_config_section()) end

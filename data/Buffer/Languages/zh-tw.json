@@ -107,7 +107,8 @@
         "orange": "橙色",
         "white": "白色",
         "infinite_air_attacks": "無限空中攻擊",
-        "max_charge": "最大充能"
+        "fast_charge": "快速充能",
+        "charge_time": "充能時間%"
     },
 
     "hammer": {

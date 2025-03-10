@@ -105,7 +105,8 @@
         "orange": "Orange",
         "white": "White",
         "infinite_air_attacks": "Infinite air attacks",
-        "max_charge": "Max charge"
+        "fast_charge": "Fast charge",
+        "charge_time": "Charge time %"
     },
 
     "hammer": {
