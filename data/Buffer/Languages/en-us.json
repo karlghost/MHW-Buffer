@@ -137,6 +137,7 @@
         "charge_level": "Charge level",
         "all_arrow_types": "All arrow types",
         "unlimited_bottles": "Unlimited bottles",
+        "tetrad_shot_active": "Tetrad shot support active",
         "max_trick_arrow_gauge": "Max trick arrow gauge"
     },
     "light_bowgun": {

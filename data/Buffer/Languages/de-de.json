@@ -139,6 +139,7 @@
         "charge_level": "Stufe der Aufladung",
         "all_arrow_types": "Alle Pfeilarten",
         "unlimited_bottles": "Unbegrenzte Flaschen",
+        "tetrad_shot_active": "Tetrad shot support active",
         "max_trick_arrow_gauge": "Max Trick Pfeilstärke"
     },
     "light_bowgun": {
