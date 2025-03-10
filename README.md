@@ -3,17 +3,9 @@
 Buffs, Modifications, and Cheats for weapons and stats.
 
 ## Download Mod
-
-<div style="display:flex;">
-   <div style="display: flex; flex-basis: 33%">
-      <img src="https://styles.redditmedia.com/t5_2y0at/styles/communityIcon_7l4gbrorhdia1.png" width=25 height=25 style="padding-right: 2px">
-      <a href="https://www.nexusmods.com/monsterhunterwilds/mods/299" >Nexus Mods</a>
-   </div>
-   <div style="display: flex; flex-basis: 33%">
-      <img src="https://cdn.freebiesupply.com/logos/large/2x/github-icon-1-logo-black-and-white.png" width=25 height=25 style="padding-right: 5px">
-      <a href="/releases">Github Releases</a>
-   </div>
-</div>
+<img src="https://styles.redditmedia.com/t5_2y0at/styles/communityIcon_7l4gbrorhdia1.png" width=25 height=25 style="padding-right: 2px">
+<a style="font-size: 1.2em" href="https://www.nexusmods.com/monsterhunterwilds/mods/299" ><sup>Nexus Mods</sup></a>
+   
 
 ## Installation Steps
 
