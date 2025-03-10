@@ -48,6 +48,7 @@ function Module.init_hooks()
 end
 
 function Module.draw()
+    imgui.push_id(Module.title)
     local changed, any_changed = false, false
     local languagePrefix = Module.title .. "."
 
@@ -69,6 +70,7 @@ function Module.draw()
         imgui.separator()
         imgui.spacing()
     end
+    imgui.pop_id()
 end
 
 function Module.reset()

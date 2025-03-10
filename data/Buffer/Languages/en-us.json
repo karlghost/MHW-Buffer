@@ -1,7 +1,4 @@
 {
-    "_IMPORTANT_NOTE": "If multiple items have the same value but control different things, you need to make them different by using spaces",
-    
-    
     "window":{
         "toggle_button": "Toggle Buffer GUI",
         "title": "Modifiers & Settings",
@@ -147,7 +144,7 @@
         "shell_level": "Shell level",
         "infinite_wyvern_fire": "Infinite wyvern fire",
         "infinite_backstep": "Infinite backstep",
-        "instant_charge": "Instant charge ", 
+        "instant_charge": "Instant charge", 
         "instant_charge_tooltip": "Will require being held for a moment, then letting go to fire",
         "free_charge_shot": "Free charge shot"
     },
