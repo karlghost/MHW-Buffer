@@ -111,7 +111,9 @@ function bindings.get_formatted_title(path)
 end
 -- ======= Gamepad ==========
 
--- Buttons currently being pressed
+
+local current_buttons = nil
+local current_buttons_last_check = nil
 local previous_buttons = 0
 local triggered_buttons = {}
 
@@ -132,10 +134,20 @@ function bindings.get_current_button_code()
     if main_pad == nil then
         main_pad = pad_manager:get_MainPad()
     end
-    local current = main_pad:get_KeyOn()
-    if current == 0 then
-        return -1
+
+    -- Cache the buttons for 0.1 seconds - allows for easier setting/reading of binds
+    if current_buttons ~= nil and current_buttons_last_check ~= nil and current_buttons_last_check + 0.1 > os.clock() then
+        return current_buttons
     end
+
+    local current = main_pad:get_KeyOn()
+
+    if current == 0 then
+        current = -1
+    end
+
+    current_buttons = current
+    current_buttons_last_check = os.clock()
     return current
 end
 
@@ -247,8 +259,9 @@ end
 -- ======= Keyboard ==========
 
 -- Keys currently being pressed
+local current_keys = nil
+local current_keys_last_check = nil
 local previous_keys = {}
-local triggered_keys = {}
 
 -- Check if the keyboard is being used
 function bindings.is_keyboard()
@@ -268,22 +281,34 @@ function bindings.get_current_keys_with_name()
     if main_mouse_keyboard == nil then
         main_mouse_keyboard = mouse_keyboard_manager:get_MainMouseKeyboard()
     end
+
+    -- Cache the keys for 0.1 seconds - allows for easier setting/reading of binds
+    if current_keys ~= nil and current_keys_last_check ~= nil and current_keys_last_check + 0.1 > os.clock() then
+        return current_keys
+    end
+
     local key_list = main_mouse_keyboard:get_field("_Keys")
     local keys = {}
     for key_name, key_code in pairs(key_bindings) do
         key_list:get_Item(key_code)
         if key_list:get_Item(key_code):get_field("_On") then
-            table.insert(keys, {
-                name = key_name,
-                code = key_code
-            })
+            if not string.match(key_name, "CLICK") then
+                table.insert(keys, {
+                    name = key_name,
+                    code = key_code
+                })
+            end
         end
     end
+
+    current_keys = keys
+    current_keys_last_check = os.clock()
     return keys
 end
 
 -- Get current keys as an array of code
 function bindings.get_current_keys()
+
     local keys = bindings.get_current_keys_with_name()
     local key_codes = {}
     for _, key in pairs(keys) do
@@ -490,18 +515,20 @@ function bindings.popup_update()
                     popup.binding = {}
                 end
 
+                popup.binding = current
+
                 -- Add the new inputs to the binding list
-                for _, input in pairs(current) do
-                    local in_list = false
-                    for _, binding in pairs(popup.binding) do
-                        if binding.code == input.code then
-                            in_list = true
-                        end
-                    end
-                    if not in_list then
-                        table.insert(popup.binding, input)
-                    end
-                end
+                -- for _, input in pairs(current) do
+                --     local in_list = false
+                --     for _, binding in pairs(popup.binding) do
+                --         if binding.code == input.code then
+                --             in_list = true
+                --         end
+                --     end
+                --     if not in_list then
+                --         table.insert(popup.binding, input)
+                --     end
+                -- end
             elseif #current == 0 and popup.binding and #popup.binding > 0 then
                 popup.listening = false
             end
