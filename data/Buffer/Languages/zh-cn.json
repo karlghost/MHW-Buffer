@@ -151,6 +151,7 @@
         "charge_level": "锁定蓄力等级",
         "all_arrow_types": "全强化瓶解锁",
         "unlimited_bottles": "强化瓶无限使用",
+        "tetrad_shot_active": "Tetrad shot support active",
         "max_trick_arrow_gauge": "特殊箭计量槽全满"
     },
     "light_bowgun": {

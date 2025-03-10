@@ -24,26 +24,36 @@ function Module.init_hooks()
     -- Watch for weapon changes, need to re-apply the default arrow types 
     sdk.hook(sdk.find_type_definition("app.HunterCharacter"):get_method("changeWeapon"), function(args) 
         
+        -- local new_weapon_id = sdk.to_int64(args[3])
         local managed = sdk.to_managed_object(args[2])
         if not managed:get_type_definition():is_a("app.HunterCharacter") then return end
         if not managed:get_IsMaster() then return end
         if not managed:get_WeaponHandling() then return end
         if not managed:get_WeaponHandling():get_type_definition() then return end
-        local is_current_bow = managed:get_WeaponHandling():get_type_definition():is_a("app.cHunterWp11Handling")
-        -- local new_weapon_id = sdk.to_int64(args[3])
-        
-        if not is_current_bow then return end
 
+        -- Get weapons
+        local is_main_bow = managed:get_WeaponHandling():get_type_definition():is_a("app.cHunterWp11Handling")
+        local is_reserve_bow = managed:get_ReserveWeaponHandling():get_type_definition():is_a("app.cHunterWp11Handling")
+        
+        -- If bot weapon are not a bow
+        if not is_main_bow and not is_reserve_bow then return end
+
+        -- Check if all_arrow_types is enabled and we have the old arrow types
         if Module.data.all_arrow_types and Module.old.arrow_types then
 
+            -- Get the weapon that is being changed out
             local weapon = managed:get_WeaponHandling()
+            if not is_main_bow then weapon = managed:get_ReserveWeaponHandling() end
 
+            -- Reset arrow types to the old arrow types
             for i = 1, #weapon:get_field("<BottleInfos>k__BackingField") do
                 local bottle_info = weapon:get_field("<BottleInfos>k__BackingField")[i]
                 if bottle_info then
                     bottle_info:set_field("<CanLoading>k__BackingField", Module.old.arrow_types[i])
                 end
             end
+
+            -- Reset old arrow types
             Module.old.arrow_types = nil
             
         end
@@ -105,8 +115,28 @@ function Module.init_hooks()
 
         -- Unlimited bottles
         if Module.data.unlimited_bottles then
-            managed:set_field("<BottleNum>k__BackingField", 10)
-            managed:set_field("<BottleShotCount>k__BackingField", 0)
+
+            local tetrad_shot_active = false
+
+            local skills = managed:get_Hunter():get_HunterSkill():get_field("_NextSkillInfo"):get_field("_items")
+            
+            for i = 0, skills:get_Length()-1 do
+                local skill = skills:get_Item(i)
+                if skill then
+                    local skill_data = skill:get_SkillData()
+                    if skill_data:get_Index() == 38 then -- Tetrad Shot
+                        tetrad_shot_active = true
+                        break
+                    end
+                end
+            end
+            local max_bottle_num = tetrad_shot_active and 4 or 10
+
+            if tetrad_shot_active then Module.hidden.tetrad_shot_active = true
+            elseif Module.hidden.tetrad_shot_active then Module.hidden.tetrad_shot_active = false end
+
+            managed:set_field("<BottleNum>k__BackingField", max_bottle_num)
+            managed:set_field("<BottleShotCount>k__BackingField", 10-max_bottle_num)
         end
 
         -- Trick Arrow Gauge 
@@ -132,6 +162,10 @@ function Module.draw()
         any_changed = any_changed or changed
 
         changed, Module.data.unlimited_bottles = imgui.checkbox(language.get(languagePrefix .. "unlimited_bottles"), Module.data.unlimited_bottles)
+        if Module.hidden.tetrad_shot_active then
+            imgui.same_line()
+            utils.tooltip(language.get(languagePrefix .. "tetrad_shot_active"))
+        end
         any_changed = any_changed or changed
 
         changed, Module.data.max_trick_arrow_gauge = imgui.checkbox(language.get(languagePrefix .. "max_trick_arrow_gauge"), Module.data.max_trick_arrow_gauge)

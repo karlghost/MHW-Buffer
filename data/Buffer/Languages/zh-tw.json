@@ -156,6 +156,7 @@
         "charge_level": "充能等級",
         "all_arrow_types": "所有箭類型",
         "unlimited_bottles": "無限瓶",
+        "tetrad_shot_active": "四重射擊支援激活",
         "max_trick_arrow_gauge": "最大技巧箭計量表"
     },
     "light_bowgun": {
