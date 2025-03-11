@@ -7,6 +7,7 @@ local Module = {
             speed = -1,
             recovery = -1,
             unlimited_stamina = false,
+            instant_charge = false,
         },
         red = false,
         white = false,
@@ -48,15 +49,17 @@ function Module.init_hooks()
         if not managed:get_Hunter():get_IsMaster() then return end
 
         -- Kinsect
-        if Module.data.kinsect.power > -1 or Module.data.kinsect.speed > -1 or Module.data.kinsect.recovery > -1 then 
-            local kinsect = managed:get_Insect()
-            update_field("kinsect", "_PowerLv", kinsect, Module.data.kinsect.power)
-            update_field("kinsect", "_SpeedLv", kinsect, Module.data.kinsect.speed)
-            update_field("kinsect", "_RecoveryLv", kinsect, Module.data.kinsect.recovery)
+        local kinsect = managed:get_Insect()
+        update_field("kinsect", "_PowerLv", kinsect, Module.data.kinsect.power)
+        update_field("kinsect", "_SpeedLv", kinsect, Module.data.kinsect.speed)
+        update_field("kinsect", "_RecoveryLv", kinsect, Module.data.kinsect.recovery)
             
-            if Module.data.kinsect.unlimited_stamina then 
-                kinsect:get_field("Stamina"):set_field("_Value", 100.0)
-            end
+        if Module.data.kinsect.unlimited_stamina then 
+            kinsect:get_field("Stamina"):set_field("_Value", 100.0)
+        end
+
+        if Module.data.kinsect.instant_charge and managed:get_field("InsectChargeTimer") > 0 then
+            managed:set_field("InsectChargeTimer", 1.0)
         end
 
         -- Extracts
@@ -83,7 +86,6 @@ function Module.init_hooks()
             managed:set_field("_ChargeTimer", 100.0)
         end
 
-
     end, function(retval) end)
 end
 
@@ -95,6 +97,7 @@ function Module.draw()
     if imgui.collapsing_header(language.get(languagePrefix .. "title")) then
         imgui.indent(10)
         
+        imgui.push_id(Module.title.."kinsect")
         languagePrefix = Module.title .. ".kinsect."
         if imgui.tree_node(language.get(languagePrefix .. "title")) then
             changed, Module.data.kinsect.power = imgui.slider_int(language.get(languagePrefix .. "power"), Module.data.kinsect.power, -1, 200, Module.data.kinsect.power == -1 and language.get("base.disabled") or "%d")
@@ -109,8 +112,12 @@ function Module.draw()
             changed, Module.data.kinsect.unlimited_stamina = imgui.checkbox(language.get(languagePrefix .. "unlimited_stamina"), Module.data.kinsect.unlimited_stamina)
             any_changed = any_changed or changed
 
+            changed, Module.data.kinsect.instant_charge = imgui.checkbox(language.get(languagePrefix .. "instant_charge"), Module.data.kinsect.instant_charge)
+            any_changed = any_changed or changed
+
             imgui.tree_pop()
         end
+        imgui.pop_id()
 
         languagePrefix = Module.title .. "."
         imgui.begin_table(Module.title.."1", 3, nil, nil, nil)

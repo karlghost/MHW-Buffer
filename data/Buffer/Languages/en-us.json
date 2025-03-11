@@ -116,11 +116,12 @@
             "power": "Power",
             "speed": "Speed",
             "recovery": "Recovery",
-            "unlimited_stamina": "Unlimited Stamina"
+            "unlimited_stamina": "Unlimited Stamina",
+            "instant_charge": "Instant charge"
         },
-        "red": "Red",
-        "orange": "Orange",
-        "white": "White",
+        "red": "Red Extract",
+        "orange": "Orange Extract",
+        "white": "White Extract",
         "infinite_air_attacks": "Infinite air attacks",
         "max_charge": "Max charge"
     },
