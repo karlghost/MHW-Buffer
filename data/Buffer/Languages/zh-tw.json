@@ -11,7 +11,23 @@
         "about": "關於",
         "author": "作者",
         "translator": "翻譯者",
-        "version": "版本"
+        "version": "版本",
+        "bindings": {
+            "title": "快捷鍵",
+            "keyboard": "鍵盤",
+            "gamepad": "手柄",
+            "remove": "移除",
+            "add_keyboard": "添加鍵盤快捷鍵",
+            "add_gamepad": "添加手柄快捷鍵",
+            "choose_modification": "選擇修改功能",
+            "on_value": "目標值",
+            "to_listen": "開始記錄快捷鍵",
+            "listening": "正在等待輸入...",
+            "save": "儲存",
+            "cancel": "取消",
+            "enabled": "已啟用",
+            "disabled": "已禁用"
+        }
     },
     "base": {
         "disabled": "禁用"
