@@ -19,8 +19,8 @@ local Module = {
             might_pill = false, -- _Kairiki_G_Timer
             adamant_pill = false, -- _Nintai_G_Timer
            
-            -- mega_demondrug = false, -- _KijinDrink_G / _Timer
-            -- mega_armorskin = false, -- _KoukaDrink_G / _Timer
+            mega_demondrug = false, -- _KijinDrink_G
+            mega_armorskin = false, -- _KoukaDrink_G 
             
             demon_powder = false, -- _KijinPowder_Timer
             hardshell_powder = false, -- _KoukaPowder_Timer
@@ -151,15 +151,19 @@ function Module.init_hooks()
             if Module.data.item_buffs.adamant_pill then
                 item_buffs:set_field("_Nintai_G_Timer", 90)
             end
-            -- if Module.data.item_buffs.mega_demondrug then -- Not working, unsure why
-            --     local demon_drug = item_buffs:get_field("_KijinDrink_G")
-            --     demon_drug:set_field("_Timer", 1800)
+            if Module.data.item_buffs.mega_demondrug then 
+                local demon_drug = item_buffs:get_field("_KijinDrink_G")
+                if demon_drug:get_field("_Timer") <= 0 then
+                    item_buffs:activateItemBuff(sdk.to_ptr(5), 1.0, 1.0)   
+                end
+            end
+            if Module.data.item_buffs.mega_armorskin then
+                local armor_skin = item_buffs:get_field("_KoukaDrink_G")
+                if armor_skin:get_field("_Timer") <= 0 then
+                    item_buffs:activateItemBuff(sdk.to_ptr(11), 1.0, 1.0)        
+                end
+            end
 
-            -- end
-            -- if Module.data.item_buffs.mega_armorskin then -- Not working, unsure why
-            --     local armor_skin = item_buffs:get_field("_KoukaDrink_G")
-            --     armor_skin:set_field("_Timer", 1800)
-            -- end
             if Module.data.item_buffs.demon_powder then
                 item_buffs:set_field("_KijinPowder_Timer", 180)
             end
@@ -419,8 +423,8 @@ function Module.draw()
             changed, Module.data.item_buffs.might_pill = imgui.checkbox(language.get(languagePrefix .. "might_pill"), Module.data.item_buffs.might_pill)
             any_changed = any_changed or changed
 
-            -- changed, Module.data.item_buffs.mega_demondrug = imgui.checkbox(language.get(languagePrefix .. "mega_demondrug"), Module.data.item_buffs.mega_demondrug)
-            -- any_changed = any_changed or changed
+            changed, Module.data.item_buffs.mega_demondrug = imgui.checkbox(language.get(languagePrefix .. "mega_demondrug"), Module.data.item_buffs.mega_demondrug)
+            any_changed = any_changed or changed
 
             changed, Module.data.item_buffs.demon_powder = imgui.checkbox(language.get(languagePrefix .. "demon_powder"), Module.data.item_buffs.demon_powder)
             any_changed = any_changed or changed
@@ -436,8 +440,8 @@ function Module.draw()
             changed, Module.data.item_buffs.adamant_pill = imgui.checkbox(language.get(languagePrefix .. "adamant_pill"), Module.data.item_buffs.adamant_pill)
             any_changed = any_changed or changed
 
-            -- changed, Module.data.item_buffs.mega_armorskin = imgui.checkbox(language.get(languagePrefix .. "mega_armorskin"), Module.data.item_buffs.mega_armorskin)
-            -- any_changed = any_changed or changed
+            changed, Module.data.item_buffs.mega_armorskin = imgui.checkbox(language.get(languagePrefix .. "mega_armorskin"), Module.data.item_buffs.mega_armorskin)
+            any_changed = any_changed or changed
 
             changed, Module.data.item_buffs.hardshell_powder = imgui.checkbox(language.get(languagePrefix .. "hardshell_powder"), Module.data.item_buffs.hardshell_powder)
             any_changed = any_changed or changed
