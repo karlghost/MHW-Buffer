@@ -101,7 +101,8 @@
             "power": "力量",
             "speed": "速度",
             "recovery": "恢復",
-            "unlimited_stamina": "無限耐力"
+            "unlimited_stamina": "無限耐力",
+            "instant_charge": "瞬間充能"
         },
         "red": "紅色",
         "orange": "橙色",

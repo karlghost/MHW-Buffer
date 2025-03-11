@@ -101,7 +101,8 @@
             "power": "Kraft",
             "speed": "Geschwindigkeit",
             "recovery": "Erholung",
-            "unlimited_stamina": "Unendliche Ausdauer"
+            "unlimited_stamina": "Unendliche Ausdauer",
+            "instant_charge": "Sofortige Aufladung"
         },
         "red": "Rot",
         "orange": "Orange",

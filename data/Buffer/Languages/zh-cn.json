@@ -99,7 +99,8 @@
             "power": "力量",
             "speed": "速度",
             "recovery": "恢复",
-            "unlimited_stamina": "无限耐力"
+            "unlimited_stamina": "无限耐力",
+            "instant_charge": "立即蓄力"
         },
         "red": "红灯",
         "orange": "橙灯",
