@@ -135,22 +135,19 @@ function Module.draw()
 
         changed, Module.data.infinite_air_attacks = imgui.checkbox(language.get(languagePrefix .. "infinite_air_attacks"), Module.data.infinite_air_attacks)
         any_changed = any_changed or changed
-
-        imgui.begin_table(Module.title.."1", 3, nil, nil, nil)
-        imgui.table_next_row()
-        imgui.table_next_column()
-
+        
         changed, Module.data.fast_charge = imgui.checkbox(language.get(languagePrefix .. "fast_charge"), Module.data.fast_charge)
         any_changed = any_changed or changed
 
-        imgui.table_next_column()
-
         if Module.data.fast_charge then
+            imgui.same_line()
+            imgui.text("  ")
+            imgui.same_line()
+            imgui.set_next_item_width(imgui.calc_item_width() - 100)
             changed, Module.data.charge_time = imgui.slider_int(language.get(languagePrefix .. "charge_time"), Module.data.charge_time, 0, 100, "%d")
+            utils.tooltip(language.get(languagePrefix .. "charge_time_tooltip"))
             any_changed = any_changed or changed
         end
-
-        imgui.end_table()
 
         if any_changed then config.save_section(Module.create_config_section()) end
         imgui.unindent(10)

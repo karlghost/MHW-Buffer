@@ -108,7 +108,8 @@
         "white": "Weiss",
         "infinite_air_attacks": "Unbegrenzte Luftangriffe",
         "fast_charge": "Schnelle Aufladung",
-        "charge_time": "Aufladezeit %"
+        "charge_time": "Aufladezeit %",
+        "charge_time_tooltip": "\"Aufladezeit %\" gibt an, wie viel Prozent der ursprünglichen Ladezeit für die maximale Ladung benötigt werden. Je kleiner der Wert, desto schneller das Aufladen."
     },
 
     "hammer": {
