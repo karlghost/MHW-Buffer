@@ -14,6 +14,8 @@ local Module = {
         infinite_air_attacks = false,
         fast_charge = false,
         charge_time = 0,
+        insect_fast_charge = false,
+        insect_charge_time = 0,
     }
 }
 
@@ -84,6 +86,11 @@ function Module.init_hooks()
             managed:set_field("_ChargeTimer", 100.0)
         end
 
+        -- Insect charge
+        if Module.data.insect_fast_charge and managed:get_field("InsectChargeTimer") > Module.data.insect_charge_time/200 then
+            managed:set_field("InsectChargeTimer", 100.0)
+        end
+
 
     end, function(retval) end)
 end
@@ -146,6 +153,19 @@ function Module.draw()
             imgui.set_next_item_width(imgui.calc_item_width() - 100)
             changed, Module.data.charge_time = imgui.slider_int(language.get(languagePrefix .. "charge_time"), Module.data.charge_time, 0, 100, "%d")
             utils.tooltip(language.get(languagePrefix .. "charge_time_tooltip"))
+            any_changed = any_changed or changed
+        end
+
+        changed, Module.data.insect_fast_charge = imgui.checkbox(language.get(languagePrefix .. "insect_fast_charge"), Module.data.insect_fast_charge)
+        any_changed = any_changed or changed
+
+        if Module.data.insect_fast_charge then
+            imgui.same_line()
+            imgui.text("  ")
+            imgui.same_line()
+            imgui.set_next_item_width(imgui.calc_item_width() - 100)
+            changed, Module.data.insect_charge_time = imgui.slider_int(language.get(languagePrefix .. "insect_charge_time"), Module.data.insect_charge_time, 0, 100, "%d")
+            utils.tooltip(language.get(languagePrefix .. "insect_charge_time_tooltip"))
             any_changed = any_changed or changed
         end
 

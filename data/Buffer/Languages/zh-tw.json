@@ -109,7 +109,10 @@
         "infinite_air_attacks": "無限空中攻擊",
         "fast_charge": "快速充能",
         "charge_time": "充能時間%",
-        "charge_time_tooltip": "\"充能時間%\"表示最大充能所需時間佔原始充能時間的百分比。數值越小，充能越快。"
+        "charge_time_tooltip": "\"充能時間%\"表示最大充能所需時間佔原始充能時間的百分比。數值越小，充能越快。",
+        "insect_fast_charge": "獵蟲快速充能",
+        "insect_charge_time": "獵蟲充能時間%",
+        "insect_charge_time_tooltip": "\"充能時間%\"表示最大充能所需時間佔原始充能時間的百分比。數值越小，充能越快。"
     },
 
     "hammer": {
