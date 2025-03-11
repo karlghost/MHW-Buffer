@@ -72,7 +72,7 @@ function utils.send_message(text)
     if chatManager == nil then
         chatManager = sdk.get_managed_singleton("app.ChatManager")
     end
-    chatManager:addSystemLog(text) -- TODO: Confirm this doesn't go to everyone
+    chatManager:addSystemLog(text)
 end
 
 function utils.mergeTables(baseTable, newTable)
