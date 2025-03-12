@@ -12,9 +12,8 @@
         "version": "Version"
     },
     "base": {
-        "disabled": "Disabled"        
+        "disabled": "Disabled"
     },
-    
     "character": {
         "title": "Character",
         "stamina": {
@@ -99,7 +98,10 @@
             "power": "Power",
             "speed": "Speed",
             "recovery": "Recovery",
-            "unlimited_stamina": "Unlimited Stamina"
+            "unlimited_stamina": "Unlimited Stamina",
+            "fast_charge": "Fast charge",
+            "charge_time": "Charge time %",
+            "charge_time_tooltip": "\"Charge time %\" sets the required time to get the max charge in percentage to the original charge time.\n The smaller the value, the faster the charging."    
         },
         "red": "Red",
         "orange": "Orange",
@@ -107,10 +109,7 @@
         "infinite_air_attacks": "Infinite air attacks",
         "fast_charge": "Fast charge",
         "charge_time": "Charge time %",
-        "charge_time_tooltip": "\"Charge time %\" sets the required time to get the max charge in percentage to the original charge time. The smaller the value, the faster the charging.",
-        "insect_fast_charge": "Kinsect fast charge",
-        "insect_charge_time": "Kinsect charge time %",
-        "insect_charge_time_tooltip": "\"Charge time %\" sets the required time to get the max charge in percentage to the original charge time. The smaller the value, the faster the charging."
+        "charge_time_tooltip": "\"Charge time %\" sets the required time to get the max charge in percentage to the original charge time.\n The smaller the value, the faster the charging."    
     },
 
     "hammer": {

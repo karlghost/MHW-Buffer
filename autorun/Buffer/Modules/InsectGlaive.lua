@@ -7,6 +7,8 @@ local Module = {
             speed = -1,
             recovery = -1,
             unlimited_stamina = false,
+            fast_charge = false,
+            charge_time = 0,
         },
         red = false,
         white = false,
@@ -14,8 +16,6 @@ local Module = {
         infinite_air_attacks = false,
         fast_charge = false,
         charge_time = 0,
-        insect_fast_charge = false,
-        insect_charge_time = 0,
     }
 }
 
@@ -51,15 +51,18 @@ function Module.init_hooks()
         if not managed:get_Hunter():get_IsMaster() then return end
 
         -- Kinsect
-        if Module.data.kinsect.power > -1 or Module.data.kinsect.speed > -1 or Module.data.kinsect.recovery > -1 then 
-            local kinsect = managed:get_Insect()
-            update_field("kinsect", "_PowerLv", kinsect, Module.data.kinsect.power)
-            update_field("kinsect", "_SpeedLv", kinsect, Module.data.kinsect.speed)
-            update_field("kinsect", "_RecoveryLv", kinsect, Module.data.kinsect.recovery)
+        local kinsect = managed:get_Insect()
+        update_field("kinsect", "_PowerLv", kinsect, Module.data.kinsect.power)
+        update_field("kinsect", "_SpeedLv", kinsect, Module.data.kinsect.speed)
+        update_field("kinsect", "_RecoveryLv", kinsect, Module.data.kinsect.recovery)
+        
+        if Module.data.kinsect.unlimited_stamina then 
+            kinsect:get_field("Stamina"):set_field("_Value", 100.0)
+        end
             
-            if Module.data.kinsect.unlimited_stamina then 
-                kinsect:get_field("Stamina"):set_field("_Value", 100.0)
-            end
+        -- Insect charge
+        if Module.data.kinsect.fast_charge and managed:get_field("InsectChargeTimer") > Module.data.kinsect.charge_time/200 then
+            managed:set_field("InsectChargeTimer", 100.0)
         end
 
         -- Extracts
@@ -86,12 +89,6 @@ function Module.init_hooks()
             managed:set_field("_ChargeTimer", 100.0)
         end
 
-        -- Insect charge
-        if Module.data.insect_fast_charge and managed:get_field("InsectChargeTimer") > Module.data.insect_charge_time/200 then
-            managed:set_field("InsectChargeTimer", 100.0)
-        end
-
-
     end, function(retval) end)
 end
 
@@ -116,6 +113,21 @@ function Module.draw()
 
             changed, Module.data.kinsect.unlimited_stamina = imgui.checkbox(language.get(languagePrefix .. "unlimited_stamina"), Module.data.kinsect.unlimited_stamina)
             any_changed = any_changed or changed
+
+
+            changed, Module.data.kinsect.fast_charge = imgui.checkbox(language.get(languagePrefix .. "fast_charge"), Module.data.kinsect.fast_charge)
+            any_changed = any_changed or changed
+
+            if Module.data.kinsect.fast_charge then
+
+                imgui.same_line()
+                imgui.text("  ")
+                imgui.same_line()
+                imgui.set_next_item_width(imgui.calc_item_width() - 100)
+                changed, Module.data.kinsect.charge_time = imgui.slider_int(language.get(languagePrefix .. "charge_time"), Module.data.kinsect.charge_time, 0, 100, "%d")
+                utils.tooltip(language.get(languagePrefix.."charge_time_tooltip"))
+                any_changed = any_changed or changed
+            end
 
             imgui.tree_pop()
         end
@@ -147,25 +159,13 @@ function Module.draw()
         any_changed = any_changed or changed
 
         if Module.data.fast_charge then
+
             imgui.same_line()
             imgui.text("  ")
             imgui.same_line()
             imgui.set_next_item_width(imgui.calc_item_width() - 100)
             changed, Module.data.charge_time = imgui.slider_int(language.get(languagePrefix .. "charge_time"), Module.data.charge_time, 0, 100, "%d")
             utils.tooltip(language.get(languagePrefix .. "charge_time_tooltip"))
-            any_changed = any_changed or changed
-        end
-
-        changed, Module.data.insect_fast_charge = imgui.checkbox(language.get(languagePrefix .. "insect_fast_charge"), Module.data.insect_fast_charge)
-        any_changed = any_changed or changed
-
-        if Module.data.insect_fast_charge then
-            imgui.same_line()
-            imgui.text("  ")
-            imgui.same_line()
-            imgui.set_next_item_width(imgui.calc_item_width() - 100)
-            changed, Module.data.insect_charge_time = imgui.slider_int(language.get(languagePrefix .. "insect_charge_time"), Module.data.insect_charge_time, 0, 100, "%d")
-            utils.tooltip(language.get(languagePrefix .. "insect_charge_time_tooltip"))
             any_changed = any_changed or changed
         end
 
