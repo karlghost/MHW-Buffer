@@ -123,7 +123,7 @@
             "unlimited_stamina": "Unendliche Ausdauer",
             "fast_charge": "Schnelle Kinsect Aufladung",
             "charge_time": "Kinsect Aufladezeit %",
-            "charge_time_tooltip": "\"Aufladezeit %\" gibt an, wie viel Prozent der ursprünglichen Ladezeit für die maximale Ladung benötigt werden. Je kleiner der Wert, desto schneller das Aufladen."    
+            "charge_time_tooltip": "\"Aufladezeit %\" gibt an, wie viel Prozent der ursprünglichen Ladezeit für die maximale Ladung benötigt werden. Je kleiner der Wert, desto schneller das Aufladen."
         },
         "red": "Rot",
         "orange": "Orange",
@@ -131,7 +131,9 @@
         "infinite_air_attacks": "Unbegrenzte Luftangriffe",
         "fast_charge": "Schnelle Aufladung",
         "charge_time": "Aufladezeit %",
-        "charge_time_tooltip": "\"Aufladezeit %\" gibt an, wie viel Prozent der ursprünglichen Ladezeit für die maximale Ladung benötigt werden. Je kleiner der Wert, desto schneller das Aufladen."
+        "charge_time_tooltip": "\"Aufladezeit %\" gibt an, wie viel Prozent der ursprünglichen Ladezeit für die maximale Ladung benötigt werden. Je kleiner der Wert, desto schneller das Aufladen.",
+        "unrestricted_charge": "Unbeschränkte Aufladen",
+        "unrestricted_charge_tooltip": "Ermöglicht Aufladen bei Aktionen, die es normalerweise nicht erlauben (z. B. während aufgeladener Angriffe oder mit weggesteckter Waffe)."    
     },
 
     "hammer": {
@@ -155,7 +157,7 @@
         "infinite_backstep": "Unendlicher Rueckwaertsschritt",
         "instant_charge": "Sofortige Aufladung", 
         "instant_charge_tooltip": "Man muss sie einen Moment lang festhalten und dann loslassen, um zu feuern.",
-        "free_charge_shot": "Kostenloser Schuss"
+        "unrestricted_charge_shot": "Kostenloser Schuss"
     },
 
     "bow": {
