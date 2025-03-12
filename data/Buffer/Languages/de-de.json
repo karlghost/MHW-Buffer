@@ -121,7 +121,9 @@
             "speed": "Geschwindigkeit",
             "recovery": "Erholung",
             "unlimited_stamina": "Unendliche Ausdauer",
-            "instant_charge": "Sofortige Aufladung"
+            "fast_charge": "Schnelle Kinsect Aufladung",
+            "charge_time": "Kinsect Aufladezeit %",
+            "charge_time_tooltip": "\"Aufladezeit %\" gibt an, wie viel Prozent der ursprünglichen Ladezeit für die maximale Ladung benötigt werden. Je kleiner der Wert, desto schneller das Aufladen."    
         },
         "red": "Rot",
         "orange": "Orange",
@@ -129,10 +131,7 @@
         "infinite_air_attacks": "Unbegrenzte Luftangriffe",
         "fast_charge": "Schnelle Aufladung",
         "charge_time": "Aufladezeit %",
-        "charge_time_tooltip": "\"Aufladezeit %\" gibt an, wie viel Prozent der ursprünglichen Ladezeit für die maximale Ladung benötigt werden. Je kleiner der Wert, desto schneller das Aufladen.",
-        "insect_fast_charge": "Schnelle Kinsect Aufladung",
-        "insect_charge_time": "Kinsect Aufladezeit %",
-        "insect_charge_time_tooltip": "\"Aufladezeit %\" gibt an, wie viel Prozent der ursprünglichen Ladezeit für die maximale Ladung benötigt werden. Je kleiner der Wert, desto schneller das Aufladen."
+        "charge_time_tooltip": "\"Aufladezeit %\" gibt an, wie viel Prozent der ursprünglichen Ladezeit für die maximale Ladung benötigt werden. Je kleiner der Wert, desto schneller das Aufladen."
     },
 
     "hammer": {
