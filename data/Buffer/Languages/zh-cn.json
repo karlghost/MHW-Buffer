@@ -153,7 +153,7 @@
         "infinite_backstep": "无限后撤步",
         "instant_charge": "立即蓄力",
         "instant_charge_tooltip": "需保持蓄力片刻后松开方可发射",
-        "unrestricted_charge_shot": "免蓄力射击"
+        "free_charge_shot": "免蓄力射击"
     },
     "bow": {
         "title": "弓",

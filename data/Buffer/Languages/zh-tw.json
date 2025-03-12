@@ -156,7 +156,7 @@
         "infinite_backstep": "無限後跳",
         "instant_charge": "瞬間充能",
         "instant_charge_tooltip": "需要稍微按住一會兒，然後放開以發射",
-        "unrestricted_charge_shot": "免費充能射擊",
+        "free_charge_shot": "免費充能射擊",
         "max_charge": "最大充能"
     },
 

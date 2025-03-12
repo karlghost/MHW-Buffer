@@ -157,7 +157,7 @@
         "infinite_backstep": "Unendlicher Rueckwaertsschritt",
         "instant_charge": "Sofortige Aufladung", 
         "instant_charge_tooltip": "Man muss sie einen Moment lang festhalten und dann loslassen, um zu feuern.",
-        "unrestricted_charge_shot": "Kostenloser Schuss"
+        "free_charge_shot": "Kostenloser Schuss"
     },
 
     "bow": {
