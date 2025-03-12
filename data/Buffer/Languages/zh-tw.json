@@ -11,7 +11,23 @@
         "about": "關於",
         "author": "作者",
         "translator": "翻譯者",
-        "version": "版本"
+        "version": "版本",
+        "bindings": {
+            "title": "快捷鍵",
+            "keyboard": "鍵盤",
+            "gamepad": "手柄",
+            "remove": "移除",
+            "add_keyboard": "添加鍵盤快捷鍵",
+            "add_gamepad": "添加手柄快捷鍵",
+            "choose_modification": "選擇修改功能",
+            "on_value": "目標值",
+            "to_listen": "開始記錄快捷鍵",
+            "listening": "正在等待輸入...",
+            "save": "儲存",
+            "cancel": "取消",
+            "enabled": "已啟用",
+            "disabled": "已禁用"
+        }
     },
     "base": {
         "disabled": "禁用"
@@ -65,6 +81,8 @@
             "adamant_pill": "堅韌藥丸",
             "demon_powder": "惡魔粉",
             "hardshell_powder": "硬殼粉",
+            "mega_demondrug": "超級惡魔藥",
+            "mega_armorskin": "超級護甲藥",
             "cool_drink": "冷飲",
             "hot_drink": "熱飲",
             "dash_juice": "衝刺果汁",
@@ -101,7 +119,8 @@
             "power": "力量",
             "speed": "速度",
             "recovery": "恢復",
-            "unlimited_stamina": "無限耐力"
+            "unlimited_stamina": "無限耐力",
+            "instant_charge": "瞬間充能"
         },
         "red": "紅色",
         "orange": "橙色",

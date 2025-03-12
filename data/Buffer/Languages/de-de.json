@@ -11,7 +11,24 @@
         "about": "Ueber",
         "author": "Autor",
         "translator": "Üebersetzer",
-        "version": "Version"
+        "version": "Version",
+        "bindings": {
+            "title": "Belegung",
+            "keyboard": "Tastatur",
+            "gamepad": "Kontroller",
+            "remove": "Entfernen",
+            "add_keyboard": "Eine neue Tasten-Belegung hinzufuegen",
+            "add_gamepad": "Eine neue Kontroller-Belegung hinzufuegen",
+            "choose_modification": "Waehlen Sie eine Aenderung",
+            "on_value": "Zum Wert",
+            "to_listen": "Beginn des Wartens auf Eingaben",
+            "listening": "Zuhoeren bei Eingaben",
+            "save": "Speichern",
+            "cancel": "Abbrechen",
+            "enabled": "wurde aktiviert.",
+            "disabled": "wurde deaktiviert.",
+            "set_to": "wurde auf %d gesetzt."
+        }
     },
     "base": {
         "disabled": "Deaktiviert"        
@@ -65,6 +82,8 @@
             "adamant_pill": "Adamant Pille",
             "demon_powder": "Daemonenpulver",
             "hardshell_powder": "Hartschalenpulver",
+            "mega_demondrug": "Megadaemonen-Droge",
+            "mega_armorskin": "Mega-Ruestungshaut",
             "cool_drink": "Kuehlendes Getraenk",
             "hot_drink": "Heisses Getraenk",
             "dash_juice": "Dash Saft",
@@ -101,7 +120,8 @@
             "power": "Kraft",
             "speed": "Geschwindigkeit",
             "recovery": "Erholung",
-            "unlimited_stamina": "Unendliche Ausdauer"
+            "unlimited_stamina": "Unendliche Ausdauer",
+            "instant_charge": "Sofortige Aufladung"
         },
         "red": "Rot",
         "orange": "Orange",
