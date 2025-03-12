@@ -167,7 +167,7 @@
         "max_special_ammo": "无限特殊弹药",
         "max_rapid_shot": "速射最大连发数",
         "max_eagle_shot": "无限特殊射击",
-        "max_eagle_shot_charge": "特殊射击无需蓄力"
+        "instant_eagle_shot_charge": "特殊射击无需蓄力"
     },
     "heavy_bowgun": {
         "title": "重弩",

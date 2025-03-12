@@ -172,7 +172,7 @@
         "max_special_ammo": "最大特殊彈藥",
         "max_rapid_shot": "最大速射",
         "max_eagle_shot": "最大鷹擊充能",
-        "max_eagle_shot_charge": "最大鷹擊充能"
+        "instant_eagle_shot_charge": "最大鷹擊充能"
     },
     "heavy_bowgun": {
         "title": "重弩",
