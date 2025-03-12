@@ -6,7 +6,7 @@ local isWindowOpen, wasOpen = false, false
 local utils = require("Buffer.Misc.Utils")
 local config = require("Buffer.Misc.Config")
 local language = require("Buffer.Misc.Language")
--- local bindings = require("Buffer.Misc.Bindings") -- Not yet implimented
+local bindings = require("Buffer.Misc.Bindings") 
 
 -- -- Misc Modules
 local character = require("Buffer.Modules.Character")
@@ -49,7 +49,7 @@ local modules = {
 language.init()
 
 -- Init the key and button binds
--- bindings.init(modules)
+bindings.init(modules)
 
 -- Init the modules, and load their config sections
 for i, module in pairs(modules) do
@@ -81,84 +81,89 @@ re.on_draw_ui(function()
         imgui.set_next_window_size(Vector2f.new(520, 450), 4)
 
         isWindowOpen = imgui.begin_window("[Buffer] "..language.get(languagePrefix .. "title"), isWindowOpen, 1024)
-        -- bindings.draw()
+        bindings.draw()
         if imgui.begin_menu_bar() then
 
-            -- languagePrefix = "window.bindings."
-            -- if imgui.begin_menu(language.get(languagePrefix .. "title")) then
-            --     imgui.spacing()
-            --     if imgui.begin_menu("   " .. language.get(languagePrefix .. "keyboard")) then
-            --         imgui.spacing()
-            --         if #bindings.keys > 0 then
-            --             imgui.begin_table("bindings_keyboard", 3, nil, nil, nil)
+            languagePrefix = "window.bindings."
+            if imgui.begin_menu(language.get(languagePrefix .. "title")) then
+                imgui.spacing()
+                if imgui.begin_menu("   " .. language.get(languagePrefix .. "keyboard")) then
+                    imgui.spacing()
+                    if #bindings.keys > 0 then
+                        imgui.begin_table("bindings_keyboard", 3, nil, nil, nil)
 
-            --             for k, v in pairs(bindings.keys) do
-            --                 imgui.table_next_row()
-            --                 imgui.table_next_column()
-            --                 local keys = v.input
-            --                 local data = v.data
-            --                 local title = bindings.get_formatted_title(data.path)
-            --                 imgui.text("   " .. title)
-            --                 imgui.table_next_column()
-            --                 local key_string = ""
-            --                 for index, key in pairs(keys) do
-            --                     key_string = key_string .. bindings.get_key_name(key)
-            --                     if index < #keys then key_string = key_string .. " + " end
-            --                 end
-            --                 imgui.text("   [ " .. key_string .. " ]     ")
-            --                 imgui.table_next_column()
-            --                 if imgui.button(language.get(languagePrefix .. "remove").. " "..tostring(k)) then 
-            --                     bindings.remove(3, k) end
-            --                 imgui.same_line()
-            --                 imgui.text("  ")
-            --             end
-
-            --             imgui.end_table()
-            --             imgui.separator()
-            --         end
-
-            --         if imgui.button("   " .. language.get(languagePrefix .. "add_keyboard"), "", false) then bindings.popup_open(3) end
-            --         imgui.spacing()
-            --         imgui.end_menu()
-            --     end
-            --     if imgui.begin_menu("   " .. language.get(languagePrefix .. "gamepad")) then
-            --         imgui.spacing()
-            --         if #bindings.btns > 0 then
-            --             imgui.begin_table("bindings_gamepad", 3, nil, nil, nil)
-
-            --             for k, v in pairs(bindings.btns) do
-            --                 imgui.table_next_row()
-            --                 imgui.table_next_column()
-            --                 local btns = v.input
-            --                 local data = v.data
+                        for k, v in pairs(bindings.keys) do
+                            imgui.table_next_row()
+                            imgui.table_next_column()
+                            local btns = bindings.get_keys_with_name(v.input)
+                            local data = v.data
                             
-            --                 local title = bindings.get_formatted_title(data.path)
-            --                 imgui.text("   " .. title)
-            --                 imgui.table_next_column()
-            --                 local key_string = ""
-            --                 for index, key in pairs(btns) do
-            --                     key_string = key_string .. bindings.get_btn_name(key)
-            --                     if index < #btns then key_string = key_string .. " + " end
-            --                 end
-            --                 imgui.text("   [ " .. key_string .. " ]     ")
-            --                 imgui.table_next_column()
-            --                 if imgui.button(language.get(languagePrefix .. "remove").. " ".. tostring(k)) then 
-            --                     bindings.remove(1, k) end
-            --                 imgui.same_line()
-            --                 imgui.text("  ")
-            --             end
+                            local title = bindings.get_formatted_title(data.path)
+                            imgui.text("   " .. title)
+                            imgui.table_next_column()
+                            local bind_string = ""
+                            
+                            for i, bind in pairs(btns) do
+                                bind_string = bind_string .. bind.name
+                                if i < #btns then bind_string = bind_string .. " + " end
+                            end
 
-            --             imgui.end_table()
-            --             imgui.separator()
-            --         end
-            --         if imgui.button("   " .. language.get(languagePrefix .. "add_gamepad")) then bindings.popup_open(1) end
-            --         imgui.spacing()
-            --         imgui.end_menu()
-            --     end
+                            imgui.text("   [ " .. bind_string .. " ]     ")
+                            imgui.table_next_column()
+                            if imgui.button(language.get(languagePrefix .. "remove").. " "..tostring(k)) then 
+                                bindings.remove(2, k) end
+                            imgui.same_line()
+                            imgui.text("  ")
+                        end
 
-            --     imgui.spacing()
-            --     imgui.end_menu()
-            -- end
+                        imgui.end_table()
+                        imgui.separator()
+                    end
+
+                    if imgui.button("   " .. language.get(languagePrefix .. "add_keyboard"), "", false) then bindings.popup_open(2) end
+                    imgui.spacing()
+                    imgui.end_menu()
+                end
+                if imgui.begin_menu("   " .. language.get(languagePrefix .. "gamepad")) then
+                    imgui.spacing()
+                    if #bindings.btns > 0 then
+                        imgui.begin_table("bindings_gamepad", 3, nil, nil, nil)
+
+                        for k, v in pairs(bindings.btns) do
+                            imgui.table_next_row()
+                            imgui.table_next_column()
+                            local btns = bindings.get_button_names(v.input)
+                            local data = v.data
+                            
+                            local title = bindings.get_formatted_title(data.path)
+                            imgui.text("   " .. title)
+                            imgui.table_next_column()
+                            local bind_string = ""
+                            
+                            for i, bind in pairs(btns) do
+                                bind_string = bind_string .. bind.name
+                                if i < #btns then bind_string = bind_string .. " + " end
+                            end
+
+                            imgui.text("   [ " .. bind_string .. " ]     ")
+                            imgui.table_next_column()
+                            if imgui.button(language.get(languagePrefix .. "remove").. " ".. tostring(k)) then 
+                                bindings.remove(1, k) end
+                            imgui.same_line()
+                            imgui.text("  ")
+                        end
+
+                        imgui.end_table()
+                        imgui.separator()
+                    end
+                    if imgui.button("   " .. language.get(languagePrefix .. "add_gamepad")) then bindings.popup_open(1) end
+                    imgui.spacing()
+                    imgui.end_menu()
+                end
+
+                imgui.spacing()
+                imgui.end_menu()
+            end
             languagePrefix = "window."
             if imgui.begin_menu(language.get(languagePrefix .. "settings")) then
                 imgui.spacing()
@@ -223,7 +228,7 @@ end)
 
 -- Keybinds
 re.on_frame(function()
-    -- bindings.update()
+    bindings.update()
 end)
 
 -- On script reset, reset anything that needs to be reset

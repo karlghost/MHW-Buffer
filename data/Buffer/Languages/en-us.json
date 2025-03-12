@@ -9,7 +9,24 @@
         "about": "About",
         "author": "Author",
         "translator": "Translator",
-        "version": "Version"
+        "version": "Version",
+        "bindings": {
+            "title": "Bindings",
+            "keyboard": "Keyboard",
+            "gamepad": "Controller",
+            "remove": "Remove",
+            "add_keyboard": "Add a New Keyboard Binding",
+            "add_gamepad": "Add a New Controller Binding",
+            "choose_modification": "Choose a modification",
+            "on_value": "On Value",
+            "to_listen": "Start Listening for inputs",
+            "listening": "Listening for inputs",
+            "save": "Save",
+            "cancel": "Cancel",
+            "enabled": "has been enabled.",
+            "disabled": "has been disabled.",
+            "set_to": "has been set to %d."
+        }
     },
     "base": {
         "disabled": "Disabled"
@@ -62,6 +79,8 @@
             "adamant_pill": "Adamant pill",
             "demon_powder": "Demon powder",
             "hardshell_powder": "Hardshell powder",
+            "mega_demondrug": "Mega demondrug",
+            "mega_armorskin": "Mega armorskin",
             "cool_drink": "Cool drink",
             "hot_drink": "Hot drink",
             "dash_juice": "Dash juice",
@@ -103,9 +122,9 @@
             "charge_time": "Charge time %",
             "charge_time_tooltip": "\"Charge time %\" sets the required time to get the max charge in percentage to the original charge time.\n The smaller the value, the faster the charging."    
         },
-        "red": "Red",
-        "orange": "Orange",
-        "white": "White",
+        "red": "Red Extract",
+        "orange": "Orange Extract",
+        "white": "White Extract",
         "infinite_air_attacks": "Infinite air attacks",
         "fast_charge": "Fast charge",
         "charge_time": "Charge time %",

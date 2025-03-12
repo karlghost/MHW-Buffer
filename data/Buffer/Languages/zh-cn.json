@@ -11,7 +11,24 @@
         "about": "关于",
         "author": "作者",
         "translator": "译者",
-        "version": "版本"
+        "version": "版本",
+        "bindings": {
+            "title": "快捷键",
+            "keyboard": "键盘",
+            "gamepad": "手柄",
+            "remove": "移除",
+            "add_keyboard": "添加键盘快捷键",
+            "add_gamepad": "添加手柄快捷键",
+            "choose_modification": "选择一个修改",
+            "on_value": "目标值",
+            "to_listen": "开始记录输入",
+            "listening": "正在记录中...",
+            "save": "保存",
+            "cancel": "取消",
+            "enabled": "已启用",
+            "disabled": "已禁用",
+            "set_to": "已设置为 %d"
+        }
     },
     "base": {
         "disabled": "禁用"        
@@ -64,6 +81,8 @@
             "adamant_pill": "硬化药丸",
             "demon_powder": "鬼人粉尘",
             "hardshell_powder": "硬化粉尘",
+            "mega_demondrug": "Mega demondrug",
+            "mega_armorskin": "Mega armorskin",
             "cool_drink": "冷饮",
             "hot_drink": "热饮",
             "dash_juice": "强走药",
@@ -99,7 +118,8 @@
             "power": "力量",
             "speed": "速度",
             "recovery": "恢复",
-            "unlimited_stamina": "无限耐力"
+            "unlimited_stamina": "无限耐力",
+            "instant_charge": "立即蓄力"
         },
         "red": "红灯",
         "orange": "橙灯",

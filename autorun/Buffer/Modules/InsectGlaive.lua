@@ -63,6 +63,9 @@ function Module.init_hooks()
         -- Insect charge
         if Module.data.kinsect.fast_charge and managed:get_field("InsectChargeTimer") > Module.data.kinsect.charge_time/200 then
             managed:set_field("InsectChargeTimer", 100.0)
+            
+        if Module.data.kinsect.unlimited_stamina then 
+            kinsect:get_field("Stamina"):set_field("_Value", 100.0)
         end
 
         -- Extracts
@@ -100,6 +103,7 @@ function Module.draw()
     if imgui.collapsing_header(language.get(languagePrefix .. "title")) then
         imgui.indent(10)
         
+        imgui.push_id(Module.title.."kinsect")
         languagePrefix = Module.title .. ".kinsect."
         if imgui.tree_node(language.get(languagePrefix .. "title")) then
             changed, Module.data.kinsect.power = imgui.slider_int(language.get(languagePrefix .. "power"), Module.data.kinsect.power, -1, 200, Module.data.kinsect.power == -1 and language.get("base.disabled") or "%d")
@@ -113,7 +117,6 @@ function Module.draw()
 
             changed, Module.data.kinsect.unlimited_stamina = imgui.checkbox(language.get(languagePrefix .. "unlimited_stamina"), Module.data.kinsect.unlimited_stamina)
             any_changed = any_changed or changed
-
 
             changed, Module.data.kinsect.fast_charge = imgui.checkbox(language.get(languagePrefix .. "fast_charge"), Module.data.kinsect.fast_charge)
             any_changed = any_changed or changed
@@ -131,6 +134,7 @@ function Module.draw()
 
             imgui.tree_pop()
         end
+        imgui.pop_id()
 
         languagePrefix = Module.title .. "."
         imgui.begin_table(Module.title.."1", 3, nil, nil, nil)
