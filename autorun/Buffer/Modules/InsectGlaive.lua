@@ -56,18 +56,16 @@ function Module.init_hooks()
         update_field("kinsect", "_SpeedLv", kinsect, Module.data.kinsect.speed)
         update_field("kinsect", "_RecoveryLv", kinsect, Module.data.kinsect.recovery)
         
+        -- Kinsect Stamina
         if Module.data.kinsect.unlimited_stamina then 
             kinsect:get_field("Stamina"):set_field("_Value", 100.0)
         end
             
-        -- Insect charge
+        -- Kinsect charge
         if Module.data.kinsect.fast_charge and managed:get_field("InsectChargeTimer") > Module.data.kinsect.charge_time/200 then
             managed:set_field("InsectChargeTimer", 100.0)
-            
-        if Module.data.kinsect.unlimited_stamina then 
-            kinsect:get_field("Stamina"):set_field("_Value", 100.0)
         end
-
+        
         -- Extracts
         if Module.data.red then 
             managed:get_field("ExtractTimer")[0]:set_field("_Value", 89.0)
