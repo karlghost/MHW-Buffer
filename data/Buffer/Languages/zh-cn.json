@@ -125,7 +125,12 @@
         "orange": "橙灯",
         "white": "白灯",
         "infinite_air_attacks": "无限空中攻击",
-        "max_charge": "最大充能"
+        "fast_charge": "快速充能",
+        "charge_time": "充能时间%",
+        "charge_time_tooltip": "\"充能时间%\"表示最大充能所需时间占原始充能时间的百分比。数值越小，充能越快。",
+        "insect_fast_charge": "猎虫快速充能",
+        "insect_charge_time": "猎虫充能时间%",
+        "insect_charge_time_tooltip": "\"充能时间%\"表示最大充能所需时间占原始充能时间的百分比。数值越小，充能越快。"
     },
     "hammer": {
         "title": "锤子",
