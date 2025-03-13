@@ -130,7 +130,9 @@
         "infinite_air_attacks": "無限空中攻擊",
         "fast_charge": "快速充能",
         "charge_time": "充能時間%",
-        "charge_time_tooltip": "\"充能時間%\"表示最大充能所需時間佔原始充能時間的百分比。數值越小，充能越快。"
+        "charge_time_tooltip": "\"充能時間%\"表示最大充能所需時間佔原始充能時間的百分比。數值越小，充能越快。",
+        "unrestricted_charge": "無限製充能",
+        "unrestricted_charge_tooltip": "可以在某些原本不允許充能的動作中充能（如蓄力攻擊中，收刀狀態）"
     },
 
     "hammer": {

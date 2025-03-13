@@ -128,7 +128,9 @@
         "infinite_air_attacks": "Infinite air attacks",
         "fast_charge": "Fast charge",
         "charge_time": "Charge time %",
-        "charge_time_tooltip": "\"Charge time %\" sets the required time to get the max charge in percentage to the original charge time.\n The smaller the value, the faster the charging."    
+        "charge_time_tooltip": "\"Charge time %\" sets the required time to get the max charge in percentage to the original charge time.\n The smaller the value, the faster the charging.",
+        "unrestricted_charge": "Unrestricted charge",
+        "unrestricted_charge_tooltip": "Enable charging in some moves that normally don't allow it. (e.g. during charged attacks, and when the weapon is sheathed)"
     },
 
     "hammer": {
