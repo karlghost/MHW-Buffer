@@ -564,10 +564,10 @@ end
 -- Draw the popup
 function bindings.popup_draw()
     if popup.open then
-        local popup_size = Vector2f.new(350, 135)
+        local popup_size = Vector2f.new(350, 145)
         -- If a path has been chosen, make the window taller
         if popup.path ~= nil then
-            popup_size.y = 175
+            popup_size.y = 190
         end
         imgui.set_next_window_size(popup_size, 1 + 256)
         imgui.begin_window("buffer_bindings", nil, 1)
@@ -611,7 +611,7 @@ function bindings.popup_draw()
             if type(popup.on) == "number" then
                 imgui.text(language.get("window.bindings.on_value") .. ": ")
                 imgui.same_line()
-                local changed, on_value = imgui.input_text("     ", popup.on)
+                local changed, on_value = imgui.input_text("     ", popup.on, 1)
                 if changed and on_value ~= "" and tonumber(on_value) then
                     popup.on = tonumber(on_value)
                 end
@@ -620,8 +620,11 @@ function bindings.popup_draw()
             elseif type(popup.on) == "boolean" then
                 imgui.text(language.get("window.bindings.on_value") .. ": ")
                 imgui.same_line()
-                imgui.input_text("   ", "true", 16384)
+                imgui.begin_disabled()
+                imgui.input_text("   ", "true/false", 16384)
+                imgui.end_disabled()
             end
+            imgui.spacing()
             imgui.spacing()
             imgui.separator()
         end
@@ -654,8 +657,8 @@ function bindings.popup_draw()
             popup.listening = true
             popup.binding = nil
         end
-        imgui.separator()
         imgui.spacing()
+        imgui.separator()
         imgui.spacing()
 
         if imgui.button(language.get("window.bindings.cancel")) then
