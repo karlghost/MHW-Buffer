@@ -119,13 +119,17 @@
             "speed": "速度",
             "recovery": "恢复",
             "unlimited_stamina": "无限耐力",
-            "instant_charge": "立即蓄力"
+            "fast_charge": "猎虫快速充能",
+            "charge_time": "猎虫充能时间%",
+            "charge_time_tooltip": "\"充能时间%\"表示最大充能所需时间占原始充能时间的百分比。数值越小，充能越快。"
         },
         "red": "红灯",
         "orange": "橙灯",
         "white": "白灯",
         "infinite_air_attacks": "无限空中攻击",
-        "max_charge": "最大充能"
+        "fast_charge": "快速充能",
+        "charge_time": "充能时间%",
+        "charge_time_tooltip": "\"充能时间%\"表示最大充能所需时间占原始充能时间的百分比。数值越小，充能越快。"
     },
     "hammer": {
         "title": "锤子",
@@ -162,7 +166,7 @@
         "max_special_ammo": "无限特殊弹药",
         "max_rapid_shot": "速射最大连发数",
         "max_eagle_shot": "无限特殊射击",
-        "max_eagle_shot_charge": "特殊射击无需蓄力"
+        "instant_eagle_shot_charge": "特殊射击无需蓄力"
     },
     "heavy_bowgun": {
         "title": "重弩",
