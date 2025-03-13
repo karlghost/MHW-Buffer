@@ -1,7 +1,7 @@
 {
     "_USE_FONT": "NotoSansSC-Regular.otf",
     "_TRANSLATOR": "Jeffrey13131",
-    "window":{
+    "window": {
         "toggle_button": "切换功能面板",
         "title": "修改项与设置",
         "settings": "设置",
@@ -47,7 +47,7 @@
             "healing": "自动恢复",
             "healing_tooltip": "任何损失的生命值将可恢复。"
         },
-        "blights_and_conditions":{
+        "blights_and_conditions": {
             "title": "属性异常与负面状态",
             "tooltip": "免疫属性异常与负面状态",
             "blights": {
@@ -59,7 +59,7 @@
                 "dragon": "龙属性",
                 "all": "全部"
             },
-            "conditions":{
+            "conditions": {
                 "title": "负面状态",
                 "poison": "中毒",
                 "sleep": "睡眠",

@@ -1,5 +1,5 @@
 {
-    "window":{
+    "window": {
         "toggle_button": "Toggle Buffer GUI",
         "title": "Modifiers & Settings",
         "settings": "Settings",
@@ -45,7 +45,7 @@
             "healing": "Healing",
             "healing_tooltip": "Any missing health will become recoverable."
         },
-        "blights_and_conditions":{
+        "blights_and_conditions": {
             "title": "Blights & Conditions",
             "tooltip": "Prevent blights and conditions",
             "blights": {
@@ -57,7 +57,7 @@
                 "dragon": "Dragon",
                 "all": "All"
             },
-            "conditions":{
+            "conditions": {
                 "title": "Conditions",
                 "poison": "Poison",
                 "sleep": "Sleep",

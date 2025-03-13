@@ -1,7 +1,7 @@
 {
     "_TRANSLATOR": "SlikerDev",
     
-    "window":{
+    "window": {
         "toggle_button": "Umschalten Buffer GUI",
         "title": "Modifizierer & Einstellungen",
         "settings": "Einstellungen",
@@ -48,7 +48,7 @@
             "healing": "Heilung",
             "healing_tooltip": "Fehlende Gesundheit wird wiederhergestellt."
         },
-        "blights_and_conditions":{
+        "blights_and_conditions": {
             "title": "Krankheiten und Zustaende",
             "tooltip": "Vorbeugung gegen Krankheiten und Zustaende",
             "blights": {
@@ -60,7 +60,7 @@
                 "dragon": "Drachen",
                 "all": "Alle"
             },
-            "conditions":{
+            "conditions": {
                 "title": "Zustaende",
                 "poison": "Gift",
                 "sleep": "Schlaf",
