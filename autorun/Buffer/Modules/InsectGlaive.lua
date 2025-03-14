@@ -7,13 +7,16 @@ local Module = {
             speed = -1,
             recovery = -1,
             unlimited_stamina = false,
-            instant_charge = false,
+            fast_charge = false,
+            charge_time = 0,
         },
         red = false,
         white = false,
         orange = false,
         infinite_air_attacks = false,
-        max_charge = false,
+        fast_charge = false,
+        charge_time = 0,
+        unrestricted_charge = false,
     }
 }
 
@@ -39,6 +42,13 @@ local function update_field(key, field_name, managed, new_value)
     end 
 end
 
+local shouldSkip = true
+local function updateChargeHook(args)
+    if Module.data.unrestricted_charge and shouldSkip then
+        return sdk.PreHookResult.SKIP_ORIGINAL
+    end
+end
+
 function Module.init_hooks()
 
     -- Weapon changes
@@ -53,15 +63,17 @@ function Module.init_hooks()
         update_field("kinsect", "_PowerLv", kinsect, Module.data.kinsect.power)
         update_field("kinsect", "_SpeedLv", kinsect, Module.data.kinsect.speed)
         update_field("kinsect", "_RecoveryLv", kinsect, Module.data.kinsect.recovery)
-            
+        
+        -- Kinsect Stamina
         if Module.data.kinsect.unlimited_stamina then 
             kinsect:get_field("Stamina"):set_field("_Value", 100.0)
         end
-
-        if Module.data.kinsect.instant_charge and managed:get_field("InsectChargeTimer") > 0 then
-            managed:set_field("InsectChargeTimer", 1.0)
+            
+        -- Kinsect charge
+        if Module.data.kinsect.fast_charge and managed:get_field("InsectChargeTimer") > Module.data.kinsect.charge_time/200 then
+            managed:set_field("InsectChargeTimer", 100.0)
         end
-
+        
         -- Extracts
         if Module.data.red then 
             managed:get_field("ExtractTimer")[0]:set_field("_Value", 89.0)
@@ -82,11 +94,21 @@ function Module.init_hooks()
         end
 
         -- Charge attack
-        if Module.data.max_charge and managed:get_field("_ChargeTimer") > 0 then 
+        if Module.data.fast_charge and managed:get_field("_ChargeTimer") > Module.data.charge_time/50 then
             managed:set_field("_ChargeTimer", 100.0)
         end
 
+        -- Free Charge
+        if Module.data.unrestricted_charge then
+            shouldSkip = false
+            managed:call("updateCharge")
+            shouldSkip = true
+        end
+
     end, function(retval) end)
+
+    sdk.hook(sdk.find_type_definition("app.cHunterWp10Handling"):get_method("updateCharge"), updateChargeHook, nil)
+
 end
 
 function Module.draw()
@@ -112,8 +134,19 @@ function Module.draw()
             changed, Module.data.kinsect.unlimited_stamina = imgui.checkbox(language.get(languagePrefix .. "unlimited_stamina"), Module.data.kinsect.unlimited_stamina)
             any_changed = any_changed or changed
 
-            changed, Module.data.kinsect.instant_charge = imgui.checkbox(language.get(languagePrefix .. "instant_charge"), Module.data.kinsect.instant_charge)
+            changed, Module.data.kinsect.fast_charge = imgui.checkbox(language.get(languagePrefix .. "fast_charge"), Module.data.kinsect.fast_charge)
             any_changed = any_changed or changed
+
+            if Module.data.kinsect.fast_charge then
+
+                imgui.same_line()
+                imgui.text("  ")
+                imgui.same_line()
+                imgui.set_next_item_width(imgui.calc_item_width() - 100)
+                changed, Module.data.kinsect.charge_time = imgui.slider_int(language.get(languagePrefix .. "charge_time"), Module.data.kinsect.charge_time, 0, 100, "%d")
+                utils.tooltip(language.get(languagePrefix.."charge_time_tooltip"))
+                any_changed = any_changed or changed
+            end
 
             imgui.tree_pop()
         end
@@ -141,9 +174,23 @@ function Module.draw()
 
         changed, Module.data.infinite_air_attacks = imgui.checkbox(language.get(languagePrefix .. "infinite_air_attacks"), Module.data.infinite_air_attacks)
         any_changed = any_changed or changed
-
         
-        changed, Module.data.max_charge = imgui.checkbox(language.get(languagePrefix .. "max_charge"), Module.data.max_charge)
+        changed, Module.data.fast_charge = imgui.checkbox(language.get(languagePrefix .. "fast_charge"), Module.data.fast_charge)
+        any_changed = any_changed or changed
+
+        if Module.data.fast_charge then
+
+            imgui.same_line()
+            imgui.text("  ")
+            imgui.same_line()
+            imgui.set_next_item_width(imgui.calc_item_width() - 100)
+            changed, Module.data.charge_time = imgui.slider_int(language.get(languagePrefix .. "charge_time"), Module.data.charge_time, 0, 100, "%d")
+            utils.tooltip(language.get(languagePrefix .. "charge_time_tooltip"))
+            any_changed = any_changed or changed
+        end
+
+        changed, Module.data.unrestricted_charge = imgui.checkbox(language.get(languagePrefix .. "unrestricted_charge"), Module.data.unrestricted_charge)
+        utils.tooltip(language.get(languagePrefix .. "unrestricted_charge_tooltip"))
         any_changed = any_changed or changed
 
         if any_changed then config.save_section(Module.create_config_section()) end
@@ -166,7 +213,8 @@ end
 
 function Module.load_from_config(config_section)
     if not config_section then return end
-    utils.mergeTables(Module.data, config_section)
+    utils.update_table_with_existing_table(Module.data, config_section)
 end
+
 
 return Module

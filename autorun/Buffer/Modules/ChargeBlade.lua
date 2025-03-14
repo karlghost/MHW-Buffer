@@ -32,7 +32,6 @@ function Module.init_hooks()
         -- Max Phials
         if Module.data.max_phials then
             managed:get_field("_SwordBinNum"):set_field("_Value", 10)
-            -- TODO: Check if skill that increases phials is present, then increase to 12
         end
 
         -- Overcharge Phials
@@ -112,7 +111,7 @@ end
 
 function Module.load_from_config(config_section)
     if not config_section then return end
-    utils.mergeTables(Module.data, config_section)
+    utils.update_table_with_existing_table(Module.data, config_section)
 end
 
 return Module

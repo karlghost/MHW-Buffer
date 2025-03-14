@@ -85,7 +85,7 @@ end
 
 function Module.load_from_config(config_section)
     if not config_section then return end
-    utils.mergeTables(Module.data, config_section)
+    utils.update_table_with_existing_table(Module.data, config_section)
 end
 
 return Module

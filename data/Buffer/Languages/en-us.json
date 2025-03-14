@@ -1,5 +1,5 @@
 {
-    "window":{
+    "window": {
         "toggle_button": "Toggle Buffer GUI",
         "title": "Modifiers & Settings",
         "settings": "Settings",
@@ -29,9 +29,8 @@
         }
     },
     "base": {
-        "disabled": "Disabled"        
+        "disabled": "Disabled"
     },
-    
     "character": {
         "title": "Character",
         "stamina": {
@@ -46,7 +45,7 @@
             "healing": "Healing",
             "healing_tooltip": "Any missing health will become recoverable."
         },
-        "blights_and_conditions":{
+        "blights_and_conditions": {
             "title": "Blights & Conditions",
             "tooltip": "Prevent blights and conditions",
             "blights": {
@@ -58,7 +57,7 @@
                 "dragon": "Dragon",
                 "all": "All"
             },
-            "conditions":{
+            "conditions": {
                 "title": "Conditions",
                 "poison": "Poison",
                 "sleep": "Sleep",
@@ -119,13 +118,19 @@
             "speed": "Speed",
             "recovery": "Recovery",
             "unlimited_stamina": "Unlimited Stamina",
-            "instant_charge": "Instant charge"
+            "fast_charge": "Fast charge",
+            "charge_time": "Charge time %",
+            "charge_time_tooltip": "\"Charge time %\" sets the required time to get the max charge in percentage to the original charge time.\n The smaller the value, the faster the charging."    
         },
         "red": "Red Extract",
         "orange": "Orange Extract",
         "white": "White Extract",
         "infinite_air_attacks": "Infinite air attacks",
-        "max_charge": "Max charge"
+        "fast_charge": "Fast charge",
+        "charge_time": "Charge time %",
+        "charge_time_tooltip": "\"Charge time %\" sets the required time to get the max charge in percentage to the original charge time.\n The smaller the value, the faster the charging.",
+        "unrestricted_charge": "Unrestricted charge",
+        "unrestricted_charge_tooltip": "Enable charging in some moves that normally don't allow it. (e.g. during charged attacks, and when the weapon is sheathed)"
     },
 
     "hammer": {
@@ -165,7 +170,7 @@
         "max_special_ammo": "Max special ammo",
         "max_rapid_shot": "Max rapid shot",
         "max_eagle_shot": "Max eagle shot",
-        "max_eagle_shot_charge": "Max eagle shot charge"
+        "instant_eagle_shot_charge": "Instant eagle shot charge"
     },
     "heavy_bowgun": {
         "title": "Heavy Bowgun",

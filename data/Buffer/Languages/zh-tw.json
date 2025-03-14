@@ -26,7 +26,8 @@
             "save": "儲存",
             "cancel": "取消",
             "enabled": "已啟用",
-            "disabled": "已禁用"
+            "disabled": "已禁用",
+            "set_to": "已設置為 %d。"
         }
     },
     "base": {
@@ -120,13 +121,19 @@
             "speed": "速度",
             "recovery": "恢復",
             "unlimited_stamina": "無限耐力",
-            "instant_charge": "瞬間充能"
+            "fast_charge": "獵蟲快速充能",
+            "charge_time": "獵蟲充能時間%",
+            "charge_time_tooltip": "\"充能時間%\"表示最大充能所需時間佔原始充能時間的百分比。數值越小，充能越快。"
         },
         "red": "紅色",
         "orange": "橙色",
         "white": "白色",
         "infinite_air_attacks": "無限空中攻擊",
-        "max_charge": "最大充能"
+        "fast_charge": "快速充能",
+        "charge_time": "充能時間%",
+        "charge_time_tooltip": "\"充能時間%\"表示最大充能所需時間佔原始充能時間的百分比。數值越小，充能越快。",
+        "unrestricted_charge": "無限製充能",
+        "unrestricted_charge_tooltip": "可以在某些原本不允許充能的動作中充能（如蓄力攻擊中，收刀狀態）"
     },
 
     "hammer": {
@@ -150,8 +157,7 @@
         "infinite_backstep": "無限後跳",
         "instant_charge": "瞬間充能",
         "instant_charge_tooltip": "需要稍微按住一會兒，然後放開以發射",
-        "free_charge_shot": "免費充能射擊",
-        "max_charge": "最大充能"
+        "free_charge_shot": "免費充能射擊"
     },
 
     "bow": {
@@ -167,7 +173,7 @@
         "max_special_ammo": "最大特殊彈藥",
         "max_rapid_shot": "最大速射",
         "max_eagle_shot": "最大鷹擊充能",
-        "max_eagle_shot_charge": "最大鷹擊充能"
+        "instant_eagle_shot_charge": "最大鷹擊充能"
     },
     "heavy_bowgun": {
         "title": "重弩",

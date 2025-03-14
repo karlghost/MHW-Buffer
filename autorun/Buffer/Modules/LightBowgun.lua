@@ -5,7 +5,7 @@ local Module = {
         max_special_ammo = false,
         max_rapid_shot = false,
         max_eagle_shot = false,
-        max_eagle_shot_charge = false,
+        instant_eagle_shot_charge = false,
         -- all_ammo = false
     },
     old = {}
@@ -51,7 +51,7 @@ function Module.init_hooks()
             end
         end
 
-        if Module.data.max_eagle_shot_charge then
+        if Module.data.instant_eagle_shot_charge then
             local weak_ammo_info = managed:get_field("_WeakAmmoInfo")
             if weak_ammo_info then
                 if weak_ammo_info:get_field("_CurrentChargeTime") > 0 then
@@ -130,7 +130,7 @@ function Module.draw()
 
         imgui.table_next_column()
 
-        changed, Module.data.max_eagle_shot_charge = imgui.checkbox(language.get(languagePrefix .. "max_eagle_shot_charge"), Module.data.max_eagle_shot_charge)
+        changed, Module.data.instant_eagle_shot_charge = imgui.checkbox(language.get(languagePrefix .. "instant_eagle_shot_charge"), Module.data.instant_eagle_shot_charge)
         any_changed = any_changed or changed
 
         imgui.end_table()
@@ -158,7 +158,7 @@ end
 
 function Module.load_from_config(config_section)
     if not config_section then return end
-    utils.mergeTables(Module.data, config_section)
+    utils.update_table_with_existing_table(Module.data, config_section)
 end
 
 return Module
