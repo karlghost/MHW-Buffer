@@ -1,7 +1,7 @@
 {
     "_TRANSLATOR": "SlikerDev",
     
-    "window":{
+    "window": {
         "toggle_button": "Umschalten Buffer GUI",
         "title": "Modifizierer & Einstellungen",
         "settings": "Einstellungen",
@@ -48,7 +48,7 @@
             "healing": "Heilung",
             "healing_tooltip": "Fehlende Gesundheit wird wiederhergestellt."
         },
-        "blights_and_conditions":{
+        "blights_and_conditions": {
             "title": "Krankheiten und Zustaende",
             "tooltip": "Vorbeugung gegen Krankheiten und Zustaende",
             "blights": {
@@ -60,7 +60,7 @@
                 "dragon": "Drachen",
                 "all": "Alle"
             },
-            "conditions":{
+            "conditions": {
                 "title": "Zustaende",
                 "poison": "Gift",
                 "sleep": "Schlaf",
@@ -123,7 +123,7 @@
             "unlimited_stamina": "Unendliche Ausdauer",
             "fast_charge": "Schnelle Kinsect Aufladung",
             "charge_time": "Kinsect Aufladezeit %",
-            "charge_time_tooltip": "\"Aufladezeit %\" gibt an, wie viel Prozent der ursprünglichen Ladezeit für die maximale Ladung benötigt werden. Je kleiner der Wert, desto schneller das Aufladen."    
+            "charge_time_tooltip": "\"Aufladezeit %\" gibt an, wie viel Prozent der ursprünglichen Ladezeit für die maximale Ladung benötigt werden. Je kleiner der Wert, desto schneller das Aufladen."
         },
         "red": "Rot",
         "orange": "Orange",
@@ -131,7 +131,9 @@
         "infinite_air_attacks": "Unbegrenzte Luftangriffe",
         "fast_charge": "Schnelle Aufladung",
         "charge_time": "Aufladezeit %",
-        "charge_time_tooltip": "\"Aufladezeit %\" gibt an, wie viel Prozent der ursprünglichen Ladezeit für die maximale Ladung benötigt werden. Je kleiner der Wert, desto schneller das Aufladen."
+        "charge_time_tooltip": "\"Aufladezeit %\" gibt an, wie viel Prozent der ursprünglichen Ladezeit für die maximale Ladung benötigt werden. Je kleiner der Wert, desto schneller das Aufladen.",
+        "unrestricted_charge": "Unbeschränkte Aufladen",
+        "unrestricted_charge_tooltip": "Ermöglicht Aufladen bei Aktionen, die es normalerweise nicht erlauben (z. B. während aufgeladener Angriffe oder mit weggesteckter Waffe)."    
     },
 
     "hammer": {

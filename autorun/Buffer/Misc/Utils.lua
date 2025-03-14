@@ -3,7 +3,7 @@ local utils = {}
 local soundManager, battleMusicManager
 local chatManager
 
-
+-- Check if the player is in battle from the sound manager
 function utils.isInBattle()
     if soundManager == nil then
         soundManager = sdk.get_managed_singleton.GetSingleton("app.SoundMusicManager")
@@ -26,8 +26,7 @@ function utils.getLength(obj)
     return count
 end
 
--- Custom tooltip, adds a spacing before the end of window by default,
--- but by using an empty text on the top and bottom it makes it even
+-- Add a tooltip to the current item
 function utils.tooltip(text)
     imgui.same_line()
     imgui.text("(?)")
@@ -51,7 +50,7 @@ function utils.split(text, delim)
     return result
 end
 
-
+-- Generate an enum from a type name
 function utils.generate_enum(typename)
     local t = sdk.find_type_definition(typename)
     if not t then return {} end
@@ -67,7 +66,7 @@ function utils.generate_enum(typename)
     return enum
 end
 
-
+-- Send a message to the player through the system log
 function utils.send_message(text)
     if chatManager == nil then
         chatManager = sdk.get_managed_singleton("app.ChatManager")
@@ -75,6 +74,7 @@ function utils.send_message(text)
     chatManager:addSystemLog(text)
 end
 
+-- Merge two tables together, updating the base table with the new table
 function utils.mergeTables(baseTable, newTable)
     for k, v in pairs(newTable) do
         if type(v) == "table" and type(baseTable[k]) == "table" then
@@ -85,5 +85,15 @@ function utils.mergeTables(baseTable, newTable)
     end
 end
 
+-- Update a table with another table, only updating the values that exist in the base table
+function utils.update_table_with_existing_table(baseTable, newTable)
+    for key, value in pairs(baseTable) do
+        if type(value) == "table" and type(newTable[key]) == "table" then
+            utils.update_table_with_existing_table(value, newTable[key])
+        elseif newTable[key] ~= nil then
+            baseTable[key] = newTable[key]
+        end
+    end
+end
 
 return utils

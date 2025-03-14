@@ -16,6 +16,7 @@ local Module = {
         infinite_air_attacks = false,
         fast_charge = false,
         charge_time = 0,
+        unrestricted_charge = false,
     }
 }
 
@@ -39,6 +40,13 @@ local function update_field(key, field_name, managed, new_value)
         managed:set_field(field_name, Module.old[key][field_name])
         Module.old[key][field_name] = nil
     end 
+end
+
+local shouldSkip = true
+local function updateChargeHook(args)
+    if Module.data.unrestricted_charge and shouldSkip then
+        return sdk.PreHookResult.SKIP_ORIGINAL
+    end
 end
 
 function Module.init_hooks()
@@ -90,7 +98,17 @@ function Module.init_hooks()
             managed:set_field("_ChargeTimer", 100.0)
         end
 
+        -- Free Charge
+        if Module.data.unrestricted_charge then
+            shouldSkip = false
+            managed:call("updateCharge")
+            shouldSkip = true
+        end
+
     end, function(retval) end)
+
+    sdk.hook(sdk.find_type_definition("app.cHunterWp10Handling"):get_method("updateCharge"), updateChargeHook, nil)
+
 end
 
 function Module.draw()
@@ -171,6 +189,10 @@ function Module.draw()
             any_changed = any_changed or changed
         end
 
+        changed, Module.data.unrestricted_charge = imgui.checkbox(language.get(languagePrefix .. "unrestricted_charge"), Module.data.unrestricted_charge)
+        utils.tooltip(language.get(languagePrefix .. "unrestricted_charge_tooltip"))
+        any_changed = any_changed or changed
+
         if any_changed then config.save_section(Module.create_config_section()) end
         imgui.unindent(10)
         imgui.separator()
@@ -191,7 +213,8 @@ end
 
 function Module.load_from_config(config_section)
     if not config_section then return end
-    utils.mergeTables(Module.data, config_section)
+    utils.update_table_with_existing_table(Module.data, config_section)
 end
+
 
 return Module
