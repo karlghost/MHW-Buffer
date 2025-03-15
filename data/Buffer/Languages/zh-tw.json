@@ -173,14 +173,20 @@
         "max_special_ammo": "最大特殊彈藥",
         "max_rapid_shot": "最大速射",
         "max_eagle_shot": "最大鷹擊充能",
-        "instant_eagle_shot_charge": "最大鷹擊充能"
+        "instant_eagle_shot_charge": "最大鷹擊充能",
+        "unlimited_ammo": "無限彈藥",
+        "no_reload": "無需裝填",
+        "no_recoil": "無後座力"
     },
     "heavy_bowgun": {
         "title": "重弩",
         "max_special_ammo": "最大特殊彈藥",
         "max_wyvern_howl": "最大龍吼",
         "max_gatling_hits": "最大加特林命中",
-        "max_gatling_hits_tooltip": "僅影響龍心點火"
+        "max_gatling_hits_tooltip": "僅影響龍心點火",
+        "unlimited_ammo": "無限彈藥",
+        "no_reload": "無需裝填",
+        "no_recoil": "無後座力"
     },
 
     "charge_blade": {

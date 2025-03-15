@@ -6,6 +6,9 @@ local Module = {
         max_rapid_shot = false,
         max_eagle_shot = false,
         instant_eagle_shot_charge = false,
+        unlimited_ammo = false,
+        no_reload = false,
+        no_recoil = false,
         -- all_ammo = false
     },
     old = {}
@@ -25,8 +28,7 @@ function Module.init_hooks()
     sdk.hook(sdk.find_type_definition("app.cHunterWp13Handling"):get_method("update"), function(args) 
         local managed = sdk.to_managed_object(args[2])
         if not managed:get_type_definition():is_a("app.cHunterWp13Handling") then return end
-        if not managed:get_Hunter() then return end
-        if not managed:get_Hunter():get_IsMaster() then return end
+        if not managed:get_Weapon() and managed:get_Weapon():get_IsMaster() then return end
 
         -- Special Ammo
         if Module.data.max_special_ammo and Module.old.special_ammo_heal_rate == nil then
@@ -60,24 +62,7 @@ function Module.init_hooks()
                 end
             end
         end
-
-
         
-        -- if Module.data.all_ammo then
-        --     local ammos = managed:get_field("_Ammos")
-        --     for i = 1, #ammos do
-        --         local ammo = ammos[i]
-        --         if ammo then
-        --             local limitAmmo = ammo:get_field("_LimitAmmo")
-        --             limitAmmo:set_field("v", 20*limitAmmo:get_field("m"))
-        --             local loadedAmmo = ammo:get_field("_LoadedAmmo")
-        --             loadedAmmo:set_field("v", 10*loadedAmmo:get_field("m"))
-        --             local backupAmmo = ammo:get_field("_BackupAmmo")
-        --             backupAmmo:set_field("v", 20*backupAmmo:get_field("m"))
-        --         end
-        --     end
-        -- end
-
         -- Maybe convert this into setting max ammo and level for all currently equipable ammo types 
         -- if Module.data.all_ammo and not Module.old.ammo then
         --     Module.old.ammo = {}
@@ -104,6 +89,50 @@ function Module.init_hooks()
         -- end
 
     end, function(retval) end)
+
+    local skip_ammo_usage = false
+    local no_reload_managed_weapon = nil
+    sdk.hook(sdk.find_type_definition("app.cHunterWpGunHandling"):get_method("shootShell"), function(args) 
+        local managed = sdk.to_managed_object(args[2])
+        if not managed:get_type_definition():is_a("app.cHunterWp13Handling") then return end
+        if not managed:get_Weapon() and managed:get_Weapon():get_IsMaster() then return end
+        no_reload_managed_weapon = managed
+        
+        if Module.data.unlimited_ammo then
+            skip_ammo_usage = true
+        end
+        if Module.data.no_reload then
+            no_reload_managed_weapon = managed
+        end
+    end, function(retval)
+
+        if no_reload_managed_weapon then
+            if Module.data.no_reload then
+                no_reload_managed_weapon:allReloadAmmo()
+            end
+
+            no_reload_managed_weapon = nil
+            skip_ammo_usage = false
+        end
+    end)
+
+    sdk.hook(sdk.find_type_definition("app.savedata.cItemParam"):get_method("changeItemPouchNum(app.ItemDef.ID, System.Int16, app.savedata.cItemParam.POUCH_CHANGE_TYPE)"), function(args)
+        if no_reload_managed_weapon and skip_ammo_usage then
+            return sdk.PreHookResult.SKIP_ORIGINAL
+        end
+    end, function(retval) return retval end)
+
+    -- Recoil
+    sdk.hook(sdk.find_type_definition("app.cHunterWpGunHandling"):get_method("updateRequestRecoil(app.mcShellPlGun, System.Int32)"), function(args)
+        local managed = sdk.to_managed_object(args[2])
+        if not managed:get_type_definition():is_a("app.cHunterWpGunHandling") then return end
+        if not managed:get_Weapon() and managed:get_Weapon():get_IsMaster() then return end
+        if managed:get_Weapon():get_WpType() ~= 13 then return end
+
+        if Module.data.no_recoil then
+            return sdk.PreHookResult.SKIP_ORIGINAL
+        end
+    end, function(retval) return retval end)
 end
 
 function Module.draw()
@@ -138,11 +167,21 @@ function Module.draw()
         -- changed, Module.data.all_ammo = imgui.checkbox(language.get(languagePrefix .. "all_ammo"), Module.data.all_ammo)
         -- any_changed = any_changed or changed
 
+        changed, Module.data.unlimited_ammo = imgui.checkbox(language.get(languagePrefix .. "unlimited_ammo"), Module.data.unlimited_ammo)
+        any_changed = any_changed or changed
+
+        changed, Module.data.no_reload = imgui.checkbox(language.get(languagePrefix .. "no_reload"), Module.data.no_reload)
+        any_changed = any_changed or changed
+
+        changed, Module.data.no_recoil = imgui.checkbox(language.get(languagePrefix .. "no_recoil"), Module.data.no_recoil)
+        any_changed = any_changed or changed
+
         if any_changed then config.save_section(Module.create_config_section()) end
         imgui.unindent(10)
         imgui.separator()
         imgui.spacing()
     end
+    
     imgui.pop_id()
 end
 
