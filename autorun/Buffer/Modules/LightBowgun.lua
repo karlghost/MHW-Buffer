@@ -28,7 +28,7 @@ function Module.init_hooks()
     sdk.hook(sdk.find_type_definition("app.cHunterWp13Handling"):get_method("update"), function(args) 
         local managed = sdk.to_managed_object(args[2])
         if not managed:get_type_definition():is_a("app.cHunterWp13Handling") then return end
-        if not managed:get_Weapon() and managed:get_Weapon():get_IsMaster() then return end
+        if not managed:get_Weapon() or not managed:get_Weapon():get_IsMaster() then return end
 
         -- Special Ammo
         if Module.data.max_special_ammo and Module.old.special_ammo_heal_rate == nil then
@@ -95,7 +95,7 @@ function Module.init_hooks()
     sdk.hook(sdk.find_type_definition("app.cHunterWpGunHandling"):get_method("shootShell"), function(args) 
         local managed = sdk.to_managed_object(args[2])
         if not managed:get_type_definition():is_a("app.cHunterWp13Handling") then return end
-        if not managed:get_Weapon() and managed:get_Weapon():get_IsMaster() then return end
+        if not managed:get_Weapon() or not managed:get_Weapon():get_IsMaster() then return end
         no_reload_managed_weapon = managed
         
         if Module.data.unlimited_ammo then
