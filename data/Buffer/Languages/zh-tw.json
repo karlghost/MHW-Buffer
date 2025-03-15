@@ -173,14 +173,20 @@
         "max_special_ammo": "無限特殊彈藥",
         "max_rapid_shot": "無限速射計量表",
         "max_eagle_shot": "無限集中特效彈",
-        "instant_eagle_shot_charge": "最大集中特效彈續力"
+        "instant_eagle_shot_charge": "最大集中特效彈續力",
+        "unlimited_ammo": "無限彈藥",
+        "no_reload": "無需裝填",
+        "no_recoil": "無後座力"
     },
     "heavy_bowgun": {
         "title": "重弩",
         "max_special_ammo": "無限特殊彈藥",
         "max_wyvern_howl": "無限集中特效彈",
         "max_gatling_hits": "最大加特林命中",
-        "max_gatling_hits_tooltip": "僅影響龍熱機關龍彈"
+        "max_gatling_hits_tooltip": "僅影響龍熱機關龍彈",
+        "unlimited_ammo": "無限彈藥",
+        "no_reload": "無需裝填",
+        "no_recoil": "無後座力"
     },
 
     "charge_blade": {
