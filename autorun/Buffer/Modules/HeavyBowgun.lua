@@ -66,10 +66,10 @@ function Module.init_hooks()
     local no_reload_managed_weapon = nil
     sdk.hook(sdk.find_type_definition("app.cHunterWpGunHandling"):get_method("shootShell"), function(args) 
         local managed = sdk.to_managed_object(args[2])
-        if not managed:get_type_definition():is_a("app.cHunterWp12Handling") then return end
+        if not managed:get_type_definition():is_a("app.cHunterWpGunHandling") then return end
         if not managed:get_Hunter() then return end
         if not managed:get_Hunter():get_IsMaster() then return end
-        no_reload_managed_weapon = managed
+        if managed:get_Weapon():get_WpType() ~= 12 then return end
         
         if Module.data.unlimited_ammo then
             skip_ammo_usage = true
@@ -79,14 +79,14 @@ function Module.init_hooks()
         end
     end, function(retval)
 
-        if no_reload_managed_weapon then
-            if Module.data.no_reload then
-                no_reload_managed_weapon:allReloadAmmo()
-            end
-
-            no_reload_managed_weapon = nil
-            skip_ammo_usage = false
+        if no_reload_managed_weapon and Module.data.no_reload then
+            no_reload_managed_weapon:allReloadAmmo()
         end
+
+        no_reload_managed_weapon = nil
+        skip_ammo_usage = false
+
+        return retval
     end)
 
     sdk.hook(sdk.find_type_definition("app.savedata.cItemParam"):get_method("changeItemPouchNum(app.ItemDef.ID, System.Int16, app.savedata.cItemParam.POUCH_CHANGE_TYPE)"), function(args)
