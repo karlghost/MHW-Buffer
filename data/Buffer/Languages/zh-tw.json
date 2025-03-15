@@ -182,7 +182,7 @@
         "title": "重弩",
         "max_special_ammo": "無限特殊彈藥",
         "max_wyvern_howl": "無限集中特效彈",
-        "max_gatling_hits": "最大加特林命中",
+        "max_gatling_hits": "最大龍熱機關龍累積傷害",
         "max_gatling_hits_tooltip": "僅影響龍熱機關龍彈",
         "unlimited_ammo": "無限彈藥",
         "no_reload": "無需裝填",
