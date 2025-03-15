@@ -62,6 +62,7 @@ function Module.init_hooks()
 
     end, function(retval) end)
 
+    -- On shooting a shell, check if unlimited ammo is enabled, and if no reload is enabled
     local skip_ammo_usage = false
     local no_reload_managed_weapon = nil
     sdk.hook(sdk.find_type_definition("app.cHunterWpGunHandling"):get_method("shootShell"), function(args) 
@@ -71,30 +72,37 @@ function Module.init_hooks()
         if not managed:get_Hunter():get_IsMaster() then return end
         if managed:get_Weapon():get_WpType() ~= 12 then return end
         
+        -- If unlimited ammo is enabled, set skip ammo usage
         if Module.data.unlimited_ammo then
             skip_ammo_usage = true
         end
+
+        -- If no reload is enabled, pass the weapon to the no_reload_managed_weapon variable
         if Module.data.no_reload then
             no_reload_managed_weapon = managed
         end
     end, function(retval)
 
+        -- If no reload is enabled, reload the weapon without an animation
         if no_reload_managed_weapon and Module.data.no_reload then
             no_reload_managed_weapon:allReloadAmmo()
         end
 
+        -- Reset variables after the shot
         no_reload_managed_weapon = nil
         skip_ammo_usage = false
 
         return retval
     end)
 
+    -- On changing the item pouch number, check if unlimited ammo is enabled, and if skip ammo usage is enabled
     sdk.hook(sdk.find_type_definition("app.savedata.cItemParam"):get_method("changeItemPouchNum(app.ItemDef.ID, System.Int16, app.savedata.cItemParam.POUCH_CHANGE_TYPE)"), function(args)
         if no_reload_managed_weapon and skip_ammo_usage then
             return sdk.PreHookResult.SKIP_ORIGINAL
         end
     end, function(retval) return retval end)
 
+    -- On updating the request recoil, check if no recoil is enabled
     sdk.hook(sdk.find_type_definition("app.cHunterWpGunHandling"):get_method("updateRequestRecoil(app.mcShellPlGun, System.Int32)"), function(args)
         local managed = sdk.to_managed_object(args[2])
         if not managed:get_type_definition():is_a("app.cHunterWpGunHandling") then return end
