@@ -4,9 +4,12 @@ local Module = {
     data = {
         max_special_ammo = false,
         max_wyvern_howl = false,
-        -- wyvern_ignition_charge_level = -1,
         max_gatling_hits = false,
-    }
+        unlimited_ammo = false,
+        no_reload = false,
+        no_recoil = false
+    },
+    old = {}
 }
 
 function Module.init()
@@ -58,6 +61,59 @@ function Module.init_hooks()
         end
 
     end, function(retval) end)
+
+    -- On shooting a shell, check if unlimited ammo is enabled, and if no reload is enabled
+    local skip_ammo_usage = false
+    local no_reload_managed_weapon = nil
+    sdk.hook(sdk.find_type_definition("app.cHunterWpGunHandling"):get_method("shootShell"), function(args) 
+        local managed = sdk.to_managed_object(args[2])
+        if not managed:get_type_definition():is_a("app.cHunterWpGunHandling") then return end
+        if not managed:get_Hunter() then return end
+        if not managed:get_Hunter():get_IsMaster() then return end
+        if managed:get_Weapon():get_WpType() ~= 12 then return end
+        
+        -- If unlimited ammo is enabled, set skip ammo usage
+        if Module.data.unlimited_ammo then
+            skip_ammo_usage = true
+        end
+
+        -- If no reload is enabled, pass the weapon to the no_reload_managed_weapon variable
+        if Module.data.no_reload then
+            no_reload_managed_weapon = managed
+        end
+    end, function(retval)
+
+        -- If no reload is enabled, reload the weapon without an animation
+        if no_reload_managed_weapon and Module.data.no_reload then
+            no_reload_managed_weapon:allReloadAmmo()
+        end
+
+        -- Reset variables after the shot
+        no_reload_managed_weapon = nil
+        skip_ammo_usage = false
+
+        return retval
+    end)
+
+    -- On changing the item pouch number, check if unlimited ammo is enabled, and if skip ammo usage is enabled
+    sdk.hook(sdk.find_type_definition("app.savedata.cItemParam"):get_method("changeItemPouchNum(app.ItemDef.ID, System.Int16, app.savedata.cItemParam.POUCH_CHANGE_TYPE)"), function(args)
+        if no_reload_managed_weapon and skip_ammo_usage then
+            return sdk.PreHookResult.SKIP_ORIGINAL
+        end
+    end, function(retval) return retval end)
+
+    -- On updating the request recoil, check if no recoil is enabled
+    sdk.hook(sdk.find_type_definition("app.cHunterWpGunHandling"):get_method("updateRequestRecoil(app.mcShellPlGun, System.Int32)"), function(args)
+        local managed = sdk.to_managed_object(args[2])
+        if not managed:get_type_definition():is_a("app.cHunterWpGunHandling") then return end
+        if not managed:get_Hunter() then return end
+        if not managed:get_Hunter():get_IsMaster() then return end
+        if managed:get_Weapon():get_WpType() ~= 12 then return end
+
+        if Module.data.no_recoil then
+            return sdk.PreHookResult.SKIP_ORIGINAL
+        end
+    end, function(retval) return retval end)
 end
 
 function Module.draw()
@@ -79,6 +135,15 @@ function Module.draw()
 
         changed, Module.data.max_gatling_hits = imgui.checkbox(language.get(languagePrefix .. "max_gatling_hits"), Module.data.max_gatling_hits)
         utils.tooltip(language.get(languagePrefix .. "max_gatling_hits_tooltip"))
+        any_changed = any_changed or changed
+
+        changed, Module.data.unlimited_ammo = imgui.checkbox(language.get(languagePrefix .. "unlimited_ammo"), Module.data.unlimited_ammo)
+        any_changed = any_changed or changed
+
+        changed, Module.data.no_reload = imgui.checkbox(language.get(languagePrefix .. "no_reload"), Module.data.no_reload)
+        any_changed = any_changed or changed
+
+        changed, Module.data.no_recoil = imgui.checkbox(language.get(languagePrefix .. "no_recoil"), Module.data.no_recoil)
         any_changed = any_changed or changed
 
         if any_changed then config.save_section(Module.create_config_section()) end

@@ -168,14 +168,20 @@
         "max_special_ammo": "无限特殊弹药",
         "max_rapid_shot": "速射最大连发数",
         "max_eagle_shot": "无限特殊射击",
-        "instant_eagle_shot_charge": "特殊射击无需蓄力"
+        "instant_eagle_shot_charge": "特殊射击无需蓄力",
+        "unlimited_ammo": "无限弹药",
+        "no_reload": "无需装填",
+        "no_recoil": "无后座力"
     },
     "heavy_bowgun": {
         "title": "重弩",
         "max_special_ammo": "无限特殊弹药",
         "max_wyvern_howl": "无限龙热机关龙弹",
         "max_gatling_hits": "最大命中数",
-        "max_gatling_hits_tooltip": "仅对龙热穿甲弹生效" 
+        "max_gatling_hits_tooltip": "仅对龙热穿甲弹生效",
+        "unlimited_ammo": "无限弹药",
+        "no_reload": "无需装填",
+        "no_recoil": "无后座力"
     },
     "charge_blade": {
         "title": "盾斧",
