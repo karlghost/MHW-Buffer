@@ -2,7 +2,7 @@ local utils, config, language
 local Module = {
     title = "hunting_horn",
     data = {
-       
+       unlimited_echo_bubbles = false,
     }
 }
 
@@ -23,6 +23,11 @@ function Module.init_hooks()
         if not managed:get_Hunter() then return end
         if not managed:get_Hunter():get_IsMaster() then return end
 
+        if Module.data.unlimited_echo_bubbles then
+            local echo_bubbles = managed:get_field("_HibikiFloatShellInfo")
+            echo_bubbles:set_field("_ReloadTimer", echo_bubbles:get_field("_MaxReloadTime"))
+        end
+
 
     end, function(retval) end)
 end
@@ -35,6 +40,8 @@ function Module.draw()
     if imgui.collapsing_header(language.get(languagePrefix .. "title")) then
         imgui.indent(10)
        
+        changed, Module.data.unlimited_echo_bubbles = imgui.checkbox(language.get(languagePrefix .. "unlimited_echo_bubbles"), Module.data.unlimited_echo_bubbles)
+        any_changed = any_changed or changed
 
         if any_changed then config.save_section(Module.create_config_section()) end
         imgui.unindent(10)

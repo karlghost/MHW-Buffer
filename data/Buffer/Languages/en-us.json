@@ -140,7 +140,8 @@
         "instant_charge": "Instant charge"
     },
     "hunting_horn": {
-        "title": "Hunting Horn"
+        "title": "Hunting Horn",
+        "unlimited_echo_bubbles": "Unlimited echo bubbles"
     },
     
     "lance": {

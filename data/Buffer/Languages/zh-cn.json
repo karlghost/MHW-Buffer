@@ -140,7 +140,8 @@
         "instant_charge": "立即蓄力"
     },
     "hunting_horn": {
-        "title": "狩猎笛"
+        "title": "狩猎笛",
+        "unlimited_echo_bubbles": "Unlimited echo bubbles"
     },
     "lance": {
         "title": "长枪",
