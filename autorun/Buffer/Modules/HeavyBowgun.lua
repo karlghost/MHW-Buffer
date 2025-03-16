@@ -97,7 +97,7 @@ function Module.init_hooks()
 
     -- On changing the item pouch number, check if unlimited ammo is enabled, and if skip ammo usage is enabled
     sdk.hook(sdk.find_type_definition("app.savedata.cItemParam"):get_method("changeItemPouchNum(app.ItemDef.ID, System.Int16, app.savedata.cItemParam.POUCH_CHANGE_TYPE)"), function(args)
-        if no_reload_managed_weapon and skip_ammo_usage then
+        if skip_ammo_usage then
             return sdk.PreHookResult.SKIP_ORIGINAL
         end
     end, function(retval) return retval end)
