@@ -312,7 +312,7 @@ function Module.init_hooks()
         end
     end, function(retval) return retval end)
   
-    -- Unlimited Slingers - Pickupable slinger ammo
+    -- Unlimited Slingers
     sdk.hook(sdk.find_type_definition("app.HunterCharacter"):get_method("useSlinger"), function(args)
         local managed = sdk.to_managed_object(args[2])
         if not managed:get_IsMaster() then return end
@@ -324,7 +324,8 @@ function Module.init_hooks()
         skip_slinger_use = false
         return retval
     end)
-
+    
+    -- Pickupable slinger ammo
     sdk.hook(sdk.find_type_definition("app.cSlingerAmmo"):get_method("useAmmo"), function(args)
         if skip_slinger_use then
             return sdk.PreHookResult.SKIP_ORIGINAL
