@@ -86,7 +86,9 @@
             "dash_juice": "Dash juice",
             "imunizer": "Imunizer"
         },
-        "unlimited_sharpness": "Unlimited Sharpness"
+        "unlimited_sharpness": "Unlimited Sharpness",
+        "unlimited_consumables": "Unlimited Consumables",
+        "unlimited_slingers": "Unlimited Slinger Ammo"
     },
 
     "great_sword": {

@@ -89,7 +89,9 @@
             "dash_juice": "Dash Saft",
             "imunizer": "Imunizierer"
         },
-        "unlimited_sharpness": "Unbegrenzte Schaerfe"
+        "unlimited_sharpness": "Unbegrenzte Schaerfe",
+        "unlimited_consumables": "Unbegrenzte Verbrauchsmaterialien",
+        "unlimited_slingers": "Unbegrenzte Schleudermunition"
     },
 
     "great_sword": {
