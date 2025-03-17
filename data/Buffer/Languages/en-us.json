@@ -86,7 +86,9 @@
             "dash_juice": "Dash juice",
             "imunizer": "Imunizer"
         },
-        "unlimited_sharpness": "Unlimited Sharpness"
+        "unlimited_sharpness": "Unlimited Sharpness",
+        "unlimited_consumables": "Unlimited Consumables",
+        "unlimited_slingers": "Unlimited Slinger Ammo"
     },
 
     "great_sword": {
@@ -138,7 +140,8 @@
         "instant_charge": "Instant charge"
     },
     "hunting_horn": {
-        "title": "Hunting Horn"
+        "title": "Hunting Horn",
+        "unlimited_echo_bubbles": "Unlimited echo bubbles"
     },
     
     "lance": {

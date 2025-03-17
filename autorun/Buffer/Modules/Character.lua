@@ -50,7 +50,9 @@ local Module = {
             }
         },
         
-        unlimited_sharpness = false
+        unlimited_sharpness = false,
+        unlimited_consumables = false,
+        unlimited_slingers = false
     }
 }
 
@@ -277,6 +279,7 @@ function Module.init_hooks()
 
     end, function(retval) end)
 
+    -- Unlimited Sharpness
     sdk.hook(sdk.find_type_definition("app.cWeaponKireaji"):get_method("consumeKireaji"), function(args)
         local managed = sdk.to_managed_object(args[2])
         local weapon_sharpness = managed:get_field("_Kireaji")
@@ -286,6 +289,49 @@ function Module.init_hooks()
         end
        
     end, function(retval) end)
+
+    -- Unlimited Consumables
+    local skip_consumable_use = false
+    sdk.hook(sdk.find_type_definition("app.HunterCharacter.cHunterExtendBase"):get_method("useItem"), function(args)
+        local managed = sdk.to_managed_object(args[2])
+        if not managed:get_IsMaster() then return end
+
+        if Module.data.unlimited_consumables then
+            skip_consumable_use = true
+        end
+    end, function(retval)
+        skip_consumable_use = false
+        return retval
+    end)
+
+    local skip_slinger_use = false
+    -- Used for consumables in both the slinger and item pouch
+    sdk.hook(sdk.find_type_definition("app.savedata.cItemParam"):get_method("changeItemPouchNum(app.ItemDef.ID, System.Int16, app.savedata.cItemParam.POUCH_CHANGE_TYPE)"), function(args)
+        if skip_consumable_use or skip_slinger_use then
+            return sdk.PreHookResult.SKIP_ORIGINAL
+        end
+    end, function(retval) return retval end)
+  
+    -- Unlimited Slingers
+    sdk.hook(sdk.find_type_definition("app.HunterCharacter"):get_method("useSlinger"), function(args)
+        local managed = sdk.to_managed_object(args[2])
+        if not managed:get_IsMaster() then return end
+
+        if Module.data.unlimited_slingers then
+            skip_slinger_use = true
+        end
+    end, function(retval)
+        skip_slinger_use = false
+        return retval
+    end)
+    
+    -- Pickupable slinger ammo
+    sdk.hook(sdk.find_type_definition("app.cSlingerAmmo"):get_method("useAmmo"), function(args)
+        if skip_slinger_use then
+            return sdk.PreHookResult.SKIP_ORIGINAL
+        end
+    end, function(retval) return retval end)
+
 end
 
 function Module.draw()
@@ -458,6 +504,12 @@ function Module.draw()
 
         languagePrefix = Module.title .."."
         changed, Module.data.unlimited_sharpness = imgui.checkbox(language.get(languagePrefix .. "unlimited_sharpness"), Module.data.unlimited_sharpness)
+        any_changed = any_changed or changed
+
+        changed, Module.data.unlimited_consumables = imgui.checkbox(language.get(languagePrefix .. "unlimited_consumables"), Module.data.unlimited_consumables)
+        any_changed = any_changed or changed
+        
+        changed, Module.data.unlimited_slingers = imgui.checkbox(language.get(languagePrefix .. "unlimited_slingers"), Module.data.unlimited_slingers)
         any_changed = any_changed or changed
             
         if any_changed then config.save_section(Module.create_config_section()) end

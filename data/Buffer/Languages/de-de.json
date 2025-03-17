@@ -89,7 +89,9 @@
             "dash_juice": "Dash Saft",
             "imunizer": "Imunizierer"
         },
-        "unlimited_sharpness": "Unbegrenzte Schaerfe"
+        "unlimited_sharpness": "Unbegrenzte Schaerfe",
+        "unlimited_consumables": "Unbegrenzte Verbrauchsmaterialien",
+        "unlimited_slingers": "Unbegrenzte Schleudermunition"
     },
 
     "great_sword": {
@@ -141,7 +143,8 @@
         "instant_charge": "Sofortige Aufladung"
     },
     "hunting_horn": {
-        "title": "Jagdhorn"
+        "title": "Jagdhorn",
+        "unlimited_echo_bubbles": "Unlimited echo bubbles"
     },
     
     "lance": {

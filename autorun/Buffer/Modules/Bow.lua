@@ -7,8 +7,7 @@ local Module = {
         unlimited_bottles = false,
         max_trick_arrow_gauge = false
     },
-    old = {},
-    hidden = {}
+    old = {}
 }
 
 function Module.init()
@@ -19,6 +18,7 @@ function Module.init()
     Module.init_hooks()
 end
 
+local tetrad_shot_active = false
 function Module.init_hooks()
 
     -- Watch for weapon changes, need to re-apply the default arrow types 
@@ -117,7 +117,7 @@ function Module.init_hooks()
             end
 
             local max_bottle_num = tetrad_shot_active and 4 or 10
-            Module.hidden.tetrad_shot_active = tetrad_shot_active
+            tetrad_shot_active = tetrad_shot_active
 
             managed:set_field("<BottleNum>k__BackingField", max_bottle_num)
             managed:set_field("<BottleShotCount>k__BackingField", 10 - max_bottle_num)
@@ -146,7 +146,7 @@ function Module.draw()
         any_changed = any_changed or changed
 
         changed, Module.data.unlimited_bottles = imgui.checkbox(language.get(languagePrefix .. "unlimited_bottles"), Module.data.unlimited_bottles)
-        if Module.hidden.tetrad_shot_active then
+        if tetrad_shot_active then
             imgui.same_line()
             utils.tooltip(language.get(languagePrefix .. "tetrad_shot_active"))
         end

@@ -88,7 +88,9 @@
             "dash_juice": "强走药",
             "imunizer": "免疫剂"
         },
-        "unlimited_sharpness": "无限锋利度"
+        "unlimited_sharpness": "无限锋利度",
+        "unlimited_consumables": "无限消耗品",
+        "unlimited_slingers": "无限弹药"
     },
     "great_sword": {
         "title": "大剑",
@@ -138,7 +140,8 @@
         "instant_charge": "立即蓄力"
     },
     "hunting_horn": {
-        "title": "狩猎笛"
+        "title": "狩猎笛",
+        "unlimited_echo_bubbles": "Unlimited echo bubbles"
     },
     "lance": {
         "title": "长枪",

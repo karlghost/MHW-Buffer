@@ -60,15 +60,17 @@ function Module.init_hooks()
 
         -- Kinsect
         local kinsect = managed:get_Insect()
-        update_field("kinsect", "_PowerLv", kinsect, Module.data.kinsect.power)
-        update_field("kinsect", "_SpeedLv", kinsect, Module.data.kinsect.speed)
-        update_field("kinsect", "_RecoveryLv", kinsect, Module.data.kinsect.recovery)
-        
-        -- Kinsect Stamina
-        if Module.data.kinsect.unlimited_stamina then 
-            kinsect:get_field("Stamina"):set_field("_Value", 100.0)
-        end
+        if kinsect then
+            update_field("kinsect", "_PowerLv", kinsect, Module.data.kinsect.power)
+            update_field("kinsect", "_SpeedLv", kinsect, Module.data.kinsect.speed)
+            update_field("kinsect", "_RecoveryLv", kinsect, Module.data.kinsect.recovery)
             
+            -- Kinsect Stamina
+            if Module.data.kinsect.unlimited_stamina then 
+                kinsect:get_field("Stamina"):set_field("_Value", 100.0)
+            end
+        end
+        
         -- Kinsect charge
         if Module.data.kinsect.fast_charge and managed:get_field("InsectChargeTimer") > Module.data.kinsect.charge_time/200 then
             managed:set_field("InsectChargeTimer", 100.0)
