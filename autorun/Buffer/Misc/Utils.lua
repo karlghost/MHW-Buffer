@@ -2,6 +2,7 @@ local utils = {}
 
 local soundManager, battleMusicManager
 local chatManager
+local player_manager
 
 -- Check if the player is in battle from the sound manager
 function utils.isInBattle()
@@ -15,6 +16,22 @@ function utils.isInBattle()
     if battleMusicManager == nil then return false end
     if battleMusicManager:get_IsBattle() then return true end
     return false
+end
+
+-- Get the Master Player
+function utils.getMasterPlayerInfo()
+    if not player_manager then
+        player_manager = sdk.get_managed_singleton("app.PlayerManager")
+    end
+    local player = player_manager:getMasterPlayerInfo()
+    return player
+end
+
+-- Get the Master Chacter from the player info
+function utils.getMasterCharacter()
+    local player = utils.getMasterPlayerInfo()
+    player = player:get_Character()
+    return player
 end
 
 -- Function to get length of table
