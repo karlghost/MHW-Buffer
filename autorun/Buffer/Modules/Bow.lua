@@ -36,9 +36,17 @@ function Module.init_hooks()
         if not managed:get_type_definition():is_a("app.HunterCharacter") then return end
         if not managed:get_IsMaster() then return end
 
+        -- Get weapon handling
         local weapon_handling = managed:get_WeaponHandling()
         local reserve_weapon_handling = managed:get_ReserveWeaponHandling()
-        local weapon = weapon_handling:get_type_definition():is_a("app.cHunterWp11Handling") and weapon_handling or reserve_weapon_handling:get_type_definition():is_a("app.cHunterWp11Handling") and reserve_weapon_handling or nil
+        if not weapon_handling then return end
+
+        -- Check if the weapon handling for the main or reserve is a bow
+        weapon_handling = (weapon_handling and weapon_handling:get_type_definition():is_a("app.cHunterWp11Handling")) and weapon_handling or nil
+        reserve_weapon_handling = (reserve_weapon_handling and reserve_weapon_handling:get_type_definition():is_a("app.cHunterWp11Handling")) and reserve_weapon_handling or nil
+
+        -- Get the weapon handling
+        local weapon = weapon_handling or reserve_weapon_handling
         if not weapon then return end
 
         -- Check if all_arrow_types is enabled and we have the old arrow types
