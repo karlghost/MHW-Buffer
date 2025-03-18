@@ -209,6 +209,16 @@ function Module.init_hooks()
         end
         if Module.data.blights_and_conditions.conditions.frenzy or Module.data.blights_and_conditions.conditions.all then -- Not far enough into story to know, will probably affect armor buff
             local frenzy = conditions:get_field("_Frenzy")
+             -- _State (0 = Infect(Ready)), 1 = Outbreak(Bad)), 2 = Overcome(Good))
+            -- _DurationTimer - counts down from _DurationTime
+            -- _OvercomePoint - builds up on attack towards _OvercomeTargetPoint
+            -- _PointReduceTimer - Builds up to 1 (Keeping at 0 stops _DurationTimer from counting down, if _State is 1)
+            -- _OvercomeCount - (Tracks how many times you've overcome, increases _OvercomeTargetPoint by 10 per)
+            if frenzy:get_field("_State") == 1 and frenzy:get_field("_DurationTimer") > 1.0 then
+                frenzy:set_field("_DurationTimer", 0.2)
+            end
+           
+
             frenzy:set_field("_IsImmune", true)
         end
         if Module.data.blights_and_conditions.conditions.stun or Module.data.blights_and_conditions.conditions.all then

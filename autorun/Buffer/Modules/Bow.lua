@@ -18,6 +18,15 @@ function Module.init()
     Module.init_hooks()
 end
 
+-- Reset the arrow types to the default arrow types
+local function reset_arrow_types(weapon)
+    local bottle_infos = weapon:get_field("<BottleInfos>k__BackingField")
+    for i, bottle_info in ipairs(bottle_infos) do
+        bottle_info:set_field("<CanLoading>k__BackingField", Module.old.bottle_infos[i])
+    end
+    Module.old.bottle_infos = nil
+end
+
 local tetrad_shot_active = false
 function Module.init_hooks()
 
@@ -27,26 +36,24 @@ function Module.init_hooks()
         if not managed:get_type_definition():is_a("app.HunterCharacter") then return end
         if not managed:get_IsMaster() then return end
 
+        -- Get weapon handling
         local weapon_handling = managed:get_WeaponHandling()
-        local is_main_bow = weapon_handling and weapon_handling:get_type_definition():is_a("app.cHunterWp11Handling")
         local reserve_weapon_handling = managed:get_ReserveWeaponHandling()
-        local is_reserve_bow = reserve_weapon_handling and reserve_weapon_handling:get_type_definition():is_a("app.cHunterWp11Handling")
+        if not weapon_handling then return end
 
-        -- If neither weapon is a bow, return
-        if not is_main_bow and not is_reserve_bow then return end
+        -- Check if the weapon handling for the main or reserve is a bow
+        weapon_handling = (weapon_handling and weapon_handling:get_type_definition():is_a("app.cHunterWp11Handling")) and weapon_handling or nil
+        reserve_weapon_handling = (reserve_weapon_handling and reserve_weapon_handling:get_type_definition():is_a("app.cHunterWp11Handling")) and reserve_weapon_handling or nil
+
+        -- Get the weapon handling
+        local weapon = weapon_handling or reserve_weapon_handling
+        if not weapon then return end
 
         -- Check if all_arrow_types is enabled and we have the old arrow types
-        if Module.data.all_arrow_types and Module.old.arrow_types then
-            local weapon = is_main_bow and weapon_handling or reserve_weapon_handling
-
-            -- Reset arrow types to the old arrow types
-            local bottle_infos = weapon:get_field("<BottleInfos>k__BackingField")
-            for i, bottle_info in ipairs(bottle_infos) do
-                bottle_info:set_field("<CanLoading>k__BackingField", Module.old.arrow_types[i])
-            end
+        if Module.data.all_arrow_types and Module.old.bottle_infos then
 
             -- Reset old arrow types
-            Module.old.arrow_types = nil
+            reset_arrow_types(weapon)
         end
     end, function(retval) end)
     
@@ -57,6 +64,7 @@ function Module.init_hooks()
         if not managed:get_Hunter() then return end
         if not managed:get_Hunter():get_IsMaster() then return end
 
+
         -- Charge Level
         if Module.data.charge_level ~= -1 then
             managed:set_field("<ChargeLv>k__BackingField", Module.data.charge_level)
@@ -66,30 +74,23 @@ function Module.init_hooks()
         -- All arrow types
         if Module.data.all_arrow_types then
             local bottle_infos = managed:get_field("<BottleInfos>k__BackingField")
-            if Module.old.arrow_types == nil then
-                Module.old.arrow_types = {}
+            if not Module.old.bottle_infos then
+                Module.old.bottle_infos = {}
                 for i, bottle_info in ipairs(bottle_infos) do
-                    Module.old.arrow_types[i] = bottle_info:get_field("<CanLoading>k__BackingField")
+                    Module.old.bottle_infos[i] = bottle_info:get_field("<CanLoading>k__BackingField")
                     bottle_info:set_field("<CanLoading>k__BackingField", true)
                 end
+                
             else
-                local needs_reapply = false
                 for i, bottle_info in ipairs(bottle_infos) do
                     if not bottle_info:get_field("<CanLoading>k__BackingField") then
-                        needs_reapply = true
+                        Module.old.bottle_infos = nil;
                         break
                     end
                 end
-                if needs_reapply then
-                    Module.old.arrow_types = nil
-                end
             end
-        elseif Module.old.arrow_types then
-            local bottle_infos = managed:get_field("<BottleInfos>k__BackingField")
-            for i, bottle_info in ipairs(bottle_infos) do
-            bottle_info:set_field("<CanLoading>k__BackingField", Module.old.arrow_types[i])
-            end
-            Module.old.arrow_types = nil
+        elseif Module.old.bottle_infos then
+            reset_arrow_types(managed)
         end
 
         -- Manually set type of arrow
@@ -102,6 +103,7 @@ function Module.init_hooks()
             -- 6 = Sleep
             -- 7 = Blast
             -- 8 = Exhaust
+
 
         -- Unlimited bottles
         if Module.data.unlimited_bottles then
@@ -122,6 +124,7 @@ function Module.init_hooks()
             managed:set_field("<BottleNum>k__BackingField", max_bottle_num)
             managed:set_field("<BottleShotCount>k__BackingField", 10 - max_bottle_num)
         end
+
 
         -- Trick Arrow Gauge 
         if Module.data.max_trick_arrow_gauge then
@@ -164,7 +167,18 @@ function Module.draw()
 end
 
 function Module.reset()
-    -- Implement reset functionality if needed
+
+    -- Reset the arrow types if all_arrow_types is enabled
+    if Module.data.all_arrow_types and Module.old.bottle_infos then
+        local player = utils.getMasterCharacter()
+        local weapon_handling = player:get_WeaponHandling()
+        local reserve_weapon_handling = player:get_ReserveWeaponHandling()
+
+        local weapon = weapon_handling:get_type_definition():is_a("app.cHunterWp11Handling") and weapon_handling or reserve_weapon_handling:get_type_definition():is_a("app.cHunterWp11Handling") and reserve_weapon_handling or nil
+        if not weapon then return end
+        
+        reset_arrow_types(weapon)
+    end
 end
 
 function Module.create_config_section()

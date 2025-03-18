@@ -31,7 +31,8 @@ function Module.init_hooks()
        
         -- Instant charge
         if Module.data.instant_charge then 
-            managed:set_field("_ChargeTimer", 3) 
+            managed:set_field("_ChargeTimer", 3)
+            managed:set_field("_ChargeLevel", 3)
         end
 
     end, function(retval) end)
