@@ -1,0 +1,192 @@
+{
+    "_USE_FONT": "NotoSansSC-Regular.otf",
+    "_TRANSLATOR": "syarukasu",
+    "window": {
+        "toggle_button": "バッファGUIの切り替え",
+        "title": "修飾子 & 設定",
+        "settings": "設定",
+        "language": "言語",
+        "font_size": "フォントサイズ",
+        "font_size_apply": "適用",
+        "about": "情報",
+        "author": "作者",
+        "translator": "翻訳者",
+        "version": "バージョン",
+        "bindings": {
+            "title": "キー設定",
+            "keyboard": "キーボード",
+            "gamepad": "コントローラー",
+            "remove": "削除",
+            "add_keyboard": "新しいキーボードのバインドを追加",
+            "add_gamepad": "新しいコントローラーのバインドを追加",
+            "choose_modification": "変更を選択",
+            "on_value": "有効値",
+            "to_listen": "入力を待機",
+            "listening": "入力を待機中",
+            "save": "保存",
+            "cancel": "キャンセル",
+            "enabled": "が有効になりました。",
+            "disabled": "が無効になりました。",
+            "set_to": "が %d に設定されました。"
+        }
+    },
+    "base": {
+        "disabled": "無効"
+    },
+    "character": {
+        "title": "キャラクター",
+        "stamina": {
+            "title": "スタミナ",
+            "max": "最大スタミナ",
+            "unlimited": "無限スタミナ"
+        },
+        "health": {
+            "title": "体力",
+            "max": "最大体力",
+            "unlimited": "無限体力",
+            "healing": "回復",
+            "healing_tooltip": "不足している体力が回復可能になります。"
+        },
+        "blights_and_conditions": {
+            "title": "属性や状態異常",
+            "tooltip": "属性異常や状態異常を防ぐ",
+            "blights": {
+                "title": "属性異常",
+                "fire": "火",
+                "water": "水",
+                "ice": "氷",
+                "thunder": "雷",
+                "dragon": "龍",
+                "all": "すべて"
+            },
+            "conditions": {
+                "title": "状態異常",
+                "poison": "毒",
+                "sleep": "睡眠",
+                "paralyze": "麻痺",
+                "blast": "爆破",
+                "stun": "気絶",
+                "defense_down": "防御力低下",
+                "bleed": "裂傷",
+                "stench": "悪臭",
+                "sticky": "粘着",
+                "frenzy": "狂竜症",
+                "frozen": "氷結",
+                "all": "すべて"
+            }
+        },
+        "item_buffs": {
+            "title": "アイテム強化",
+            "might_pill": "怪力の種",
+            "adamant_pill": "忍耐の種",
+            "demon_powder": "鬼人の粉塵",
+            "hardshell_powder": "硬化の粉塵",
+            "mega_demondrug": "強走薬グレート",
+            "mega_armorskin": "硬化薬グレート",
+            "cool_drink": "クーラードリンク",
+            "hot_drink": "ホットドリンク",
+            "dash_juice": "強走薬",
+            "imunizer": "活力剤"
+        },
+        "unlimited_sharpness": "斬れ味無限",
+        "unlimited_consumables": "消費アイテム無限",
+        "unlimited_slingers": "スリンガー弾無限"
+    },
+    "great_sword": {
+        "title": "大剣",
+        "true_charge_boost": "真・溜め斬り強化",
+        "true_charge_boost_tooltip": "真・溜め斬りの初撃ダメージ増加",
+        "instant_charge": "即時溜め"
+    },
+    "sword_and_shield": {
+        "title": "片手剣"
+    },
+    "dual_blades": {
+        "title": "双剣",
+        "demon_gauge": "鬼人ゲージ最大",
+        "demon_boost": "鬼人強化を発動"
+    },
+    "long_sword": {
+        "title": "太刀",
+        "aura_level": "練気レベル",
+        "aura_level_tooltip": "0から1に設定する場合、ゲージを溜める必要があります。",
+        "max_aura_gauge": "練気ゲージ最大",
+        "max_spirit_gauge": "気刃ゲージ最大"
+    },
+    "insect_glaive": {
+        "title": "操虫棍",
+        "kinsect": {
+            "title": "猟虫",
+            "power": "攻撃力",
+            "speed": "速度",
+            "recovery": "回復力",
+            "unlimited_stamina": "無限スタミナ",
+            "fast_charge": "高速チャージ",
+            "charge_time": "チャージ時間 %",
+            "charge_time_tooltip": "「チャージ時間 %」は、最大チャージに必要な時間を元の時間の割合として設定します。\n値が小さいほど高速チャージになります。"
+        },
+        "red": "赤エキス",
+        "orange": "橙エキス",
+        "white": "白エキス",
+        "infinite_air_attacks": "空中攻撃無限",
+        "unrestricted_charge": "制限なしのチャージ",
+        "unrestricted_charge_tooltip": "通常チャージできない場面（溜め攻撃中、納刀時など）でもチャージ可能にする"
+    },
+    "hammer": {
+        "title": "ハンマー",
+        "instant_charge": "即時溜め"
+    },
+    "hunting_horn": {
+        "title": "狩猟笛",
+        "unlimited_echo_bubbles": "無限の旋律効果"
+    },
+    "lance": {
+        "title": "ランス",
+        "counter_charge_level": "カウンターチャージレベル",
+        "rush_level": "突進レベル",
+        "infinite_backstep": "無限バックステップ"
+    },
+    "gunlance": {
+        "title": "ガンランス",
+        "shell_level": "砲撃レベル",
+        "infinite_wyvern_fire": "竜撃砲無限",
+        "instant_charge": "即時溜め",
+        "free_charge_shot": "チャージショット自由"
+    },
+    "bow": {
+        "title": "弓",
+        "charge_level": "溜めレベル",
+        "all_arrow_types": "全ての矢タイプ",
+        "unlimited_bottles": "ビン無限",
+        "tetrad_shot_active": "四連射サポート有効",
+        "max_trick_arrow_gauge": "トリックアローゲージ最大"
+    },
+    "light_bowgun": {
+        "title": "ライトボウガン",
+        "max_special_ammo": "特殊弾最大",
+        "unlimited_ammo": "弾無限",
+        "no_reload": "リロード不要",
+        "no_recoil": "反動なし"
+    },
+    "heavy_bowgun": {
+        "title": "ヘビィボウガン",
+        "max_special_ammo": "特殊弾最大",
+        "unlimited_ammo": "弾無限",
+        "no_reload": "リロード不要",
+        "no_recoil": "反動なし"
+    },
+    "charge_blade": {
+        "title": "チャージアックス",
+        "max_phials": "ビン最大",
+        "overcharge_phials": "ビン超過",
+        "shield_enhanced": "シールド強化",
+        "sword_enhanced": "剣強化",
+        "axe_enhanced": "斧強化"
+    },
+    "switch_axe": {
+        "title": "スラッシュアックス",
+        "max_charge": "チャージ最大",
+        "max_sword_charge": "剣モードゲージ最大",
+        "powered_axe": "斧モード強化"
+    }
+}
