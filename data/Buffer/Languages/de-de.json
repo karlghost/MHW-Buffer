@@ -89,6 +89,11 @@
             "dash_juice": "Dash Saft",
             "imunizer": "Imunizierer"
         },
+        "mantles": {
+            "title": "Mantles(TN)",
+            "instant_cooldown": "Instant cooldown(TN)",
+            "unlimited_duration": "Unlimited duration(TN)"
+        },
         "unlimited_sharpness": "Unbegrenzte Schaerfe",
         "unlimited_consumables": "Unbegrenzte Verbrauchsmaterialien",
         "unlimited_slingers": "Unbegrenzte Schleudermunition"

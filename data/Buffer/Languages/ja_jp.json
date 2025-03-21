@@ -88,6 +88,11 @@
             "dash_juice": "強走薬",
             "imunizer": "活力剤"
         },
+        "mantles": {
+            "title": "Mantles(TN)",
+            "instant_cooldown": "Instant cooldown(TN)",
+            "unlimited_duration": "Unlimited duration(TN)"
+        },
         "unlimited_sharpness": "斬れ味無限",
         "unlimited_consumables": "消費アイテム無限",
         "unlimited_slingers": "スリンガー弾無限"
