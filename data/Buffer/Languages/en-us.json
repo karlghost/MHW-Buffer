@@ -86,6 +86,11 @@
             "dash_juice": "Dash juice",
             "imunizer": "Imunizer"
         },
+        "mantles": {
+            "title": "Mantles",
+            "instant_cooldown": "Instant cooldown",
+            "unlimited_duration": "Unlimited duration"
+        },
         "unlimited_sharpness": "Unlimited Sharpness",
         "unlimited_consumables": "Unlimited Consumables",
         "unlimited_slingers": "Unlimited Slinger Ammo"
