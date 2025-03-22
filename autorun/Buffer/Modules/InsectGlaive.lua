@@ -17,7 +17,8 @@ local Module = {
         fast_charge = false,
         charge_time = 0,
         unrestricted_charge = false,
-    }
+    },
+    old = {}
 }
 
 function Module.init()
@@ -233,7 +234,7 @@ function Module.draw()
 end
 
 function Module.reset()
-    if Module.old.kinsect._PowerLv or Module.data.kinsect._RecoveryLv or Module.old.kinsect._SpeedLv then
+    if Module.old.kinsect and (Module.old.kinsect._PowerLv or Module.data.kinsect._RecoveryLv or Module.old.kinsect._SpeedLv) then
 
         local player = utils.getMasterCharacter()
         local weapon_handling = player:get_WeaponHandling()
