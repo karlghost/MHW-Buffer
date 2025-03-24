@@ -67,10 +67,12 @@ re.on_draw_ui(function()
     local languagePrefix = "window."
 
     -- Draw button to toggle window state
+    imgui.indent(2)
     if imgui.button(language.get(languagePrefix .. "toggle_button")) then
         isWindowOpen = not isWindowOpen
         config.set("window.is_window_open", isWindowOpen)
     end
+    imgui.unindent(2)
 
     if isWindowOpen then
         wasOpen = true
