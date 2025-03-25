@@ -90,9 +90,9 @@
             "imunizer": "Imunizierer"
         },
         "mantles": {
-            "title": "Mantles(TN)",
-            "instant_cooldown": "Instant cooldown(TN)",
-            "unlimited_duration": "Unlimited duration(TN)"
+            "title": "Mantel(TN)",
+            "instant_cooldown": "Sofortige Abklingzeit(TN)",
+            "unlimited_duration": "Unbegrenzte Dauer(TN)"
         },
         "unlimited_sharpness": "Unbegrenzte Schaerfe",
         "unlimited_consumables": "Unbegrenzte Verbrauchsmaterialien",
