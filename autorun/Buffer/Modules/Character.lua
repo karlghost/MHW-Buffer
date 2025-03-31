@@ -70,21 +70,6 @@ function Module.init()
     Module.init_hooks()
 end
 
-
--- Hunter Character
--- app.IHunterContextHolder _ContextHolder
--- app.cHunterContext <Hunter>k__BackingField
--- app.cHunterStatus  <HunterStatus>k__BackingField
-
-
--- Meal Bonuses - a bit overpowered, so maybe I won't add these
--- app.cHunterMEalEffect _MealEffect -- make sure isActive is on
--- app.cMEalEffect _MealEffect (Yes again)
--- Can add 400 to _AttackAdd
--- Can add unlimited to _DefenceAdd
-
-
-
 function Module.init_hooks()
     
     sdk.hook(sdk.find_type_definition("app.cHunterStatus"):get_method("update"), function(args)
