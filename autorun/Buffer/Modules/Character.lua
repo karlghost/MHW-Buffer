@@ -46,6 +46,7 @@ local Module = {
                 sleep = false,
                 sticky = false,
                 frozen = false,
+                bubble = false,
                 all = false
             }
         },
@@ -244,6 +245,13 @@ function Module.init_hooks()
             if frozen:get_field("_DurationTime") > 0 then
                 frozen:set_field("_DurationTime", 0)
                 frozen:set_field("_IsRestrainted", false)
+            end
+        end
+        if Module.data.blights_and_conditions.conditions.bubble or Module.data.blights_and_conditions.conditions.all then
+            local bubble = conditions:get_field("_Ex00") -- Bubble blight - I think
+            if bubble:get_field("_DurationTime") > 0 then
+                bubble:set_field("_DurationTime", 0)
+                bubble:set_field("_Type", 0)
             end
         end
         if Module.data.blights_and_conditions.blights.fire or Module.data.blights_and_conditions.blights.all then
@@ -477,6 +485,9 @@ function Module.draw()
                 changed, Module.data.blights_and_conditions.conditions.frenzy = imgui.checkbox(language.get(languagePrefix.."frenzy"), Module.data.blights_and_conditions.conditions.frenzy)
                 any_changed = any_changed or changed
 
+                changed, Module.data.blights_and_conditions.conditions.all = imgui.checkbox(language.get(languagePrefix.."all"), Module.data.blights_and_conditions.conditions.all)
+                any_changed = any_changed or changed
+
                 imgui.table_next_column()
 
                 changed, Module.data.blights_and_conditions.conditions.stun = imgui.checkbox(language.get(languagePrefix.."stun"), Module.data.blights_and_conditions.conditions.stun)
@@ -494,8 +505,9 @@ function Module.draw()
                 changed, Module.data.blights_and_conditions.conditions.frozen = imgui.checkbox(language.get(languagePrefix.."frozen"), Module.data.blights_and_conditions.conditions.frozen)
                 any_changed = any_changed or changed
 
-                changed, Module.data.blights_and_conditions.conditions.all = imgui.checkbox(language.get(languagePrefix.."all"), Module.data.blights_and_conditions.conditions.all)
+                changed, Module.data.blights_and_conditions.conditions.bubble = imgui.checkbox(language.get(languagePrefix.."bubble"), Module.data.blights_and_conditions.conditions.bubble)
                 any_changed = any_changed or changed
+
 
                 imgui.end_table()
                 imgui.tree_pop()
