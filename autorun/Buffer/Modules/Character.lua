@@ -225,6 +225,9 @@ function Module.init_hooks()
                 paralyze:set_field("_DurationTime", 0)
                 paralyze:set_field("_IsRestrainted", false)
             end
+            if paralyze:get_field("_Accumulator") > 0 then
+                paralyze:set_field("_Accumulator", 0)
+            end
         end
         if Module.data.blights_and_conditions.conditions.sleep or Module.data.blights_and_conditions.conditions.all then
             local sleep = conditions:get_field("_Sleep") -- Effect probably still plays
@@ -241,10 +244,13 @@ function Module.init_hooks()
             end
         end
         if Module.data.blights_and_conditions.conditions.frozen or Module.data.blights_and_conditions.conditions.all then
-            local frozen = conditions:get_field("_Frozen") -- Effect probably still plays
+            local frozen = conditions:get_field("_Frozen") -- Effect still plays
             if frozen:get_field("_DurationTime") > 0 then
                 frozen:set_field("_DurationTime", 0)
                 frozen:set_field("_IsRestrainted", false)
+            end
+            if frozen:get_field("_Accumulator") > 0 then
+                frozen:set_field("_Accumulator", 0)
             end
         end
         if Module.data.blights_and_conditions.conditions.bubble or Module.data.blights_and_conditions.conditions.all then
