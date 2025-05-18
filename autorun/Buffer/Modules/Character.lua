@@ -16,10 +16,15 @@ local Module = {
             hot_drink = false,
             cool_drink = false,
             imunizer = false,
+            might_seed = false, -- _Kairiki_Timer
             might_pill = false, -- _Kairiki_G_Timer
+            adamant_seed = false, -- _Nintai_Timer
             adamant_pill = false, -- _Nintai_G_Timer
-           
+
+
+            demon_drug = false, -- _KijinDrink
             mega_demondrug = false, -- _KijinDrink_G
+            armor_skin = false, -- _KoukaDrink
             mega_armorskin = false, -- _KoukaDrink_G 
             
             demon_powder = false, -- _KijinPowder_Timer
@@ -139,16 +144,36 @@ function Module.init_hooks()
             if Module.data.item_buffs.imunizer then
                 item_buffs:set_field("_Immunizer_Timer", 300)
             end
+            if Module.data.item_buffs.might_seed then
+                item_buffs:set_field("_Kairiki_Timer", 180)
+            end
             if Module.data.item_buffs.might_pill then
                 item_buffs:set_field("_Kairiki_G_Timer", 90)
             end
+            if Module.data.item_buffs.adamant_seed then
+                item_buffs:set_field("_Nintai_Timer", 180)
+            end
             if Module.data.item_buffs.adamant_pill then
                 item_buffs:set_field("_Nintai_G_Timer", 90)
+            end
+            -- Implement demon_drug
+            if Module.data.item_buffs.demon_drug then
+                local demon_drug = item_buffs:get_field("_KijinDrink")
+                if demon_drug:get_field("_Timer") <= 0 then
+                    item_buffs:activateItemBuff(sdk.to_ptr(4), 1.0, 1.0)   
+                end
             end
             if Module.data.item_buffs.mega_demondrug then 
                 local demon_drug = item_buffs:get_field("_KijinDrink_G")
                 if demon_drug:get_field("_Timer") <= 0 then
                     item_buffs:activateItemBuff(sdk.to_ptr(5), 1.0, 1.0)   
+                end
+            end
+            -- Implement armor_skin
+            if Module.data.item_buffs.armor_skin then
+                local armor_skin = item_buffs:get_field("_KoukaDrink")
+                if armor_skin:get_field("_Timer") <= 0 then
+                    item_buffs:activateItemBuff(sdk.to_ptr(10), 1.0, 1.0)        
                 end
             end
             if Module.data.item_buffs.mega_armorskin then
@@ -528,7 +553,13 @@ function Module.draw()
             imgui.table_next_row()
             imgui.table_next_column()
 
+            changed, Module.data.item_buffs.might_seed = imgui.checkbox(language.get(languagePrefix .. "might_seed"), Module.data.item_buffs.might_seed)
+            any_changed = any_changed or changed
+            
             changed, Module.data.item_buffs.might_pill = imgui.checkbox(language.get(languagePrefix .. "might_pill"), Module.data.item_buffs.might_pill)
+            any_changed = any_changed or changed
+            
+            changed, Module.data.item_buffs.demon_drug = imgui.checkbox(language.get(languagePrefix .. "demon_drug"), Module.data.item_buffs.demon_drug)
             any_changed = any_changed or changed
 
             changed, Module.data.item_buffs.mega_demondrug = imgui.checkbox(language.get(languagePrefix .. "mega_demondrug"), Module.data.item_buffs.mega_demondrug)
@@ -544,8 +575,14 @@ function Module.draw()
             any_changed = any_changed or changed
 
             imgui.table_next_column()
+            
+            changed, Module.data.item_buffs.adamant_seed = imgui.checkbox(language.get(languagePrefix .. "adamant_seed"), Module.data.item_buffs.adamant_seed)
+            any_changed = any_changed or changed
 
             changed, Module.data.item_buffs.adamant_pill = imgui.checkbox(language.get(languagePrefix .. "adamant_pill"), Module.data.item_buffs.adamant_pill)
+            any_changed = any_changed or changed
+            
+            changed, Module.data.item_buffs.armor_skin = imgui.checkbox(language.get(languagePrefix .. "armor_skin"), Module.data.item_buffs.armor_skin)
             any_changed = any_changed or changed
 
             changed, Module.data.item_buffs.mega_armorskin = imgui.checkbox(language.get(languagePrefix .. "mega_armorskin"), Module.data.item_buffs.mega_armorskin)
