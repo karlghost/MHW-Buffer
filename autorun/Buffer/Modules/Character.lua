@@ -156,7 +156,6 @@ function Module.init_hooks()
             if Module.data.item_buffs.adamant_pill then
                 item_buffs:set_field("_Nintai_G_Timer", 90)
             end
-            -- Implement demon_drug
             if Module.data.item_buffs.demon_drug then
                 local demon_drug = item_buffs:get_field("_KijinDrink")
                 if demon_drug:get_field("_Timer") <= 0 then
@@ -169,7 +168,6 @@ function Module.init_hooks()
                     item_buffs:activateItemBuff(sdk.to_ptr(5), 1.0, 1.0)   
                 end
             end
-            -- Implement armor_skin
             if Module.data.item_buffs.armor_skin then
                 local armor_skin = item_buffs:get_field("_KoukaDrink")
                 if armor_skin:get_field("_Timer") <= 0 then
