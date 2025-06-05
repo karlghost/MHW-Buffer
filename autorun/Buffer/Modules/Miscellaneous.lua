@@ -14,17 +14,12 @@ function Module.init()
     config = require("Buffer.Misc.Config")
     language = require("Buffer.Misc.Language")
 
-    -- Initialize debug mode (set to true temporarily to help find the right fields)
-    Module.debug = false
-
-    -- Initialize the last log time to prevent spamming the log
-    Module.last_log_time = 0
-
     Module.init_hooks()
 end
 
 function Module.init_hooks()
-    -- Hook to handle Akuma functionality
+
+
     sdk.hook(sdk.find_type_definition("app.HunterCharacter"):get_method("update"), function(args)
         local managed = sdk.to_managed_object(args[2])
         if not managed:get_type_definition():is_a("app.HunterCharacter") then return end
@@ -36,9 +31,10 @@ function Module.init_hooks()
         -- Unlimited Drive Impact
         if Module.data.akuma.unlimited_drive_impact then
             ex_emote:set_field("_aimAttackTimer", 0)
-        end        -- Set Gou Hadoken to maximum level (Technically 1 (0-1))
+        end       
+        
+        -- Set Gou Hadoken to maximum level (Technically 1 (0-1))
         if Module.data.akuma.gou_hadoken_max_level then
-            -- Set the charge level to maximum
             if ex_emote:get_field("<ChargeLv>k__BackingField") ~= nil and ex_emote:get_field("ChargeLvMax") ~= nil then
                 local max_level = ex_emote:get_field("ChargeLvMax")
                 ex_emote:set_field("<ChargeLv>k__BackingField", max_level)
@@ -56,7 +52,6 @@ function Module.draw()
     if imgui.collapsing_header(language.get(languagePrefix .. "title")) then
         imgui.indent(10)
 
-        -- Akuma settings
         languagePrefix = Module.title .. ".akuma."
         if imgui.tree_node(language.get(languagePrefix .. "title")) then            changed, Module.data.akuma.unlimited_drive_impact = imgui.checkbox(
                 language.get(languagePrefix .. "unlimited_drive_impact"), Module.data.akuma.unlimited_drive_impact)
