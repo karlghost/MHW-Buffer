@@ -33,6 +33,14 @@
     "base": {
         "disabled": "禁用"
     },
+    "miscellaneous": {
+        "title": "杂项",
+        "akuma": {
+            "title": "豪鬼",
+            "unlimited_drive_impact": "无限冲击拳",
+            "gou_hadoken_max_level": "豪波动拳最大等级"
+        }
+    },
     "character": {
         "title": "角色",
         "stamina": {

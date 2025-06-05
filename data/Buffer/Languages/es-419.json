@@ -33,6 +33,14 @@
     "base": {
         "disabled": "Desactivado"
     },
+    "miscellaneous": {
+        "title": "Misceláneos",
+        "akuma": {
+            "title": "Akuma",
+            "unlimited_drive_impact": "Impacto Impulsor Ilimitado",
+            "gou_hadoken_max_level": "Gou Hadoken Nivel Máximo"
+        }
+    },
     "character": {
         "title": "Personaje",
         "stamina": {
