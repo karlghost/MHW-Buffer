@@ -3,7 +3,7 @@ local Module = {
     title = "miscellaneous",
     data = {
         akuma = {
-            unlimited_drive_impact = false,
+            instant_drive_gauge = false,
             gou_hadoken_max_level = false
         }
     }
@@ -23,13 +23,11 @@ function Module.init_hooks()
     sdk.hook(sdk.find_type_definition("app.HunterCharacter"):get_method("update"), function(args)
         local managed = sdk.to_managed_object(args[2])
         if not managed:get_type_definition():is_a("app.HunterCharacter") then return end
-        if not managed:get_IsMaster() then return end
-
-        local ex_emote = managed:get_ExEmote00()
+        if not managed:get_IsMaster() then return end        local ex_emote = managed:get_ExEmote00()
         if ex_emote == nil then return end
 
-        -- Unlimited Drive Impact
-        if Module.data.akuma.unlimited_drive_impact then
+        -- Instant Drive Gauge
+        if Module.data.akuma.instant_drive_gauge then
             ex_emote:set_field("_aimAttackTimer", 0)
         end       
         
@@ -50,11 +48,9 @@ function Module.draw()
     local languagePrefix = Module.title .. "."
 
     if imgui.collapsing_header(language.get(languagePrefix .. "title")) then
-        imgui.indent(10)
-
-        languagePrefix = Module.title .. ".akuma."
-        if imgui.tree_node(language.get(languagePrefix .. "title")) then            changed, Module.data.akuma.unlimited_drive_impact = imgui.checkbox(
-                language.get(languagePrefix .. "unlimited_drive_impact"), Module.data.akuma.unlimited_drive_impact)
+        imgui.indent(10)        languagePrefix = Module.title .. ".akuma."
+        if imgui.tree_node(language.get(languagePrefix .. "title")) then            changed, Module.data.akuma.instant_drive_gauge = imgui.checkbox(
+                language.get(languagePrefix .. "instant_drive_gauge"), Module.data.akuma.instant_drive_gauge)
             any_changed = any_changed or changed
 
             changed, Module.data.akuma.gou_hadoken_max_level = imgui.checkbox(

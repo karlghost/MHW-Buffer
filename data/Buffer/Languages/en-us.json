@@ -35,7 +35,7 @@
         "title": "Miscellaneous",
         "akuma": {
             "title": "Akuma",
-            "unlimited_drive_impact": "Unlimited Drive Impact",
+            "instant_drive_gauge": "Instant Drive Gauge",
             "gou_hadoken_max_level": "Gou Hadoken Max Level"
         }
     },

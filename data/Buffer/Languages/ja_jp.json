@@ -37,7 +37,7 @@
         "title": "その他",
         "akuma": {
             "title": "豪鬼",
-            "unlimited_drive_impact": "無限ドライブインパクト",
+            "instant_drive_gauge": "瞬間ドライブゲージ",
             "gou_hadoken_max_level": "豪波動拳最大レベル"
         }
     },

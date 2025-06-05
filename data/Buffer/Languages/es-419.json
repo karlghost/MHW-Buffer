@@ -37,7 +37,7 @@
         "title": "Misceláneos",
         "akuma": {
             "title": "Akuma",
-            "unlimited_drive_impact": "Impacto Impulsor Ilimitado",
+            "instant_drive_gauge": "Medidor de Impulso Instantáneo",
             "gou_hadoken_max_level": "Gou Hadoken Nivel Máximo"
         }
     },

@@ -37,7 +37,7 @@
         "title": "杂项",
         "akuma": {
             "title": "豪鬼",
-            "unlimited_drive_impact": "无限冲击拳",
+            "instant_drive_gauge": "即时驱动计量表",
             "gou_hadoken_max_level": "豪波动拳最大等级"
         }
     },
