@@ -23,7 +23,9 @@ function Module.init_hooks()
     sdk.hook(sdk.find_type_definition("app.HunterCharacter"):get_method("update"), function(args)
         local managed = sdk.to_managed_object(args[2])
         if not managed:get_type_definition():is_a("app.HunterCharacter") then return end
-        if not managed:get_IsMaster() then return end        local ex_emote = managed:get_ExEmote00()
+        if not managed:get_IsMaster() then return end    
+
+        local ex_emote = managed:get_ExEmote00()
         if ex_emote == nil then return end
 
         -- Instant Drive Gauge
@@ -48,13 +50,15 @@ function Module.draw()
     local languagePrefix = Module.title .. "."
 
     if imgui.collapsing_header(language.get(languagePrefix .. "title")) then
-        imgui.indent(10)        languagePrefix = Module.title .. ".akuma."
-        if imgui.tree_node(language.get(languagePrefix .. "title")) then            changed, Module.data.akuma.instant_drive_gauge = imgui.checkbox(
-                language.get(languagePrefix .. "instant_drive_gauge"), Module.data.akuma.instant_drive_gauge)
+        imgui.indent(10)        
+        
+        languagePrefix = Module.title .. ".akuma."
+        if imgui.tree_node(language.get(languagePrefix .. "title")) then            
+            
+            changed, Module.data.akuma.instant_drive_gauge = imgui.checkbox(language.get(languagePrefix .. "instant_drive_gauge"), Module.data.akuma.instant_drive_gauge)
             any_changed = any_changed or changed
 
-            changed, Module.data.akuma.gou_hadoken_max_level = imgui.checkbox(
-                language.get(languagePrefix .. "gou_hadoken_max_level"), Module.data.akuma.gou_hadoken_max_level)
+            changed, Module.data.akuma.gou_hadoken_max_level = imgui.checkbox(language.get(languagePrefix .. "gou_hadoken_max_level"), Module.data.akuma.gou_hadoken_max_level)
             any_changed = any_changed or changed
 
             imgui.tree_pop()
