@@ -22,145 +22,165 @@ Buffs, Modifications, and Cheats for weapons and stats.
 <details>
 <summary><strong>Character</strong></summary>
 
-- **Health**
-  - Max health
-  - Unlimited health
-  - Healing
-- **Stamina**
-  - Max stamina
-  - Unlimited stamina
-- **Blights & Conditions**
-  - Blights
-    - Fire
-    - Thunder
-    - Water
-    - Ice
-    - Dragon
-    - All
-  - Conditions
-    - Poison
-    - Stench
-    - Blast
-    - Bleed
-    - Defense Down
-    - Frenzy
-    - Stun
-    - Paralyze
-    - Sleep
-    - Sticky
-    - Frozen
-    - Bubble
-    - All
-- **Item Buffs**
-  - Might seed
-  - Might pill
-  - Demon drug
-  - Mega demondrug
-  - Demon powder
-  - Hot drink
-  - Dash juice
-  - Adamant seed
-  - Adamant pill
-  - Armor skin
-  - Mega armorskin
-  - Hardshell powder
-  - Cool drink
-  - Immunizer
-- **Mantles**
-  - Instant cooldown
-  - Unlimited duration
-- **Invincible**
-  - Unlimited Sharpness
-  - Unlimited Consumables
-  - Unlimited Slinger Ammo
+<table>
+<tr>
+<td style="vertical-align: top">
+
+**Health**
+- Max health  
+- Unlimited health  
+- Healing  
+
+**Stamina**  
+- Max stamina  
+- Unlimited stamina  
+
+**Mantles**  
+- Instant cooldown  
+- Unlimited duration  
+
+**Invincible**  
+- Unlimited Sharpness  
+- Unlimited Consumables  
+- Unlimited Slinger Ammo  
+
+</td>
+<td style="vertical-align: top">
+
+**Blights**  
+- Fire  
+- Thunder  
+- Water  
+- Ice  
+- Dragon  
+- All  
+
+**Conditions**  
+- Poison  
+- Stench  
+- Blast  
+- Bleed  
+- Defense Down  
+- Frenzy  
+- Stun  
+- Paralyze  
+- Sleep  
+- Sticky  
+- Frozen  
+- Bubble  
+- All  
+
+</td>
+<td style="vertical-align: top">
+
+**Item Buffs**  
+- Might seed  
+- Might pill  
+- Demon drug  
+- Mega demondrug  
+- Demon powder  
+- Hot drink  
+- Dash juice  
+- Adamant seed  
+- Adamant pill  
+- Armor skin  
+- Mega armorskin  
+- Hardshell powder  
+- Cool drink  
+- Immunizer  
+
+</td>
+</tr>
+</table>
 
 </details>
+
 
 <details>
 <summary><strong>Miscellaneous</strong></summary>
 
 - **Akuma**
-  - Unlimited Drive Impact
-  - Gou Hadoken Max Level
+  - Unlimited Drive Impact  
+  - Gou Hadoken Max Level  
 
 </details>
 
 <details>
 <summary><strong>Great Sword</strong></summary>
 
-- True Charge boost
-- Instant charge
+- True Charge boost  
+- Instant charge  
 
 </details>
 
 <details>
 <summary><strong>Dual Blades</strong></summary>
 
-- Full demon gauge
-- Activate demon boost
+- Full demon gauge  
+- Activate demon boost  
 
 </details>
 
 <details>
 <summary><strong>Long Sword</strong></summary>
 
-- Aura level
-- Max aura gauge
-- Max spirit gauge
+- Aura level  
+- Max aura gauge  
+- Max spirit gauge  
 
 </details>
 
 <details>
 <summary><strong>Hammer</strong></summary>
 
-- Instant charge
+- Instant charge  
 
 </details>
 
 <details>
 <summary><strong>Hunting Horn</strong></summary>
 
-- Unlimited echo bubbles
+- Unlimited echo bubbles  
 
 </details>
 
 <details>
 <summary><strong>Lance</strong></summary>
 
-- Counter charge level
-- Rush level
-- Infinite backstep
+- Counter charge level  
+- Rush level  
+- Infinite backstep  
 
 </details>
 
 <details>
 <summary><strong>Gunlance</strong></summary>
 
-- Instant charge
-- Free charge shot
-- Shell level
-- Infinite wyvern fire
-- Infinite backstep
+- Instant charge  
+- Free charge shot  
+- Shell level  
+- Infinite wyvern fire  
+- Infinite backstep  
 
 </details>
 
 <details>
 <summary><strong>Switch Axe</strong></summary>
 
-- Max charge
-- Max sword charge
-- Powered axe
+- Max charge  
+- Max sword charge  
+- Powered axe  
 
 </details>
 
 <details>
 <summary><strong>Charge Blade</strong></summary>
 
-- Max phials
-- Overcharge phials
-- Shield enhanced
-- Sword enhanced
-- Axe enhanced
+- Max phials  
+- Overcharge phials  
+- Shield enhanced  
+- Sword enhanced  
+- Axe enhanced  
 
 </details>
 
@@ -168,54 +188,54 @@ Buffs, Modifications, and Cheats for weapons and stats.
 <summary><strong>Insect Glaive</strong></summary>
 
 - **Kinsect**
-  - Power
-  - Speed
-  - Recovery
-- Unlimited Stamina
-- Fast charge
-- Red Extract
-- White Extract
-- Orange Extract
-- Infinite air attacks
-- Fast charge
-- Unrestricted charge
+  - Power  
+  - Speed  
+  - Recovery  
+- Unlimited Stamina  
+- Fast charge  
+- Red Extract  
+- White Extract  
+- Orange Extract  
+- Infinite air attacks  
+- Unrestricted charge  
 
 </details>
 
 <details>
 <summary><strong>Bow</strong></summary>
 
-- Charge level
-- All arrow types
-- Unlimited bottles
-- Max trick arrow gauge
+- Charge level  
+- All arrow types  
+- Unlimited bottles  
+- Max trick arrow gauge  
 
 </details>
 
 <details>
 <summary><strong>Light Bowgun</strong></summary>
 
-- Max special ammo
-- Max rapid shot
-- Max eagle shot
-- Instant eagle shot charge
-- Unlimited ammo
-- No reload
-- No recoil
+- Max special ammo  
+- Max rapid shot  
+- Max eagle shot  
+- Instant eagle shot charge  
+- Unlimited ammo  
+- No reload  
+- No recoil  
 
 </details>
 
 <details>
 <summary><strong>Heavy Bowgun</strong></summary>
 
-- Max special ammo
-- Max wyvern howl
-- Max gatling hits
-- Unlimited ammo
-- No reload
-- No recoil
+- Max special ammo  
+- Max wyvern howl  
+- Max gatling hits  
+- Unlimited ammo  
+- No reload  
+- No recoil  
 
 </details>
+
 
 
 
