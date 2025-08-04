@@ -39,6 +39,10 @@
             "title": "豪鬼",
             "instant_drive_gauge": "最大豪鬼計量表",
             "gou_hadoken_max_level": "豪波動拳傷害最大化"
+        },
+        "water gun": {
+            "title": "Water Gun(*)",
+            "unlimited_ammo": "Unlimited ammo(*)"
         }
     },
     "character": {
