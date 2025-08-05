@@ -62,8 +62,7 @@ local Module = {
             bonus_attack = -1,
             bonus_defence = -1,
             critical_chance = -1,
-            element = -1,
-            element_damage = -1
+            element = -1
         },
         invincible = false,
         unlimited_sharpness = false,
@@ -677,9 +676,6 @@ function Module.draw()
             any_changed = any_changed or changed
 
             changed, Module.data.stats.critical_chance = imgui.slider_int(language.get(languagePrefix .. "critical_chance"), Module.data.stats.critical_chance, -1, 100, Module.data.stats.critical_chance == -1 and language.get("base.disabled") or "%d%%")
-            any_changed = any_changed or changed
-
-            changed, Module.data.stats.element_damage = imgui.slider_int(language.get(languagePrefix .. "element_damage"), Module.data.stats.element_damage, -1, 1000, Module.data.stats.element_damage == -1 and language.get("base.disabled") or "%d")
             any_changed = any_changed or changed
 
             languagePrefix = languagePrefix .. "element."
