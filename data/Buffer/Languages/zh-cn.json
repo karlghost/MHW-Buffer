@@ -109,6 +109,7 @@
             "title": "Stats(*)",
             "bonus_attack": "Bonus attack(*)",
             "bonus_defence": "Bonus defence(*)",
+            "critical_chance": "Critical chance(*)",
             "element": {
                 "title": "Element(*)",
                 "none": "None(*)",
