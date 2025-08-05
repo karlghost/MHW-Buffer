@@ -61,7 +61,8 @@ local Module = {
         stats = {
             bonus_attack = -1,
             bonus_defence = -1,
-            element = -1,
+            critical_chance = -1,
+            element = -1
         },
         invincible = false,
         unlimited_sharpness = false,
@@ -72,6 +73,20 @@ local Module = {
         stats = {}
     }
 }
+
+local function updateDahliaFloatBox(key, field_name, managed, new_value)
+    if Module.old == nil then Module.old = {} end
+    if Module.old[key] == nil then Module.old[key] = {} end
+    if new_value >= 0 then 
+        if Module.old[key][field_name] == nil then 
+            Module.old[key][field_name] = managed:get_field(field_name):read()
+        end
+        managed:get_field(field_name):write(new_value+0.0) 
+    elseif Module.old[key][field_name] ~= nil then
+        managed:get_field(field_name):write(Module.old[key][field_name]+0.0)
+        Module.old[key][field_name] = nil
+    end 
+end
 
 function Module.init()
     utils = require("Buffer.Misc.Utils")
@@ -319,25 +334,10 @@ function Module.init_hooks()
                 dragon:set_field("_DurationTimer", 0)
             end
         end
-
         
-        if Module.data.stats.bonus_attack >= 0 then
-            if hunter_meal_effect:get_field("_IsEffectActive") ~= true then
-                hunter_meal_effect:set_field("_IsEffectActive", true)
-            end
-
-            if meal_effect ~= nil then
-                meal_effect:set_field("_AttackAdd", Module.data.stats.bonus_attack)
-            end
-        end
-        if Module.data.stats.bonus_defence >= 0 then
-            if hunter_meal_effect:get_field("_IsEffectActive") ~= true then
-                hunter_meal_effect:set_field("_IsEffectActive", true)
-            end
-            if meal_effect ~= nil then
-                meal_effect:set_field("_DefenceAdd", Module.data.stats.bonus_defence)
-            end
-        end
+        updateDahliaFloatBox("bonus_attack", "_WeaponAttackPower", managed:get_AttackPower(), Module.data.stats.bonus_attack)
+        updateDahliaFloatBox("bonus_defence", "_OriginalArmorDefencePower", managed:get_DefencePower(), Module.data.stats.bonus_defence)
+        updateDahliaFloatBox("critical_chance", "_OriginalCritical", managed:get_CriticalRate(), Module.data.stats.critical_chance)
 
         if Module.data.stats.element ~= -1 then
             local attack_power = managed:get_field("_AttackPower")
@@ -665,13 +665,17 @@ function Module.draw()
             any_changed = any_changed or changed
             imgui.tree_pop()
         end
-   languagePrefix = Module.title .. ".stats."
+        
+        languagePrefix = Module.title .. ".stats."
         if imgui.tree_node(language.get(languagePrefix .. "title")) then
 
-            changed, Module.data.stats.bonus_attack = imgui.slider_int(language.get(languagePrefix .. "bonus_attack"), Module.data.stats.bonus_attack, -1, 400, Module.data.stats.bonus_attack == -1 and language.get("base.disabled") or "%d")
+            changed, Module.data.stats.bonus_attack = imgui.slider_int(language.get(languagePrefix .. "bonus_attack"), Module.data.stats.bonus_attack, -1, 5000, Module.data.stats.bonus_attack == -1 and language.get("base.disabled") or "%d")
             any_changed = any_changed or changed
 
-            changed, Module.data.stats.bonus_defence = imgui.slider_int(language.get(languagePrefix .. "bonus_defence"), Module.data.stats.bonus_defence, -1, 1000, Module.data.stats.bonus_defence == -1 and language.get("base.disabled") or "%d")
+            changed, Module.data.stats.bonus_defence = imgui.slider_int(language.get(languagePrefix .. "bonus_defence"), Module.data.stats.bonus_defence, -1, 5000, Module.data.stats.bonus_defence == -1 and language.get("base.disabled") or "%d")
+            any_changed = any_changed or changed
+
+            changed, Module.data.stats.critical_chance = imgui.slider_int(language.get(languagePrefix .. "critical_chance"), Module.data.stats.critical_chance, -1, 100, Module.data.stats.critical_chance == -1 and language.get("base.disabled") or "%d%%")
             any_changed = any_changed or changed
 
             languagePrefix = languagePrefix .. "element."

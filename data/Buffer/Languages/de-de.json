@@ -39,6 +39,10 @@
             "title": "Akuma",
             "instant_drive_gauge": "Sofortiges Drive-Messgerät",
             "gou_hadoken_max_level": "Gou Hadoken Max Stufe"
+        },
+        "water gun": {
+            "title": "Water Gun(*)",
+            "unlimited_ammo": "Unlimited ammo(*)"
         }
     },
     "character": {
@@ -110,6 +114,7 @@
             "title": "Stats(*)",
             "bonus_attack": "Bonus attack(*)",
             "bonus_defence": "Bonus defence(*)",
+            "critical_chance": "Critical chance(*)",
             "element": {
                 "title": "Element(*)",
                 "none": "None(*)",
