@@ -39,6 +39,12 @@ Buffs, Modifications, and Cheats for weapons and stats.
 - Instant cooldown  
 - Unlimited duration  
 
+**Stats**
+- Adjust attack damage
+- Element swapper
+- Adjust defence amount
+- Adjust critical rate
+
 **Invincible**  
 - Unlimited Sharpness  
 - Unlimited Consumables  
@@ -102,6 +108,9 @@ Buffs, Modifications, and Cheats for weapons and stats.
 - **Akuma**
   - Unlimited Drive Impact  
   - Gou Hadoken Max Level  
+
+- **Watergun**
+  - Unlimited Ammo 
 
 </details>
 
@@ -206,8 +215,10 @@ Buffs, Modifications, and Cheats for weapons and stats.
 
 - Charge level  
 - All arrow types  
-- Unlimited bottles  
-- Max trick arrow gauge  
+- Unlimited bottles
+- Tetrid shot support
+- Max trick arrow gauge 
+- Bladescale support
 
 </details>
 
@@ -221,6 +232,7 @@ Buffs, Modifications, and Cheats for weapons and stats.
 - Unlimited ammo  
 - No reload  
 - No recoil  
+- Bladescale support
 
 </details>
 
@@ -233,6 +245,7 @@ Buffs, Modifications, and Cheats for weapons and stats.
 - Unlimited ammo  
 - No reload  
 - No recoil  
+- Bladescale support
 
 </details>
 
