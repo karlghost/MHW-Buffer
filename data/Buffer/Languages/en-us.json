@@ -210,8 +210,7 @@
         "infinite_wyvern_fire": "Infinite wyvern fire",
         "infinite_backstep": "Infinite backstep",
         "instant_charge": "Instant charge",
-        "instant_charge_tooltip": "Will require being held for a moment, then letting go to fire",
-        "free_charge_shot": "Free charge shot"
+        "unlimited_ammo": "Unlimited ammo"
     },
 
     "bow": {

@@ -209,8 +209,7 @@
         "infinite_wyvern_fire": "无限龙击炮",
         "infinite_backstep": "无限后撤步",
         "instant_charge": "立即蓄力",
-        "instant_charge_tooltip": "需保持蓄力片刻后松开方可发射",
-        "free_charge_shot": "免蓄力射击"
+        "unlimited_ammo": "无限弹药"
     },
     "bow": {
         "title": "弓",

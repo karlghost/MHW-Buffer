@@ -212,8 +212,7 @@
         "infinite_wyvern_fire": "Unendliches Wyvernfeuer",
         "infinite_backstep": "Unendlicher Rueckwaertsschritt",
         "instant_charge": "Sofortige Aufladung",
-        "instant_charge_tooltip": "Man muss sie einen Moment lang festhalten und dann loslassen, um zu feuern.",
-        "free_charge_shot": "Kostenloser Schuss"
+        "unlimited_ammo": "Unendliche Munition"
     },
 
     "bow": {

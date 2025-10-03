@@ -211,8 +211,7 @@
         "infinite_wyvern_fire": "Fuego wyvern infinito",
         "infinite_backstep": "Retroceso infinito",
         "instant_charge": "Carga instantánea",
-        "instant_charge_tooltip": "Requiere mantener presionado un momento y luego soltar para disparar",
-        "free_charge_shot": "Disparo cargado liberado"
+        "unlimited_ammo": "Munición ilimitada"
     },
 
     "bow": {

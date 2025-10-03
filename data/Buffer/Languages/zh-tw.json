@@ -212,8 +212,7 @@
         "infinite_wyvern_fire": "無限龍擊炮",
         "infinite_backstep": "無限後跳",
         "instant_charge": "砲擊瞬間續力",
-        "instant_charge_tooltip": "需要稍微按住續力，然後放開發射",
-        "free_charge_shot": "無限續力射擊"
+        "unlimited_ammo": "無限彈藥"
     },
 
     "bow": {
