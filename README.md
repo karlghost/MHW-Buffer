@@ -45,7 +45,8 @@ Buffs, Modifications, and Cheats for weapons and stats.
 - Adjust defence amount
 - Adjust critical rate
 
-**Invincible**  
+**Other**
+- Invincible  
 - Unlimited Sharpness  
 - Unlimited Consumables  
 - Unlimited Slinger Ammo  
