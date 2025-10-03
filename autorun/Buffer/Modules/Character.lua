@@ -51,6 +51,7 @@ local Module = {
                 sticky = false,
                 frozen = false,
                 bubble = false,
+                hp_reduction = false,
                 all = false
             }
         },
@@ -304,6 +305,15 @@ function Module.init_hooks()
                 bubble:set_field("_Type", 0)
             end
         end
+
+        if Module.data.blights_and_conditions.conditions.hp_reduction or Module.data.blights_and_conditions.conditions.all then
+            local hp_reduction = conditions:get_field("_Ex01")
+            if hp_reduction:get_field("_DurationTimer") > 0 then
+                hp_reduction:set_field("_DurationTimer", 0)
+            end
+        end
+
+
         if Module.data.blights_and_conditions.blights.fire or Module.data.blights_and_conditions.blights.all then
             local fire = conditions:get_field("_Fire")
             if fire:get_field("_DurationTimer") > 0 then
@@ -563,8 +573,10 @@ function Module.draw()
                     Module.data.blights_and_conditions.conditions.frenzy)
                 any_changed = any_changed or changed
 
-                changed, Module.data.blights_and_conditions.conditions.all = imgui.checkbox(language.get(languagePrefix.."all"), Module.data.blights_and_conditions.conditions.all)
+                changed, Module.data.blights_and_conditions.conditions.hp_reduction = imgui.checkbox(language.get(languagePrefix .. "hp_reduction"),
+                    Module.data.blights_and_conditions.conditions.hp_reduction)
                 any_changed = any_changed or changed
+
 
                 imgui.table_next_column()
 
@@ -589,6 +601,9 @@ function Module.draw()
                 any_changed = any_changed or changed
 
                 changed, Module.data.blights_and_conditions.conditions.bubble = imgui.checkbox(language.get(languagePrefix.."bubble"), Module.data.blights_and_conditions.conditions.bubble)
+                any_changed = any_changed or changed
+                
+                changed, Module.data.blights_and_conditions.conditions.all = imgui.checkbox(language.get(languagePrefix.."all"), Module.data.blights_and_conditions.conditions.all)
                 any_changed = any_changed or changed
 
                 imgui.end_table()
