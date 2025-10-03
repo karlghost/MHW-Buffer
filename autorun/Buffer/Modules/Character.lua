@@ -611,6 +611,7 @@ function Module.draw()
             end
             imgui.tree_pop()
         end
+        utils.tooltip(language.get(languagePrefix .. "tooltip"))
 
         languagePrefix = Module.title .. ".item_buffs."
         if imgui.tree_node(language.get(languagePrefix .. "title")) then
