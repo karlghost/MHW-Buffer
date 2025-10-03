@@ -590,9 +590,6 @@ function Module.draw()
 
                 changed, Module.data.blights_and_conditions.conditions.bubble = imgui.checkbox(language.get(languagePrefix.."bubble"), Module.data.blights_and_conditions.conditions.bubble)
                 any_changed = any_changed or changed
-                
-                changed, Module.data.blights_and_conditions.conditions.all = imgui.checkbox(language.get(languagePrefix .. "all"), Module.data.blights_and_conditions.conditions.all)
-                any_changed = any_changed or changed
 
                 imgui.end_table()
                 imgui.tree_pop()
