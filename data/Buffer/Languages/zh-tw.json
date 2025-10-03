@@ -43,6 +43,16 @@
         "water gun": {
             "title": "Water Gun(*)",
             "unlimited_ammo": "Unlimited ammo(*)"
+        },
+        "pictomancy": {
+            "title": "Pictomancy*",
+            "state": {
+                "title": "Active Pictomancy State*",
+                "pom": "Pom Motif*",
+                "wing": "Wing Motif*",
+                "mog": "Mog of the ages*"
+            },
+            "instant_cooldown": "Instant Cooldown*"
         }
     },
     "character": {
