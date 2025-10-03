@@ -45,12 +45,12 @@
         "pictomancy": {
             "title": "Pictomancy",
             "state": {
-                "title": "Active Pictomancy State",
+                "title": "Active Pictomancy state",
                 "pom": "Pom Motif",
                 "wing": "Wing Motif",
                 "mog": "Mog of the ages"
             },
-            "instant_cooldown": "Instant Cooldown"
+            "instant_cooldown": "Instant cooldown"
         }
     },
     "character": {
