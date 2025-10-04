@@ -6,16 +6,9 @@ local player_manager
 
 -- Check if the player is in battle from the sound manager
 function utils.isInBattle()
-    if soundManager == nil then
-        soundManager = sdk.get_managed_singleton.GetSingleton("app.SoundMusicManager")
-    end
-    if soundManager == nil then return false end
-    if battleMusicManager == nil then
-        battleMusicManager = soundManager:get_BattleMusic()
-    end
-    if battleMusicManager == nil then return false end
-    if battleMusicManager:get_IsBattle() then return true end
-    return false
+    local character = utils.getMasterCharacter()
+    if not character then return false end
+    return character:get_IsCombat()
 end
 
 -- Get the Master Player
