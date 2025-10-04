@@ -45,14 +45,14 @@
             "unlimited_ammo": "Unlimited ammo(*)"
         },
         "pictomancy": {
-            "title": "Pictomancy*",
+            "title": "Pictomancy(*)",
             "state": {
-                "title": "Active Pictomancy state*",
-                "pom": "Pom Motif*",
-                "wing": "Wing Motif*",
-                "mog": "Mog of the ages*"
+                "title": "Active Pictomancy state(*)",
+                "pom": "Pom Motif(*)",
+                "wing": "Wing Motif(*)",
+                "mog": "Mog of the ages(*)"
             },
-            "instant_cooldown": "Instant cooldown*"
+            "instant_cooldown": "Instant cooldown(*)"
         }
     },
     "character": {
@@ -95,7 +95,7 @@
                 "frenzy": "Frenesí",
                 "frozen": "Congelado",
                 "bubble": "Burbuja",
-                "hp_reduction": "HP Reduction*",
+                "hp_reduction": "HP Reduction(*)",
                 "all": "Todas"
             }
         },
