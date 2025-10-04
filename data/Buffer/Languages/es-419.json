@@ -202,14 +202,12 @@
     "lance": {
         "title": "Lanza",
         "counter_charge_level": "Nivel de carga contrataque",
-        "rush_level": "Nivel de embestida",
-        "infinite_backstep": "Retroceso infinito"
+        "rush_level": "Nivel de embestida"
     },
     "gunlance": {
         "title": "Lanza Pistola",
         "shell_level": "Nivel de proyectil",
         "infinite_wyvern_fire": "Fuego wyvern infinito",
-        "infinite_backstep": "Retroceso infinito",
         "instant_charge": "Carga instantánea",
         "unlimited_ammo": "Munición ilimitada"
     },

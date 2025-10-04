@@ -200,14 +200,12 @@
     "lance": {
         "title": "ランス",
         "counter_charge_level": "カウンターチャージレベル",
-        "rush_level": "突進レベル",
-        "infinite_backstep": "無限バックステップ"
+        "rush_level": "突進レベル"
     },
     "gunlance": {
         "title": "ガンランス",
         "shell_level": "砲撃レベル",
         "infinite_wyvern_fire": "竜撃砲無限",
-        "infinite_backstep": "無限バックステップ",
         "instant_charge": "即時溜め",
         "unlimited_ammo": "弾無限"
     },

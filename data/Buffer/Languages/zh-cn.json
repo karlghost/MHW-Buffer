@@ -200,14 +200,12 @@
     "lance": {
         "title": "长枪",
         "counter_charge_level": "防御冲锋等级",
-        "rush_level": "突进等级",
-        "infinite_backstep": "无限后撤步"
+        "rush_level": "突进等级"
     },
     "gunlance": {
         "title": "铳枪",
         "shell_level": "炮击等级",
         "infinite_wyvern_fire": "无限龙击炮",
-        "infinite_backstep": "无限后撤步",
         "instant_charge": "立即蓄力",
         "unlimited_ammo": "无限弹药"
     },

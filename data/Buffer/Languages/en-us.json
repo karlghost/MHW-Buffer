@@ -201,14 +201,12 @@
     "lance": {
         "title": "Lance",
         "counter_charge_level": "Counter charge level",
-        "rush_level": "Rush level",
-        "infinite_backstep": "Infinite backstep"
+        "rush_level": "Rush level"
     },
     "gunlance": {
         "title": "Gunlance",
         "shell_level": "Shell level",
         "infinite_wyvern_fire": "Infinite wyvern fire",
-        "infinite_backstep": "Infinite backstep",
         "instant_charge": "Instant charge",
         "unlimited_ammo": "Unlimited ammo"
     },

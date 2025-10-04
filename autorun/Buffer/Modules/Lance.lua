@@ -36,11 +36,6 @@ function Module.init_hooks()
             managed:set_field("_RushLevelTimer", 1.4)
         end
 
-        -- Infinite backstep
-        if Module.data.infinite_backstep then 
-            managed:set_field("_StepCount", 0) 
-        end
-
     end, function(retval) end)
 end
 
