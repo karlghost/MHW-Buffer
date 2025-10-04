@@ -95,7 +95,7 @@ function Module.draw()
             imgui.tree_pop()
         end
 
-        languagePrefix = Module.title .. ".water gun."
+        languagePrefix = Module.title .. ".water_gun."
         if imgui.tree_node(language.get(languagePrefix .. "title")) then
             
             changed, Module.data.water_gun.unlimited_ammo = imgui.checkbox(language.get(languagePrefix .. "unlimited_ammo"), Module.data.water_gun.unlimited_ammo)
