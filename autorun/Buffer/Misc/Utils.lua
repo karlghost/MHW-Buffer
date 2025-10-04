@@ -4,7 +4,7 @@ local soundManager, battleMusicManager
 local chatManager
 local player_manager
 
--- Check if the player is in battle from the sound manager
+-- Check if the player is in battle
 function utils.isInBattle()
     local character = utils.getMasterCharacter()
     if not character then return false end
