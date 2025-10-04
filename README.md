@@ -45,7 +45,8 @@ Buffs, Modifications, and Cheats for weapons and stats.
 - Adjust defence amount
 - Adjust critical rate
 
-**Invincible**  
+**Other**
+- Invincible  
 - Unlimited Sharpness  
 - Unlimited Consumables  
 - Unlimited Slinger Ammo  
@@ -73,7 +74,8 @@ Buffs, Modifications, and Cheats for weapons and stats.
 - Sleep  
 - Sticky  
 - Frozen  
-- Bubble  
+- Bubble
+- HP Reduction
 - All  
 
 </td>
@@ -111,6 +113,10 @@ Buffs, Modifications, and Cheats for weapons and stats.
 
 - **Watergun**
   - Unlimited Ammo 
+
+- **Pictomandy**
+  - Active Pictomancy state
+  - Instant cooldown
 
 </details>
 
@@ -166,7 +172,7 @@ Buffs, Modifications, and Cheats for weapons and stats.
 <summary><strong>Gunlance</strong></summary>
 
 - Instant charge  
-- Free charge shot  
+- Unlimited ammo
 - Shell level  
 - Infinite wyvern fire  
 - Infinite backstep  

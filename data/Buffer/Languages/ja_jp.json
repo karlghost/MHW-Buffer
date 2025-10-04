@@ -43,6 +43,16 @@
         "water gun": {
             "title": "水鉄砲",
             "unlimited_ammo": "弾無限"
+        },
+        "pictomancy": {
+            "title": "Pictomancy*",
+            "state": {
+                "title": "Active Pictomancy state*",
+                "pom": "Pom Motif*",
+                "wing": "Wing Motif*",
+                "mog": "Mog of the ages*"
+            },
+            "instant_cooldown": "Instant cooldown*"
         }
     },
     "character": {
@@ -85,6 +95,7 @@
                 "frenzy": "狂竜症",
                 "frozen": "氷結",
                 "bubble": "泡",
+                "hp_reduction": "HP Reduction*",
                 "all": "すべて"
             }
         },
@@ -198,8 +209,7 @@
         "infinite_wyvern_fire": "竜撃砲無限",
         "infinite_backstep": "無限バックステップ",
         "instant_charge": "即時溜め",
-        "instant_charge_tooltip": "少し溜める必要があります",
-        "free_charge_shot": "チャージショット自由"
+        "unlimited_ammo": "弾無限"
     },
     "bow": {
         "title": "弓",
