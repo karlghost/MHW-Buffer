@@ -146,18 +146,18 @@ end
 --- @param path string The path to the setting (e.g., "character.health").
 --- @return string The formatted name of the setting.
 function helper.get_setting_name_from_path(path)
-    path = utils.split(path, ".")
-    local currentPath = path[1]
-    local title = language.get(currentPath .. ".title")
-    for i = 2, #path, 1 do
-        currentPath = currentPath .. "." .. path[i]
-        if i == #path then
-            title = title .. "/" .. language.get(currentPath)
-        else
-            title = title .. "/" .. language.get(currentPath .. ".title")
-        end
+    local path_parts = utils.split(path, ".")
+    local title_parts = {}
+    
+    for i, part in ipairs(path_parts) do
+        local current_path = table.concat(path_parts, ".", 1, i)
+        local key = (i == #path_parts and type(language.get(current_path)) ~= "table") 
+            and current_path 
+            or current_path .. ".title"
+        table.insert(title_parts, language.get(key))
     end
-    return title
+    
+    return table.concat(title_parts, "/")
 end
 
 -- Draws the popup for adding a new binding
@@ -205,7 +205,11 @@ function helper.draw()
                                     imgui.end_menu()
                                 end
                             else
-                                if imgui.menu_item(language.get(current_path)) then
+                                local label_key = current_path
+                                if not string.find(language.get(current_path .. ".title"), "Invalid Language Key") then
+                                    label_key = current_path .. ".title"
+                                end
+                                if imgui.menu_item(language.get(label_key)) then
                                     helper.popup.path = current_path
                                     helper.popup.value = value
                                 end
