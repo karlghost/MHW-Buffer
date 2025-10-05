@@ -40,19 +40,19 @@
             "instant_drive_gauge": "ドライブゲージ即時溜め",
             "gou_hadoken_max_level": "豪波動拳最大レベル"
         },
-        "water gun": {
+        "water_gun": {
             "title": "水鉄砲",
             "unlimited_ammo": "弾無限"
         },
         "pictomancy": {
-            "title": "Pictomancy*",
+            "title": "Pictomancy(*)",
             "state": {
-                "title": "Active Pictomancy state*",
-                "pom": "Pom Motif*",
-                "wing": "Wing Motif*",
-                "mog": "Mog of the ages*"
+                "title": "Active Pictomancy state(*)",
+                "pom": "Pom Motif(*)",
+                "wing": "Wing Motif(*)",
+                "mog": "Mog of the ages(*)"
             },
-            "instant_cooldown": "Instant cooldown*"
+            "instant_cooldown": "Instant cooldown(*)"
         }
     },
     "character": {
@@ -95,7 +95,7 @@
                 "frenzy": "狂竜症",
                 "frozen": "氷結",
                 "bubble": "泡",
-                "hp_reduction": "HP Reduction*",
+                "hp_reduction": "HP Reduction(*)",
                 "all": "すべて"
             }
         },
@@ -200,14 +200,12 @@
     "lance": {
         "title": "ランス",
         "counter_charge_level": "カウンターチャージレベル",
-        "rush_level": "突進レベル",
-        "infinite_backstep": "無限バックステップ"
+        "rush_level": "突進レベル"
     },
     "gunlance": {
         "title": "ガンランス",
         "shell_level": "砲撃レベル",
         "infinite_wyvern_fire": "竜撃砲無限",
-        "infinite_backstep": "無限バックステップ",
         "instant_charge": "即時溜め",
         "unlimited_ammo": "弾無限"
     },

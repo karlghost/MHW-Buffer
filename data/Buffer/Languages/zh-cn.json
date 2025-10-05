@@ -40,19 +40,19 @@
             "instant_drive_gauge": "即时驱动计量表",
             "gou_hadoken_max_level": "豪波动拳最大等级"
         },
-        "water gun": {
+        "water_gun": {
             "title": "Water Gun(*)",
             "unlimited_ammo": "Unlimited ammo(*)"
         },
         "pictomancy": {
-            "title": "Pictomancy*",
+            "title": "Pictomancy(*)",
             "state": {
-                "title": "Active Pictomancy state*",
-                "pom": "Pom Motif*",
-                "wing": "Wing Motif*",
-                "mog": "Mog of the ages*"
+                "title": "Active Pictomancy state(*)",
+                "pom": "Pom Motif(*)",
+                "wing": "Wing Motif(*)",
+                "mog": "Mog of the ages(*)"
             },
-            "instant_cooldown": "Instant cooldown*"
+            "instant_cooldown": "Instant cooldown(*)"
         }
     },
     "character": {
@@ -95,7 +95,7 @@
                 "frenzy": "狂龙症",
                 "frozen": "冻结",
                 "bubble": "Bubble (*)",
-                "hp_reduction": "HP Reduction*",
+                "hp_reduction": "HP Reduction(*)",
                 "all": "全部 "
             }
         },
@@ -200,14 +200,12 @@
     "lance": {
         "title": "长枪",
         "counter_charge_level": "防御冲锋等级",
-        "rush_level": "突进等级",
-        "infinite_backstep": "无限后撤步"
+        "rush_level": "突进等级"
     },
     "gunlance": {
         "title": "铳枪",
         "shell_level": "炮击等级",
         "infinite_wyvern_fire": "无限龙击炮",
-        "infinite_backstep": "无限后撤步",
         "instant_charge": "立即蓄力",
         "unlimited_ammo": "无限弹药"
     },

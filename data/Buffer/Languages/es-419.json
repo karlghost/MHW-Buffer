@@ -40,19 +40,19 @@
             "instant_drive_gauge": "Indicador Drive Instantáneo",
             "gou_hadoken_max_level": "Gou Hadoken Nivel Máximo"
         },
-        "water gun": {
+        "water_gun": {
             "title": "Water Gun(*)",
             "unlimited_ammo": "Unlimited ammo(*)"
         },
         "pictomancy": {
-            "title": "Pictomancy*",
+            "title": "Pictomancy(*)",
             "state": {
-                "title": "Active Pictomancy state*",
-                "pom": "Pom Motif*",
-                "wing": "Wing Motif*",
-                "mog": "Mog of the ages*"
+                "title": "Active Pictomancy state(*)",
+                "pom": "Pom Motif(*)",
+                "wing": "Wing Motif(*)",
+                "mog": "Mog of the ages(*)"
             },
-            "instant_cooldown": "Instant cooldown*"
+            "instant_cooldown": "Instant cooldown(*)"
         }
     },
     "character": {
@@ -95,7 +95,7 @@
                 "frenzy": "Frenesí",
                 "frozen": "Congelado",
                 "bubble": "Burbuja",
-                "hp_reduction": "HP Reduction*",
+                "hp_reduction": "HP Reduction(*)",
                 "all": "Todas"
             }
         },
@@ -202,14 +202,12 @@
     "lance": {
         "title": "Lanza",
         "counter_charge_level": "Nivel de carga contrataque",
-        "rush_level": "Nivel de embestida",
-        "infinite_backstep": "Retroceso infinito"
+        "rush_level": "Nivel de embestida"
     },
     "gunlance": {
         "title": "Lanza Pistola",
         "shell_level": "Nivel de proyectil",
         "infinite_wyvern_fire": "Fuego wyvern infinito",
-        "infinite_backstep": "Retroceso infinito",
         "instant_charge": "Carga instantánea",
         "unlimited_ammo": "Munición ilimitada"
     },

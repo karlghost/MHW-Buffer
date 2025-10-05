@@ -48,11 +48,6 @@ function Module.init_hooks()
             managed:get_field("_RyuugekiGauge"):set_field("_Value", 2)
         end
 
-        -- Infinite backstep
-        if Module.data.infinite_backstep then 
-            managed:set_field("_StepCount", 0) 
-        end
-
         -- Instant charge
         if Module.data.instant_charge then 
             local max_ammo = ammo:get_LimitAmmo()

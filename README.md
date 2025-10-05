@@ -163,8 +163,7 @@ Buffs, Modifications, and Cheats for weapons and stats.
 <summary><strong>Lance</strong></summary>
 
 - Counter charge level  
-- Rush level  
-- Infinite backstep  
+- Rush level   
 
 </details>
 
@@ -174,8 +173,7 @@ Buffs, Modifications, and Cheats for weapons and stats.
 - Instant charge  
 - Unlimited ammo
 - Shell level  
-- Infinite wyvern fire  
-- Infinite backstep  
+- Infinite wyvern fire
 
 </details>
 
