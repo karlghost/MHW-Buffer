@@ -191,7 +191,8 @@
     },
     "hammer": {
         "title": "ハンマー",
-        "instant_charge": "即時溜め"
+        "charge_level": "Charge level(*)",
+        "super_charge_level": "Super charge level(*)"
     },
     "hunting_horn": {
         "title": "狩猟笛",

@@ -193,7 +193,8 @@
 
     "hammer": {
         "title": "Hammer",
-        "instant_charge": "Sofortige Aufladung"
+        "charge_level": "Charge level(*)",
+        "super_charge_level": "Super charge level(*)"
     },
     "hunting_horn": {
         "title": "Jagdhorn",
