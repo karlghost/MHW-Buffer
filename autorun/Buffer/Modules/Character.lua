@@ -229,7 +229,7 @@ function Module.init_hooks()
         if Module.data.blights_and_conditions.conditions.blast or Module.data.blights_and_conditions.conditions.all then
             local blast = conditions:get_field("_Blast")
             if blast:get_field("_CureAccumerator") > 0 then
-                blast:set_field("_CureAccumerator", 0)
+                blast:forceDeactivate()
             end
         end
         if Module.data.blights_and_conditions.conditions.bleed or Module.data.blights_and_conditions.conditions.all then
@@ -257,25 +257,26 @@ function Module.init_hooks()
         end
         if Module.data.blights_and_conditions.conditions.stun or Module.data.blights_and_conditions.conditions.all then
             local stun = conditions:get_field("_Stun")
-            if stun:get_field("_ReduceTimer") < 6 then -- Maybe a Jewel or skill lowers this - not far enough to know
+            if stun:get_field("_ReduceTimer") < 6 then -- Maybe a Jewel or skill lowers this
                 stun:set_field("_ReduceTimer", 6)
+            end
+            if stun:get_field("_Accumulator") > 0 then
+                stun:set_field("_Accumulator", 0)
             end
         end
         if Module.data.blights_and_conditions.conditions.paralyze or Module.data.blights_and_conditions.conditions.all then
             local paralyze = conditions:get_field("_Paralyze") -- Effect still plays
             if paralyze:get_field("_DurationTime") > 0 then
-                paralyze:set_field("_DurationTime", 0)
-                paralyze:set_field("_IsRestrainted", false)
+                paralyze:cure() -- cure stops more of the animation than forceDeactivate
             end
             if paralyze:get_field("_Accumulator") > 0 then
                 paralyze:set_field("_Accumulator", 0)
             end
         end
         if Module.data.blights_and_conditions.conditions.sleep or Module.data.blights_and_conditions.conditions.all then
-            local sleep = conditions:get_field("_Sleep") -- Effect probably still plays
+            local sleep = conditions:get_field("_Sleep")
             if sleep:get_field("_DurationTime") > 0 then
-                sleep:set_field("_DurationTime", 0)
-                sleep:set_field("_IsRestrainted", false)
+                sleep:forceDeactivate()
             end
         end
         if Module.data.blights_and_conditions.conditions.sticky or Module.data.blights_and_conditions.conditions.all then
@@ -286,10 +287,9 @@ function Module.init_hooks()
             end
         end
         if Module.data.blights_and_conditions.conditions.frozen or Module.data.blights_and_conditions.conditions.all then
-            local frozen = conditions:get_field("_Frozen") -- Effect still plays
+            local frozen = conditions:get_field("_Frozen") -- Effect still partially plays
             if frozen:get_field("_DurationTime") > 0 then
-                frozen:set_field("_DurationTime", 0)
-                frozen:set_field("_IsRestrainted", false)
+                frozen:cure()
             end
             if frozen:get_field("_Accumulator") > 0 then
                 frozen:set_field("_Accumulator", 0)
