@@ -193,7 +193,8 @@
 
     "hammer": {
         "title": "大錘",
-        "instant_charge": "瞬間續力"
+        "charge_level": "Charge level(*)",
+        "super_charge_level": "Super charge level(*)"
     },
     "hunting_horn": {
         "title": "狩獵笛",

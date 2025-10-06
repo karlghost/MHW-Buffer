@@ -217,31 +217,31 @@ function Module.init_hooks()
         if Module.data.blights_and_conditions.conditions.poison or Module.data.blights_and_conditions.conditions.all then
             local poison = conditions:get_field("_Poison")
             if poison:get_field("_DurationTimer") > 0 then
-                poison:set_field("_DurationTimer", 0)
+                poison:forceDeactivate()
             end
         end
         if Module.data.blights_and_conditions.conditions.stench or Module.data.blights_and_conditions.conditions.all then
             local stench = conditions:get_field("_Stench")
             if stench:get_field("_DurationTimer") > 0 then
-                stench:set_field("_DurationTimer", 0)
+                stench:forceDeactivate()
             end
         end
         if Module.data.blights_and_conditions.conditions.blast or Module.data.blights_and_conditions.conditions.all then
             local blast = conditions:get_field("_Blast")
             if blast:get_field("_CureAccumerator") > 0 then
-                blast:set_field("_CureAccumerator", 0)
+                blast:forceDeactivate()
             end
         end
         if Module.data.blights_and_conditions.conditions.bleed or Module.data.blights_and_conditions.conditions.all then
             local bleed = conditions:get_field("_Bleed")
             if bleed:get_field("_CureTimer") > 0 then
-                bleed:set_field("_CureTimer", 0)
+                bleed:forceDeactivate()
             end
         end
         if Module.data.blights_and_conditions.conditions.defense_down or Module.data.blights_and_conditions.conditions.all then
             local def_Down = conditions:get_field("_DefDown")
             if def_Down:get_field("_DurationTimer") > 0 then
-                def_Down:set_field("_DurationTimer", 0)
+                def_Down:forceDeactivate()
             end
         end
         if Module.data.blights_and_conditions.conditions.frenzy or Module.data.blights_and_conditions.conditions.all then -- Not far enough into story to know, will probably affect armor buff
@@ -254,31 +254,29 @@ function Module.init_hooks()
             if frenzy:get_field("_State") == 1 and frenzy:get_field("_DurationTimer") > 1.0 then
                 frenzy:set_field("_DurationTimer", 0.2)
             end
-           
-
-            frenzy:set_field("_IsImmune", true)
         end
         if Module.data.blights_and_conditions.conditions.stun or Module.data.blights_and_conditions.conditions.all then
             local stun = conditions:get_field("_Stun")
-            if stun:get_field("_ReduceTimer") < 6 then -- Maybe a Jewel or skill lowers this - not far enough to know
+            if stun:get_field("_ReduceTimer") < 6 then -- Maybe a Jewel or skill lowers this
                 stun:set_field("_ReduceTimer", 6)
+            end
+            if stun:get_field("_Accumulator") > 0 then
+                stun:set_field("_Accumulator", 0)
             end
         end
         if Module.data.blights_and_conditions.conditions.paralyze or Module.data.blights_and_conditions.conditions.all then
             local paralyze = conditions:get_field("_Paralyze") -- Effect still plays
             if paralyze:get_field("_DurationTime") > 0 then
-                paralyze:set_field("_DurationTime", 0)
-                paralyze:set_field("_IsRestrainted", false)
+                paralyze:cure() -- cure stops more of the animation than forceDeactivate
             end
             if paralyze:get_field("_Accumulator") > 0 then
                 paralyze:set_field("_Accumulator", 0)
             end
         end
         if Module.data.blights_and_conditions.conditions.sleep or Module.data.blights_and_conditions.conditions.all then
-            local sleep = conditions:get_field("_Sleep") -- Effect probably still plays
+            local sleep = conditions:get_field("_Sleep")
             if sleep:get_field("_DurationTime") > 0 then
-                sleep:set_field("_DurationTime", 0)
-                sleep:set_field("_IsRestrainted", false)
+                sleep:forceDeactivate()
             end
         end
         if Module.data.blights_and_conditions.conditions.sticky or Module.data.blights_and_conditions.conditions.all then
@@ -289,10 +287,9 @@ function Module.init_hooks()
             end
         end
         if Module.data.blights_and_conditions.conditions.frozen or Module.data.blights_and_conditions.conditions.all then
-            local frozen = conditions:get_field("_Frozen") -- Effect still plays
+            local frozen = conditions:get_field("_Frozen") -- Effect still partially plays
             if frozen:get_field("_DurationTime") > 0 then
-                frozen:set_field("_DurationTime", 0)
-                frozen:set_field("_IsRestrainted", false)
+                frozen:cure()
             end
             if frozen:get_field("_Accumulator") > 0 then
                 frozen:set_field("_Accumulator", 0)
@@ -301,15 +298,13 @@ function Module.init_hooks()
         if Module.data.blights_and_conditions.conditions.bubble or Module.data.blights_and_conditions.conditions.all then
             local bubble = conditions:get_field("_Ex00") 
             if bubble:get_field("_DurationTimer") > 0 then -- Uses _DurationTimer instead of _DurationTime like the other conditions
-                bubble:set_field("_DurationTimer", 0)
-                bubble:set_field("_Type", 0)
+                bubble:forceDeactivate()
             end
         end
-
         if Module.data.blights_and_conditions.conditions.hp_reduction or Module.data.blights_and_conditions.conditions.all then
             local hp_reduction = conditions:get_field("_Ex01")
             if hp_reduction:get_field("_DurationTimer") > 0 then
-                hp_reduction:set_field("_DurationTimer", 0)
+                hp_reduction:forceDeactivate()
             end
         end
 
@@ -317,31 +312,31 @@ function Module.init_hooks()
         if Module.data.blights_and_conditions.blights.fire or Module.data.blights_and_conditions.blights.all then
             local fire = conditions:get_field("_Fire")
             if fire:get_field("_DurationTimer") > 0 then
-                fire:set_field("_DurationTimer", 0)
+                fire:forceDeactivate()
             end
         end
         if Module.data.blights_and_conditions.blights.thunder or Module.data.blights_and_conditions.blights.all then
             local electric = conditions:get_field("_Elec")
             if electric:get_field("_DurationTimer") > 0 then
-                electric:set_field("_DurationTimer", 0)
+                electric:forceDeactivate()
             end
         end
         if Module.data.blights_and_conditions.blights.water or Module.data.blights_and_conditions.blights.all then
             local water = conditions:get_field("_Water")
             if water:get_field("_DurationTimer") > 0 then
-                water:set_field("_DurationTimer", 0)
+                water:forceDeactivate()
             end
         end
         if Module.data.blights_and_conditions.blights.ice or Module.data.blights_and_conditions.blights.all then
             local ice = conditions:get_field("_Ice")
             if ice:get_field("_DurationTimer") > 0 then
-                ice:set_field("_DurationTimer", 0)
+                ice:forceDeactivate()
             end
         end
         if Module.data.blights_and_conditions.blights.dragon or Module.data.blights_and_conditions.blights.all then
             local dragon = conditions:get_field("_Dragon")
             if dragon:get_field("_DurationTimer") > 0 then
-                dragon:set_field("_DurationTimer", 0)
+                dragon:forceDeactivate()
             end
         end
         

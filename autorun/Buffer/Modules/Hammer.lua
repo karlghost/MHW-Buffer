@@ -2,7 +2,8 @@ local utils, config, language
 local Module = {
     title = "hammer",
     data = {
-        instant_charge = false,
+        charge_level = -1,
+        super_charge_level = -1,
     }
 }
 
@@ -23,10 +24,15 @@ function Module.init_hooks()
         if not managed:get_Hunter() then return end
         if not managed:get_Hunter():get_IsMaster() then return end
 
-        -- Instant charge
-        if Module.data.instant_charge then 
-            managed:set_field("_ChargeTimer", 3) 
-        end
+       -- Charge level
+       if Module.data.charge_level >= 0 then
+            managed:set_field("<ChargeLvl>k__BackingField", Module.data.charge_level)
+       end
+
+         -- Super charge level
+       if Module.data.super_charge_level >= 0 then
+            managed:set_field("<SuperChargeLvl>k__BackingField", Module.data.super_charge_level)
+       end
 
     end, function(retval) end)
 end
@@ -38,8 +44,11 @@ function Module.draw()
 
     if imgui.collapsing_header(language.get(languagePrefix .. "title")) then
         imgui.indent(10)
-       
-        changed, Module.data.instant_charge = imgui.checkbox(language.get(languagePrefix .. "instant_charge"), Module.data.instant_charge)
+
+        changed, Module.data.charge_level = imgui.slider_int(language.get(languagePrefix .. "charge_level"), Module.data.charge_level, -1, 3, Module.data.charge_level == -1 and language.get("base.disabled") or "%d")
+        any_changed = any_changed or changed
+
+        changed, Module.data.super_charge_level = imgui.slider_int(language.get(languagePrefix .. "super_charge_level"), Module.data.super_charge_level, -1, 3, Module.data.super_charge_level == -1 and language.get("base.disabled") or "%d")
         any_changed = any_changed or changed
 
         if any_changed then config.save_section(Module.create_config_section()) end
