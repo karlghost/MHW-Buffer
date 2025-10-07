@@ -1,4 +1,4 @@
-local version = "0.1.7"
+local version = "0.1.8"
 
 local isWindowOpen, wasOpen = false, false
 
@@ -223,7 +223,7 @@ re.on_draw_ui(function()
                 imgui.spacing()
                 imgui.end_menu()
             end
-            
+
             if imgui.begin_menu(language.get(languagePrefix .. "about")) then
                 imgui.spacing()
                 imgui.text("   " .. language.get(languagePrefix .. "author") .. ": Bimmr   ")
