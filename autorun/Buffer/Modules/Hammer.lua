@@ -26,12 +26,12 @@ function Module.init_hooks()
 
        -- Charge level
        if Module.data.charge_level >= 0 then
-            managed:set_field("<ChargeLvl>k__BackingField", Module.data.charge_level)
+            managed:set_field("<ChargeLv>k__BackingField", Module.data.charge_level)
        end
 
          -- Super charge level
        if Module.data.super_charge_level >= 0 then
-            managed:set_field("<SuperChargeLvl>k__BackingField", Module.data.super_charge_level)
+            managed:set_field("<SuperChargeLv>k__BackingField", Module.data.super_charge_level)
        end
 
     end, function(retval) end)
