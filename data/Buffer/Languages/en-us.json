@@ -10,10 +10,8 @@
         "author": "Author",
         "translator": "Translator",
         "version": "Version",
-        "options": {
-            "title": "Options",
-            "disable_all": "Disable all"
-        },
+        "options": "Options",
+        "disable_all": "Disable all",
         "bindings": {
             "title": "Bindings",
             "keyboard": "Keyboard",

@@ -199,8 +199,7 @@ re.on_draw_ui(function()
                 imgui.end_menu()
             end
 
-            languagePrefix = "window.options."
-            if imgui.begin_menu(language.get(languagePrefix .. "title")) then
+            if imgui.begin_menu(language.get(languagePrefix .. "options")) then
                 imgui.spacing()
                 if imgui.menu_item("   " .. language.get(languagePrefix .. "disable_all"), "", false, true) then
 
@@ -224,7 +223,7 @@ re.on_draw_ui(function()
                 imgui.spacing()
                 imgui.end_menu()
             end
-            languagePrefix = "window."
+            
             if imgui.begin_menu(language.get(languagePrefix .. "about")) then
                 imgui.spacing()
                 imgui.text("   " .. language.get(languagePrefix .. "author") .. ": Bimmr   ")

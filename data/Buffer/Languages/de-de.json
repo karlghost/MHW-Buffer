@@ -12,6 +12,8 @@
         "author": "Autor",
         "translator": "Üebersetzer",
         "version": "Version",
+        "options": "Optionen",
+        "disable_all": "Alle deaktivieren",
         "bindings": {
             "title": "Belegung",
             "keyboard": "Tastatur",

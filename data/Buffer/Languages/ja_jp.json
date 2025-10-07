@@ -12,6 +12,8 @@
         "author": "作者",
         "translator": "翻訳者",
         "version": "バージョン",
+        "options": "オプション",
+        "disable_all": "すべて無効化",
         "bindings": {
             "title": "キー設定",
             "keyboard": "キーボード",
