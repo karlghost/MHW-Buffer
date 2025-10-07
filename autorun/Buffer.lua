@@ -168,7 +168,6 @@ re.on_draw_ui(function()
                     imgui.end_menu()
                 end
                 
-
                 imgui.spacing()
                 imgui.end_menu()
             end
@@ -200,6 +199,32 @@ re.on_draw_ui(function()
                 imgui.end_menu()
             end
 
+            languagePrefix = "window.options."
+            if imgui.begin_menu(language.get(languagePrefix .. "title")) then
+                imgui.spacing()
+                if imgui.menu_item("   " .. language.get(languagePrefix .. "disable_all"), "", false, true) then
+
+                    function disable_all(data_layer)
+                        for key, value in pairs(data_layer) do
+                            if type(value) == "boolean" then
+                                data_layer[key] = false
+                            elseif type(value) == "number" then
+                                data_layer[key] = -1
+                            elseif type(value) == "table" then
+                                disable_all(value)
+                            end
+                        end
+                    end
+
+                    for _, module in pairs(modules) do 
+                        disable_all(module.data)
+                        config.save_section(module.create_config_section())
+                    end
+                end
+                imgui.spacing()
+                imgui.end_menu()
+            end
+            languagePrefix = "window."
             if imgui.begin_menu(language.get(languagePrefix .. "about")) then
                 imgui.spacing()
                 imgui.text("   " .. language.get(languagePrefix .. "author") .. ": Bimmr   ")
