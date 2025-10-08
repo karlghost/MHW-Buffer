@@ -12,6 +12,8 @@
         "author": "作者",
         "translator": "译者",
         "version": "版本",
+        "options": "选项",
+        "disable_all": "禁用所有",
         "bindings": {
             "title": "快捷键",
             "keyboard": "键盘",
