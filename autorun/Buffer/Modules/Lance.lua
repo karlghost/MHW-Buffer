@@ -53,9 +53,6 @@ function Module.draw()
         changed, Module.data.rush_level = imgui.slider_int(language.get(languagePrefix .. "rush_level"), Module.data.rush_level, -1, 1, Module.data.rush_level == -1 and language.get("base.disabled") or "%d")
         any_changed = any_changed or changed
 
-        changed, Module.data.infinite_backstep = imgui.checkbox(language.get(languagePrefix .. "infinite_backstep"), Module.data.infinite_backstep)
-        any_changed = any_changed or changed
-
         if any_changed then config.save_section(Module.create_config_section()) end
         imgui.unindent(10)
         imgui.separator()
