@@ -153,7 +153,7 @@
         "title": "Gran Espada",
         "true_charge_boost": "Impulso de carga verdadera",
         "true_charge_boost_tooltip": "Golpe inicial con bonificación de carga verdadera",
-        "instant_charge": "Carga instantánea"
+        "charge_level": "Charge level(*)"
     },
     "sword_and_shield": {
         "title": "Espada y Escudo"

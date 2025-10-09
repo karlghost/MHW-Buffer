@@ -152,7 +152,7 @@
         "title": "大剣",
         "true_charge_boost": "真・溜め斬り強化",
         "true_charge_boost_tooltip": "真・溜め斬りの初撃ダメージ増加",
-        "instant_charge": "即時溜め"
+        "charge_level": "Charge level(*)"
     },
     "sword_and_shield": {
         "title": "片手剣"
