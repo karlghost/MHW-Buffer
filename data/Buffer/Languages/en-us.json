@@ -151,7 +151,7 @@
         "title": "Great Sword",
         "true_charge_boost": "True Charge boost",
         "true_charge_boost_tooltip": "Inital hit of true charge bonus",
-        "instant_charge": "Instant charge"
+        "charge_level": "Charge level"
     },
     "sword_and_shield": {
         "title": "Sword & Shield"

@@ -153,7 +153,7 @@
         "title": "大劍",
         "true_charge_boost": "真蓄力提升",
         "true_charge_boost_tooltip": "真蓄力初始命中加成",
-        "instant_charge": "瞬間續力"
+        "charge_level": "Charge level(*)"
     },
     "sword_and_shield": {
         "title": "單手劍"

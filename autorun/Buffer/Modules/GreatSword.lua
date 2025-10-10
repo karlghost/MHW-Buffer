@@ -3,7 +3,7 @@ local Module = {
     title = "great_sword",
     data = {
         true_charge_boost = false,
-        instant_charge = false
+        charge_level = -1,
     }
 }
 
@@ -28,11 +28,10 @@ function Module.init_hooks()
         if Module.data.true_charge_boost then 
             managed:set_field("_IsSpiritSlashEnhanced", true) 
         end
-       
-        -- Instant charge
-        if Module.data.instant_charge then 
-            managed:set_field("_ChargeTimer", 3)
-            managed:set_field("_ChargeLevel", 3)
+
+        -- Charge level
+        if Module.data.charge_level >= 0 and managed:get_field("_ChargeTimer") > 0 then
+            managed:set_field("_ChargeLevel", Module.data.charge_level)
         end
 
     end, function(retval) end)
@@ -50,7 +49,7 @@ function Module.draw()
         utils.tooltip(language.get(languagePrefix .. "true_charge_boost_tooltip"))
         any_changed = any_changed or changed
 
-        changed, Module.data.instant_charge = imgui.checkbox(language.get(languagePrefix .. "instant_charge"), Module.data.instant_charge)
+        changed, Module.data.charge_level = imgui.slider_int(language.get(languagePrefix .. "charge_level"), Module.data.charge_level, -1, 3, Module.data.charge_level == -1 and language.get("base.disabled") or "%d")
         any_changed = any_changed or changed       
 
         if any_changed then config.save_section(Module.create_config_section()) end

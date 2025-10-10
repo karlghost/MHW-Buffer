@@ -84,9 +84,6 @@ function Module.draw()
         
         changed, Module.data.infinite_wyvern_fire = imgui.checkbox(language.get(languagePrefix .. "infinite_wyvern_fire"), Module.data.infinite_wyvern_fire)
         any_changed = any_changed or changed
-
-        changed, Module.data.infinite_backstep = imgui.checkbox(language.get(languagePrefix .. "infinite_backstep"), Module.data.infinite_backstep)
-        any_changed = any_changed or changed
         
         if any_changed then config.save_section(Module.create_config_section()) end
         imgui.unindent(10)

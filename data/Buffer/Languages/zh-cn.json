@@ -152,7 +152,7 @@
         "title": "大剑",
         "true_charge_boost": "真蓄力强化",
         "true_charge_boost_tooltip": "真蓄力斩首次命中加成",
-        "instant_charge": "立即蓄力"
+        "charge_level": "Charge level(*)"
     },
     "sword_and_shield": {
         "title": "剑盾"

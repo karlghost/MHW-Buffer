@@ -25,13 +25,13 @@ function Module.init_hooks()
         if not managed:get_Hunter():get_IsMaster() then return end
 
        -- Charge level
-       if Module.data.charge_level >= 0 then
-            managed:set_field("<ChargeLv>k__BackingField", Module.data.charge_level)
+       if Module.data.charge_level >= 0 and managed:get_field("_ChargeTimer") > 0 then
+            managed:set_field("<ChargeLv>k__BackingField", Module.data.charge_level + 1)
        end
 
          -- Super charge level
-       if Module.data.super_charge_level >= 0 then
-            managed:set_field("<SuperChargeLv>k__BackingField", Module.data.super_charge_level)
+       if Module.data.super_charge_level >= 0 and managed:get_field("_SuperChargeTimer") > 0 then
+            managed:set_field("<SuperChargeLv>k__BackingField", Module.data.super_charge_level + 1)
        end
 
     end, function(retval) end)
@@ -45,10 +45,10 @@ function Module.draw()
     if imgui.collapsing_header(language.get(languagePrefix .. "title")) then
         imgui.indent(10)
 
-        changed, Module.data.charge_level = imgui.slider_int(language.get(languagePrefix .. "charge_level"), Module.data.charge_level, -1, 3, Module.data.charge_level == -1 and language.get("base.disabled") or "%d")
+        changed, Module.data.charge_level = imgui.slider_int(language.get(languagePrefix .. "charge_level"), Module.data.charge_level, -1, 2, Module.data.charge_level == -1 and language.get("base.disabled") or tostring(Module.data.charge_level + 1))
         any_changed = any_changed or changed
 
-        changed, Module.data.super_charge_level = imgui.slider_int(language.get(languagePrefix .. "super_charge_level"), Module.data.super_charge_level, -1, 3, Module.data.super_charge_level == -1 and language.get("base.disabled") or "%d")
+        changed, Module.data.super_charge_level = imgui.slider_int(language.get(languagePrefix .. "super_charge_level"), Module.data.super_charge_level, -1, 2, Module.data.super_charge_level == -1 and language.get("base.disabled") or tostring(Module.data.super_charge_level + 1))
         any_changed = any_changed or changed
 
         if any_changed then config.save_section(Module.create_config_section()) end
