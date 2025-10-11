@@ -152,7 +152,8 @@
         "title": "大剣",
         "true_charge_boost": "真・溜め斬り強化",
         "true_charge_boost_tooltip": "真・溜め斬りの初撃ダメージ増加",
-        "charge_level": "Charge level(*)"
+        "charge_level": "Charge level(*)",
+        "instant_charge": "即時溜め"
     },
     "sword_and_shield": {
         "title": "片手剣"
@@ -194,7 +195,8 @@
     "hammer": {
         "title": "ハンマー",
         "charge_level": "Charge level(*)",
-        "super_charge_level": "Super charge level(*)"
+        "super_charge_level": "Super charge level(*)",
+        "instant_charge": "即時溜め"
     },
     "hunting_horn": {
         "title": "狩猟笛",

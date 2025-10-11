@@ -151,7 +151,8 @@
         "title": "Great Sword",
         "true_charge_boost": "True Charge boost",
         "true_charge_boost_tooltip": "Inital hit of true charge bonus",
-        "charge_level": "Charge level"
+        "charge_level": "Charge level",
+        "instant_charge": "Instant charge"
     },
     "sword_and_shield": {
         "title": "Sword & Shield"
@@ -194,7 +195,8 @@
     "hammer": {
         "title": "Hammer",
         "charge_level": "Charge level",
-        "super_charge_level": "Super charge level"
+        "super_charge_level": "Super charge level",
+        "instant_charge": "Instant charge"
     },
     "hunting_horn": {
         "title": "Hunting Horn",

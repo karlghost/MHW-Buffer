@@ -152,7 +152,8 @@
         "title": "大剑",
         "true_charge_boost": "真蓄力强化",
         "true_charge_boost_tooltip": "真蓄力斩首次命中加成",
-        "charge_level": "Charge level(*)"
+        "charge_level": "Charge level(*)",
+        "instant_charge": "立即蓄力"
     },
     "sword_and_shield": {
         "title": "剑盾"
@@ -194,7 +195,8 @@
     "hammer": {
         "title": "锤子",
         "charge_level": "Charge level(*)",
-        "super_charge_level": "Super charge level(*)"
+        "super_charge_level": "Super charge level(*)",
+        "instant_charge": "立即蓄力"
     },
     "hunting_horn": {
         "title": "狩猎笛",
