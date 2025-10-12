@@ -1,6 +1,5 @@
 local utils = {}
 
-local soundManager, battleMusicManager
 local chatManager
 local player_manager
 
