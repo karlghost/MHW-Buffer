@@ -177,7 +177,7 @@ re.on_draw_ui(function()
                 if imgui.begin_menu("   " .. language.get(languagePrefix .. "language")) then
                     imgui.spacing()
                     for _, lang in pairs(language.sorted) do
-                        if imgui.menu_item("   " .. lang .. "   ", "", lang == language.current, lang ~= language.current) then language.change(lang) end
+                        if imgui.menu_item("   " .. language.getLanguageName(lang) .. "   ", "", lang == language.current, lang ~= language.current) then language.change(lang) end
                     end
                     imgui.spacing()
                     imgui.end_menu()

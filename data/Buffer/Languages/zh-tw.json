@@ -1,6 +1,7 @@
 {
-    "_USE_FONT": "NotoSansSC-Regular.otf",
     "_TRANSLATOR": "Paver",
+    "_LANGUAGE_NAME": "繁體中文 (TW)",
+    
     "window": {
         "toggle_button": "開關增益 GUI",
         "title": "修改器和設置",
