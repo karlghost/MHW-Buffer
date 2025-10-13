@@ -4,6 +4,7 @@ local Module = {
     data = {
         charge_level = -1,
         super_charge_level = -1,
+        instant_charge = false,
     }
 }
 
@@ -34,6 +35,11 @@ function Module.init_hooks()
             managed:set_field("<SuperChargeLv>k__BackingField", Module.data.super_charge_level + 1)
        end
 
+       -- Instant charge
+        if Module.data.instant_charge then 
+            managed:set_field("_ChargeTimer", 3) 
+        end
+
     end, function(retval) end)
 end
 
@@ -49,6 +55,9 @@ function Module.draw()
         any_changed = any_changed or changed
 
         changed, Module.data.super_charge_level = imgui.slider_int(language.get(languagePrefix .. "super_charge_level"), Module.data.super_charge_level, -1, 2, Module.data.super_charge_level == -1 and language.get("base.disabled") or tostring(Module.data.super_charge_level + 1))
+        any_changed = any_changed or changed
+
+        changed, Module.data.instant_charge = imgui.checkbox(language.get(languagePrefix .. "instant_charge"), Module.data.instant_charge)
         any_changed = any_changed or changed
 
         if any_changed then config.save_section(Module.create_config_section()) end

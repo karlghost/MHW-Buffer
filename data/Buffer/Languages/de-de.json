@@ -1,5 +1,6 @@
 {
     "_TRANSLATOR": "SlikerDev",
+    "_LANGUAGE_NAME": "Deutsch (DE)",
 
     "window": {
         "toggle_button": "Umschalten Buffer GUI",
@@ -153,7 +154,8 @@
         "title": "Grossschwert",
         "true_charge_boost": "Echter Ladungsboost",
         "true_charge_boost_tooltip": "Anfaenglicher Bonus fuer echte Aufladung",
-        "charge_level": "Charge level(*)"
+        "charge_level": "Charge level(*)",
+        "instant_charge": "Sofortige Aufladung"
     },
     "sword_and_shield": {
         "title": "Schwert & Schild"
@@ -196,7 +198,8 @@
     "hammer": {
         "title": "Hammer",
         "charge_level": "Charge level(*)",
-        "super_charge_level": "Super charge level(*)"
+        "super_charge_level": "Super charge level(*)",
+        "instant_charge": "Sofortige Aufladung"
     },
     "hunting_horn": {
         "title": "Jagdhorn",
