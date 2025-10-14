@@ -69,6 +69,7 @@ local Module = {
         unlimited_sharpness = false,
         unlimited_consumables = false,
         unlimited_slingers = false,
+        unlimited_meal_timer = false,
     },
     old = {
         stats = {}
@@ -143,10 +144,7 @@ function Module.init()
     Module.init_hooks()
 end
 
-function Module.init_hooks()
-
-    
-    
+function Module.init_hooks() 
 
     sdk.hook(sdk.find_type_definition("app.cHunterStatus"):get_method("update"), function(args)
         local managed = sdk.to_managed_object(args[2])
@@ -173,8 +171,8 @@ function Module.init_hooks()
             end
         end
 
-        if hunter_meal_effect ~= nil then
-            if Module.data.health.max then
+        if Module.data.health.max then
+            if hunter_meal_effect ~= nil then
                 if hunter_meal_effect:get_field("_IsEffectActive") ~= true then
                     hunter_meal_effect:set_field("_IsEffectActive", true)
                 end
@@ -199,6 +197,15 @@ function Module.init_hooks()
                 end
                 if stamina:get_MaxStamina() < 150 then
                     stamina:set_field("_RequestAddMaxStamina", 1)
+                end
+            end
+        end
+
+        -- Meal Timer
+        if Module.data.unlimited_meal_timer then
+            if hunter_meal_effect ~= nil then
+                if hunter_meal_effect:get_field("_IsTimerActive") then
+                    hunter_meal_effect:set_field("_DurationTimer", hunter_meal_effect:get_field("_TimerMax"))
                 end
             end
         end
@@ -574,6 +581,9 @@ function Module.draw()
         any_changed = any_changed or changed
         
         changed, Module.data.unlimited_slingers = imgui.checkbox(language.get(languagePrefix .. "unlimited_slingers"), Module.data.unlimited_slingers)
+        any_changed = any_changed or changed
+
+        changed, Module.data.unlimited_meal_timer = imgui.checkbox(language.get(languagePrefix .. "unlimited_meal_timer"), Module.data.unlimited_meal_timer)
         any_changed = any_changed or changed
             
         if any_changed then config.save_section(Module.create_config_section()) end

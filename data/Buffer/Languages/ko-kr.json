@@ -147,7 +147,8 @@
         "invincible_tooltip": "공격 피해, 움츠리기, 움찔, 상태 이상을 받지 않습니다.",
         "unlimited_sharpness": "예리도 무한",
         "unlimited_consumables": "소비 아이템 무한",
-        "unlimited_slingers": "슬링어 탄약 무한"
+        "unlimited_slingers": "슬링어 탄약 무한",
+        "unlimited_meal_timer": "Unlimited Meal Timer(*)"
     },
     "great_sword": {
         "title": "대검",
