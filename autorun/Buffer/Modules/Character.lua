@@ -74,19 +74,46 @@ local Module = {
         stats = {}
     }
 }
+--- Updates a float field in a managed object, caching the original value.
+--- @param key Unique identifier for caching the original value.
+--- @param field_name Name of the field to update.
+--- @param field_container Object containing the field to modify.
+--- @param new_value Value to add to the field (or reset if negative).
+--- @param is_override If true, sets the field to new_value directly; if false, adds new_value to the original.
+local function updateDahliaFloatBox(key, field_name, managed, new_value, is_override)
+    -- Initialize storage
+    Module.old = Module.old or {}
+    Module.old[key] = Module.old[key] or {}
+    
+    -- Cache the field reference
+    local field = managed:get_field(field_name)
 
-local function updateDahliaFloatBox(key, field_name, managed, new_value)
-    if Module.old == nil then Module.old = {} end
-    if Module.old[key] == nil then Module.old[key] = {} end
-    if new_value >= 0 then 
-        if Module.old[key][field_name] == nil then 
-            Module.old[key][field_name] = managed:get_field(field_name):read()
+    -- Determine if this is a reset/disabled case. If is_override then disable if new_value == -1 otherwise disable if new_value == 0
+    local is_disabled = is_override and (new_value < 0) or (not is_override and new_value == 0)
+    
+    -- Handle reset case
+    if is_disabled then
+        local original = Module.old[key][field_name]
+        if original ~= nil then
+            field:write(original + 0.0)
+            Module.old[key][field_name] = nil
         end
-        managed:get_field(field_name):write(new_value+0.0) 
-    elseif Module.old[key][field_name] ~= nil then
-        managed:get_field(field_name):write(Module.old[key][field_name]+0.0)
-        Module.old[key][field_name] = nil
-    end 
+        return
+    end
+    
+    -- Handle update case (non-disabled value)
+    -- Store original value if not already stored
+    if Module.old[key][field_name] == nil then
+        Module.old[key][field_name] = field:read()
+    end
+    
+    -- Apply the modification
+    local original_value = Module.old[key][field_name]
+    if is_override then
+        field:write(new_value + 0.0)
+    else
+        field:write(original_value + new_value + 0.0)
+    end
 end
 
 function Module.init()
@@ -340,9 +367,9 @@ function Module.init_hooks()
             end
         end
         
-        updateDahliaFloatBox("bonus_attack", "_WeaponAttackPower", managed:get_AttackPower(), Module.data.stats.bonus_attack)
-        updateDahliaFloatBox("bonus_defence", "_OriginalArmorDefencePower", managed:get_DefencePower(), Module.data.stats.bonus_defence)
-        updateDahliaFloatBox("critical_chance", "_OriginalCritical", managed:get_CriticalRate(), Module.data.stats.critical_chance)
+        updateDahliaFloatBox("bonus_attack", "_WeaponAttackPower", managed:get_AttackPower(), Module.data.stats.bonus_attack, false)
+        updateDahliaFloatBox("bonus_defence", "_OriginalArmorDefencePower", managed:get_DefencePower(), Module.data.stats.bonus_defence, false)
+        updateDahliaFloatBox("critical_chance", "_OriginalCritical", managed:get_CriticalRate(), Module.data.stats.critical_chance, true)
 
         if Module.data.stats.element ~= -1 then
             local attack_power = managed:get_field("_AttackPower")
@@ -677,10 +704,10 @@ function Module.draw()
         languagePrefix = Module.title .. ".stats."
         if imgui.tree_node(language.get(languagePrefix .. "title")) then
 
-            changed, Module.data.stats.bonus_attack = imgui.slider_int(language.get(languagePrefix .. "bonus_attack"), Module.data.stats.bonus_attack, -1, 5000, Module.data.stats.bonus_attack == -1 and language.get("base.disabled") or "%d")
+            changed, Module.data.stats.bonus_attack = imgui.drag_int(language.get(languagePrefix .. "bonus_attack"), Module.data.stats.bonus_attack, 1, 0, 5000, Module.data.stats.bonus_attack <= 0 and language.get("base.disabled") or "%d")
             any_changed = any_changed or changed
 
-            changed, Module.data.stats.bonus_defence = imgui.slider_int(language.get(languagePrefix .. "bonus_defence"), Module.data.stats.bonus_defence, -1, 5000, Module.data.stats.bonus_defence == -1 and language.get("base.disabled") or "%d")
+            changed, Module.data.stats.bonus_defence = imgui.drag_int(language.get(languagePrefix .. "bonus_defence"), Module.data.stats.bonus_defence, 1, 0, 5000, Module.data.stats.bonus_defence <= 0 and language.get("base.disabled") or "%d")
             any_changed = any_changed or changed
 
             changed, Module.data.stats.critical_chance = imgui.slider_int(language.get(languagePrefix .. "critical_chance"), Module.data.stats.critical_chance, -1, 100, Module.data.stats.critical_chance == -1 and language.get("base.disabled") or "%d%%")
