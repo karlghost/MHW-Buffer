@@ -10,7 +10,7 @@ local Module = {
             unlimited_ammo = false,
         },
         pictomancy = {
-            state = -1, -- 0 = Pom Motif, 2 = Wing Motif, 4 = Mog of the ages
+            state = -1,
             instant_cooldown = false,
         }
     }
@@ -67,7 +67,7 @@ function Module.init_hooks()
 
             -- Only set if different or if a multiple of 2 (0, 2, 4)
             if current_state % 2 ~= 0 or current_state ~= Module.data.pictomancy.state * 2 then
-                pictomancy:set_field("<PictPhase>k__BackingField", Module.data.pictomancy.state * 2) -- x2 because in-game values are 0, 2, 4
+                pictomancy:set_field("<PictPhase>k__BackingField", Module.data.pictomancy.state * 2) -- x2 because in-game values are: 0 = Pom Motif, 2 = Wing Motif, 4 = Mog of the ages
             end
         end
 
