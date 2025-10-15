@@ -80,8 +80,9 @@ re.on_draw_ui(function()
     if isWindowOpen then
         wasOpen = true
 
-        imgui.push_style_var(3, 7.5) -- Rounded window
-        imgui.push_style_var(12, 5.0) -- Rounded elements
+        imgui.push_style_var(imgui.ImGuiStyleVar.WindowRounding, 7.5) -- Rounded window
+        imgui.push_style_var(imgui.ImGuiStyleVar.FrameRounding, 5.0) -- Rounded elements
+        imgui.push_style_var(imgui.ImGuiStyleVar.Alpha, 0.9) -- Window transparency
 
         imgui.set_next_window_size(Vector2f.new(520, 450), 4)
 
@@ -246,7 +247,7 @@ re.on_draw_ui(function()
 
         imgui.spacing()
         imgui.end_window()
-        imgui.pop_style_var(2)
+        imgui.pop_style_var(3)
 
         -- If the window is closed, but was just open. 
         -- This is needed because of the close icon on the window not triggering a save to the config

@@ -31,7 +31,6 @@ local function reset_arrow_types(weapon)
     Module.old.bottle_infos = nil
 end
 
-local tetrad_shot_active = false
 function Module.init_hooks()
 
     -- Watch for weapon changes, need to re-apply the default arrow types 
