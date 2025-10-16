@@ -46,13 +46,13 @@ function Module.add_ui()
     local changed, any_changed = false, false
     local languagePrefix = Module.title .. "."
 
+    changed, Module.data.shell_level = imgui.slider_int(language.get(languagePrefix .. "shell_level"), Module.data.shell_level, -1, 6, Module.data.shell_level == -1 and language.get("base.disabled") or "%d")
+    any_changed = any_changed or changed
+
     changed, Module.data.unlimited_ammo = imgui.checkbox(language.get(languagePrefix .. "unlimited_ammo"), Module.data.unlimited_ammo)
     any_changed = any_changed or changed
 
     changed, Module.data.instant_charge = imgui.checkbox(language.get(languagePrefix .. "instant_charge"), Module.data.instant_charge)
-    any_changed = any_changed or changed
-
-    changed, Module.data.shell_level = imgui.slider_int(language.get(languagePrefix .. "shell_level"), Module.data.shell_level, -1, 6, Module.data.shell_level == -1 and language.get("base.disabled") or "%d")
     any_changed = any_changed or changed
     
     changed, Module.data.infinite_wyvern_fire = imgui.checkbox(language.get(languagePrefix .. "infinite_wyvern_fire"), Module.data.infinite_wyvern_fire)

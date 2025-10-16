@@ -187,6 +187,9 @@ function Module.add_ui()
     local changed, any_changed = false, false
     local languagePrefix = Module.title .. "."
 
+    changed, Module.data.shell_level = imgui.slider_int(language.get(languagePrefix .. "shell_level"), Module.data.shell_level, -1, 2, Module.data.shell_level == -1 and language.get("base.disabled") or tostring(Module.data.shell_level + 1))
+    any_changed = any_changed or changed
+
     changed, Module.data.max_special_ammo = imgui.checkbox(language.get(languagePrefix .. "max_special_ammo"), Module.data.max_special_ammo)
     any_changed = any_changed or changed
 
@@ -229,9 +232,6 @@ function Module.add_ui()
     any_changed = any_changed or changed
 
     changed, Module.data.all_rapid_fire = imgui.checkbox(language.get(languagePrefix .. "all_rapid_fire"), Module.data.all_rapid_fire)
-    any_changed = any_changed or changed
-
-    changed, Module.data.shell_level = imgui.slider_int(language.get(languagePrefix .. "shell_level"), Module.data.shell_level, -1, 2, Module.data.shell_level == -1 and language.get("base.disabled") or tostring(Module.data.shell_level + 1))
     any_changed = any_changed or changed
 
     return any_changed

@@ -36,16 +36,16 @@ end
 function Module.add_ui()
     local changed, any_changed = false, false
     local languagePrefix = Module.title .. "."
+
+    changed, Module.data.charge_level = imgui.slider_int(language.get(languagePrefix .. "charge_level"), Module.data.charge_level, -1, 3, Module.data.charge_level == -1 and language.get("base.disabled") or "%d")
+    any_changed = any_changed or changed  
        
     changed, Module.data.true_charge_boost = imgui.checkbox(language.get(languagePrefix .. "true_charge_boost"), Module.data.true_charge_boost)
     utils.tooltip(language.get(languagePrefix .. "true_charge_boost_tooltip"))
     any_changed = any_changed or changed
-
-    changed, Module.data.charge_level = imgui.slider_int(language.get(languagePrefix .. "charge_level"), Module.data.charge_level, -1, 3, Module.data.charge_level == -1 and language.get("base.disabled") or "%d")
-    any_changed = any_changed or changed    
     
     changed, Module.data.instant_charge = imgui.checkbox(language.get(languagePrefix .. "instant_charge"), Module.data.instant_charge)
-    any_changed = any_changed or changed
+    any_changed = any_changed or changed 
 
     return any_changed
 end
