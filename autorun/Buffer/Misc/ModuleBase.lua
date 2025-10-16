@@ -215,7 +215,7 @@ function ModuleBase:draw_module()
     imgui.push_id(self.title)
 
     -- Draw the header. Add spaces to the left to add space for the icon
-    if imgui.collapsing_header("    " .. language.get(self.title .. ".title")) then
+    if imgui.collapsing_header("     " .. language.get(self.title .. ".title")) then
 
         -- Draw the module content
         imgui.indent(10)
@@ -226,7 +226,7 @@ function ModuleBase:draw_module()
 
     -- Draw the icon
     local pos = imgui.get_cursor_pos()
-    imgui.set_cursor_pos({header_pos.x + 18, header_pos.y + 2})
+    imgui.set_cursor_pos({header_pos.x + 19, header_pos.y + 2})
     icons.draw_icon(self.title)
     imgui.set_cursor_pos(pos)
 
