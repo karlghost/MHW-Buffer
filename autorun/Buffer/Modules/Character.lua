@@ -108,19 +108,28 @@ local CONDITIONS_DATA = {
     -- Frenzy, Stun, Paralyze, Sticky, Frozen are handled differently
 }
 
+--- Updates a float field value with caching and restoration support
+--- @param key string Cache key for storing original values
+--- @param field_name string Name of the field to update
+--- @param managed userdata The managed object containing the field
+--- @param new_value number The new value to apply
+--- @param is_override boolean If true, replaces value; if false, adds to original
 local function updateDahliaFloatBox(key, field_name, managed, new_value, is_override)
     if not managed then return end
 
-    -- ensure cache table exists
+    -- Ensure cache table exists
     Module.old[key] = Module.old[key] or {}
     local cache = Module.old[key]
+    
+    -- Get field reference
     local field = managed:get_field(field_name)
     if not field then return end
 
-    local disabled = (is_override and new_value < 0) or (not is_override and new_value == 0)
+    -- Determine if feature is disabled
+    local disabled = (is_override and new_value < 0) or (not is_override and new_value <= 0)
 
     if disabled then
-        -- restore original value if cached
+        -- Restore original value if cached
         if cache[field_name] then
             field:write(cache[field_name] + 0.0)
             cache[field_name] = nil
@@ -128,12 +137,13 @@ local function updateDahliaFloatBox(key, field_name, managed, new_value, is_over
         return
     end
 
-    -- cache original value once
+    -- Cache original value on first use
     cache[field_name] = cache[field_name] or field:read()
     local original = cache[field_name]
 
-    -- write new value
-    field:write((is_override and new_value or (original + new_value)) + 0.0)
+    -- Calculate and write new value (always as float)
+    local final_value = is_override and new_value or (original + new_value)
+    field:write(final_value + 0.0)
 end
 
 function Module.init()
@@ -420,7 +430,7 @@ function Module.draw()
     local changed, any_changed = false, false
     local languagePrefix = Module.title .. "."
 
-    if imgui.collapsing_header(language.get(languagePrefix .. "title")) then
+    if imgui.collapsing_header("    " .. language.get(languagePrefix .. "title")) then
         imgui.indent(10)
 
         languagePrefix = Module.title .. ".health."

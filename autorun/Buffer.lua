@@ -7,6 +7,7 @@ local utils = require("Buffer.Misc.Utils")
 local config = require("Buffer.Misc.Config")
 local language = require("Buffer.Misc.Language")
 local bindings = require("Buffer.Misc.BindingsHelper")
+local Icon = require("Buffer.Misc.Icon")
 
 -- -- Misc Modules
 local character = require("Buffer.Modules.Character")
@@ -242,7 +243,17 @@ re.on_draw_ui(function()
         imgui.separator()
 
         imgui.spacing()
-        for _, module in pairs(modules) do if module.draw ~= nil then module.draw() end end
+        for _, module in pairs(modules) do 
+            if module.draw ~= nil then 
+            
+                local header_pos = imgui.get_cursor_pos()
+                module.draw() 
+                local pos = imgui.get_cursor_pos()
+                imgui.set_cursor_pos({header_pos.x + 18, header_pos.y + 2})
+                Icon.drawIcon(module.title)
+                imgui.set_cursor_pos(pos)
+            end
+        end
         imgui.spacing()
 
         imgui.spacing()
