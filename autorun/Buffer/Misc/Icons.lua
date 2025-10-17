@@ -2,9 +2,9 @@ local language = require("Buffer.Misc.Language")
 
 local Icons = {
     glyphs = {
-        great_sword = "{gray}\u{e915}{white}\u{e916}",
+        great_sword = "{gray}\u{e915}{white}\u{e916}", -- {black}\u{e914}{gray}\u{e915}{white}\u{e916}"
         sword_and_shield = "\u{e917}", -- "\u{e917}{black}\u{e918}"
-        dual_blades = "\u{e91c}{gray}\u{e91e}",
+        dual_blades = "\u{e91c}{gray}\u{e91e}", -- "\u{e91c}{gray}\u{e91e}{black}\u{e91f}"
         long_sword = "\u{e919}\u{e91a}", -- "\u{e919}{gray}\u{e91a}{black}\u{e91b}"
         hammer = "\u{e91f}\u{e920}", -- "\u{e91f}{gray}\u{e920}{black}\u{e921}"
         hunting_horn = "\u{e922}", -- "\u{e922}{black}\u{e923}"
