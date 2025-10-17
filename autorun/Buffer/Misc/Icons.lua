@@ -5,20 +5,20 @@ local Icons = {
         great_sword = "{gray}\u{e915}{white}\u{e916}",
         sword_and_shield = "\u{e917}", -- "\u{e917}{black}\u{e918}"
         dual_blades = "\u{e91c}{gray}\u{e91e}",
-        long_sword = "\u{e919}{white}\u{e91a}", -- "\u{e919}{gray}\u{e91a}{black}\u{e91b}"
+        long_sword = "\u{e919}\u{e91a}", -- "\u{e919}{gray}\u{e91a}{black}\u{e91b}"
         hammer = "\u{e91f}\u{e920}", -- "\u{e91f}{gray}\u{e920}{black}\u{e921}"
         hunting_horn = "\u{e922}", -- "\u{e922}{black}\u{e923}"
-        lance = "{white}\u{e925}", -- "{black}\u{e924}{white}\u{e925}"
+        lance = "\u{e925}", -- "{black}\u{e924}{white}\u{e925}"
         gunlance = "\u{e926}\u{e927}", -- "\u{e926}\u{e927}{black}\u{e928}"
-        switch_axe = "{white}\u{e92a}{white}\u{e92b}", -- "{black}\u{e929}{white}\u{e92a}\u{e92b}"
+        switch_axe = "\u{e92a}\u{e92b}", -- "{black}\u{e929}{white}\u{e92a}\u{e92b}"
         charge_blade = "\u{e92c}\u{e92d}{black}\u{e92e}",
         insect_glaive = "\u{e92f}\u{e930}", -- "\u{e92f}\u{e930}{black}\u{e931}"
         bow = "\u{e932}", -- "\u{e932}{black}\u{e933}"
         light_bowgun = "\u{e934}\u{e935}", -- "\u{e934}\u{e935}{black}\u{e936}"
         heavy_bowgun = "\u{e937}\u{e938}", -- "\u{e937}\u{e938}{black}\u{e939}"
 
-        character = "{white}\u{e901}", -- "{black}\u{e900}{white}\u{e901}"
-        miscellaneous = "{white}\u{e903}\u{e904}\u{e905}", -- "{black}\u{e902}{white}\u{e903}\u{e904}\u{e905}"
+        character = "\u{e901}", -- "{black}\u{e900}{white}\u{e901}"
+        miscellaneous = "\u{e903}\u{e904}\u{e905}", -- "{black}\u{e902}{white}\u{e903}\u{e904}\u{e905}"
 
     },
     font = nil,
