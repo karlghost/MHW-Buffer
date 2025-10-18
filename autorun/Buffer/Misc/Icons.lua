@@ -1,44 +1,24 @@
 local language = require("Buffer.Misc.Language")
 
 local Icons = {
-    --//  glyphs_no_outline = {
-    --//     great_sword = "\u{e917}",
-    --//     sword_and_shield = "\u{e939}",
-    --//     dual_blades = "\u{e918}",
-    --//     long_sword = "\u{e91a}\u{e91b}\u{e91c}",
-    --//     hammer = "\u{e91e}\u{e91f}",
-    --//     hunting_horn = "\u{e921}",
-    --//     lance = "\u{e924}",
-    --//     gunlance = "\u{e925}\u{e926}",
-    --//     switch_axe = "\u{e929}\u{e92a}",
-    --//     charge_blade = "\u{e92b}",
-    --//     insect_glaive = "\u{e92e}\u{e92f}",
-    --//     bow = "\u{e931}",
-    --//     light_bowgun = "\u{e933}\u{e934}",
-    --//     heavy_bowgun = "\u{e936}\u{e937}",
-
-    --//     character = "\u{e900}",
-    --//     miscellaneous = "\u{e904}"
-
-    --// },
     glyphs = {
-        great_sword = "{black}\u{e916}{white}\u{e93f}",
-        sword_and_shield = "\u{e939}",
-        dual_blades = "\u{e918}{black}\u{e919}",
-        long_sword = "\u{e91a}\u{e91b}\u{e91c}{black}\u{e91d}",
-        hammer = "\u{e91e}\u{e91f}{black}\u{e920}",
-        hunting_horn = "\u{e921}{black}\u{e922}",
-        lance = "{black}\u{e923}{white}\u{e924}",
-        gunlance = "\u{e925}\u{e926}{black}\u{e927}",
-        switch_axe = "{black}\u{e928}{white}\u{e929}\u{e92a}",
-        charge_blade = "\u{e92b}\u{e92c}{black}\u{e92d}",
-        insect_glaive = "\u{e92e}\u{e92f}{black}\u{e930}",
-        bow = "\u{e931}{black}\u{e932}",
-        light_bowgun = "\u{e933}\u{e934}{black}\u{e935}",
-        heavy_bowgun = "\u{e936}\u{e937}{black}\u{e938}",
+        great_sword = "{gray}\u{e915}{white}\u{e916}", -- {black}\u{e914}{gray}\u{e915}{white}\u{e916}"
+        sword_and_shield = "\u{e917}", -- "\u{e917}{black}\u{e918}"
+        dual_blades = "\u{e91c}{gray}\u{e91e}", -- "\u{e91c}{gray}\u{e91e}{black}\u{e91f}"
+        long_sword = "\u{e919}\u{e91a}", -- "\u{e919}{gray}\u{e91a}{black}\u{e91b}"
+        hammer = "\u{e91f}\u{e920}", -- "\u{e91f}{gray}\u{e920}{black}\u{e921}"
+        hunting_horn = "\u{e922}", -- "\u{e922}{black}\u{e923}"
+        lance = "\u{e925}", -- "{black}\u{e924}{white}\u{e925}"
+        gunlance = "\u{e926}\u{e927}", -- "\u{e926}\u{e927}{black}\u{e928}"
+        switch_axe = "\u{e92a}\u{e92b}", -- "{black}\u{e929}{white}\u{e92a}\u{e92b}"
+        charge_blade = "\u{e92c}\u{e92d}{black}\u{e92e}",
+        insect_glaive = "\u{e92f}\u{e930}", -- "\u{e92f}\u{e930}{black}\u{e931}"
+        bow = "\u{e932}", -- "\u{e932}{black}\u{e933}"
+        light_bowgun = "\u{e934}\u{e935}", -- "\u{e934}\u{e935}{black}\u{e936}"
+        heavy_bowgun = "\u{e937}\u{e938}", -- "\u{e937}\u{e938}{black}\u{e939}"
 
-        character = "{black}\u{e900}{white}\u{e901}\u{e902}\u{e903}",
-        miscellaneous = "{black}\u{e904}{white}\u{e905}\u{e906}\u{e907}",
+        character = "\u{e901}", -- "{black}\u{e900}{white}\u{e901}"
+        miscellaneous = "\u{e903}\u{e904}\u{e905}", -- "{black}\u{e902}{white}\u{e903}\u{e904}\u{e905}"
 
     },
     font = nil,
@@ -46,6 +26,7 @@ local Icons = {
     default_color = 0xFFFFFFFF, -- White
     colors = {
         black = 0xFF333333, -- Made it more gray so it doesn't have as much contrast
+        gray = 0xFF777777,
         white = 0xFFFFFFFF
     }
 }
@@ -76,6 +57,12 @@ function Icons.draw_icon(icon)
     imgui.push_font(Icons.font)
     local code = Icons.glyphs[icon] or "?"
     local pos = imgui.get_cursor_pos()
+    
+    -- Apply 3-point offset for character and miscellaneous icons
+    if icon == "character" or icon == "miscellaneous" then
+        pos.x = pos.x + 3
+    end
+    
     local current_color = Icons.default_color
     
     -- Parse the string for UTF-8 codes and color placeholders
@@ -108,7 +95,7 @@ function Icons.draw_icon(icon)
             -- Draw the character with current color
             imgui.set_cursor_pos(pos)
             imgui.text_colored(char, current_color)
-            
+
             i = i + char_len
         end
     end

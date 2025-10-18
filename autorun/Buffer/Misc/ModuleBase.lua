@@ -226,7 +226,9 @@ function ModuleBase:draw_module()
 
     -- Draw the icon
     local pos = imgui.get_cursor_pos()
-    imgui.set_cursor_pos({header_pos.x + 19, header_pos.y + 2})
+    -- Scale icon x offset based on font size (19 at size 16, 23 at size 24)
+    local icon_x_offset = 11 + (language.font.size * 0.5)
+    imgui.set_cursor_pos({header_pos.x + icon_x_offset, header_pos.y + 2})
     icons.draw_icon(self.title)
     imgui.set_cursor_pos(pos)
 
