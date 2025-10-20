@@ -137,7 +137,7 @@ function Module.create_hooks()
     end, function(retval)
         if skip_shot_knockback then
             skip_shot_knockback = false
-            return sdk.to_ptr(2)
+            return sdk.to_ptr(4)
         else
             return retval
         end
