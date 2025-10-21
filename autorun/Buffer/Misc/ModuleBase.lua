@@ -76,14 +76,13 @@ end
 --- @param enabled boolean True to cache and set field to true, false to restore originals
 function ModuleBase:cache_and_update_array_toggle(cache_key, array, field_name, enabled)
     if enabled then
-        -- Cache and update all items
+        -- Cache originals once
         if not self.old[cache_key] then
             self.old[cache_key] = {}
             -- Handle both Lua tables and managed arrays
             if type(array) == "table" then
                 for i, item in ipairs(array) do
                     self.old[cache_key][i] = item:get_field(field_name)
-                    item:set_field(field_name, true)
                 end
             else
                 -- Managed array: use numeric indices starting at 0
@@ -91,8 +90,21 @@ function ModuleBase:cache_and_update_array_toggle(cache_key, array, field_name, 
                     local item = array[i]
                     if item then
                         self.old[cache_key][i] = item:get_field(field_name)
-                        item:set_field(field_name, true)
                     end
+                end
+            end
+        end
+        -- Always update to true
+        if type(array) == "table" then
+            for i, item in ipairs(array) do
+                item:set_field(field_name, true)
+            end
+        else
+            -- Managed array: use numeric indices starting at 0
+            for i = 0, #array do
+                local item = array[i]
+                if item then
+                    item:set_field(field_name, true)
                 end
             end
         end
