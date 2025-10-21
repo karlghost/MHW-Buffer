@@ -114,9 +114,9 @@ function Module.create_hooks()
     end, function(retval) return retval end)
 
     -- On updating the request recoil, check if no recoil is enabled
-    sdk.hook(sdk.find_type_definition("app.cHunterWpGunHandling"):get_method("updateRequestRecoil(app.mcShellPlGun, System.Int32)"), function(args)
+    sdk.hook(sdk.find_type_definition("app.cHunterWp12Handling"):get_method("updateRequestRecoil(app.mcShellPlGun, System.Int32)"), function(args)
         local managed = sdk.to_managed_object(args[2])
-        if not Module:weapon_hook_guard(managed, "app.cHunterWpGunHandling") then return end
+        if not Module:weapon_hook_guard(managed, "app.cHunterWp12Handling") then return end
         if managed:get_Weapon():get_WpType() ~= 12 then return end
 
         if Module.data.no_recoil then
@@ -125,9 +125,9 @@ function Module.create_hooks()
     end, function(retval) return retval end)
 
     local skip_shot_knockback = false
-    sdk.hook(sdk.find_type_definition("app.cHunterWpGunHandling"):get_method("getShootActType"), function(args) 
+    sdk.hook(sdk.find_type_definition("app.cHunterWp12Handling"):get_method("getShootActType"), function(args) 
         local managed = sdk.to_managed_object(args[2])
-        if not Module:weapon_hook_guard(managed, "app.cHunterWpGunHandling") then return end
+        if not Module:weapon_hook_guard(managed, "app.cHunterWp12Handling") then return end
         if managed:get_Weapon():get_WpType() ~= 12 then return end
 
         if Module.data.no_recoil then
@@ -137,10 +137,13 @@ function Module.create_hooks()
     end, function(retval)
         if skip_shot_knockback then
             skip_shot_knockback = false
-            return sdk.to_ptr(4)
-        else
-            return retval
+            local type = sdk.find_type_definition("app.WeaponGunDef.SHOOT_ACT_TYPE")
+            local value = sdk.to_int64(retval)
+            if value ~= 2 then
+                return sdk.to_ptr(5)
+            end
         end
+        return retval
     end)
 
 end
