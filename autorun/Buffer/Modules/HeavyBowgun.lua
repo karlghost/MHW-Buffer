@@ -117,7 +117,6 @@ function Module.create_hooks()
     sdk.hook(sdk.find_type_definition("app.cHunterWp12Handling"):get_method("updateRequestRecoil(app.mcShellPlGun, System.Int32)"), function(args)
         local managed = sdk.to_managed_object(args[2])
         if not Module:weapon_hook_guard(managed, "app.cHunterWp12Handling") then return end
-        if managed:get_Weapon():get_WpType() ~= 12 then return end
 
         if Module.data.no_recoil then
             return sdk.PreHookResult.SKIP_ORIGINAL
@@ -128,7 +127,6 @@ function Module.create_hooks()
     sdk.hook(sdk.find_type_definition("app.cHunterWp12Handling"):get_method("getShootActType"), function(args) 
         local managed = sdk.to_managed_object(args[2])
         if not Module:weapon_hook_guard(managed, "app.cHunterWp12Handling") then return end
-        if managed:get_Weapon():get_WpType() ~= 12 then return end
 
         if Module.data.no_recoil then
             skip_shot_knockback = true
@@ -137,10 +135,25 @@ function Module.create_hooks()
     end, function(retval)
         if skip_shot_knockback then
             skip_shot_knockback = false
-            local type = sdk.find_type_definition("app.WeaponGunDef.SHOOT_ACT_TYPE")
+            
+            -- Check if shooting special ammo
+            local use_ui_shell_type = utils.get_master_character():get_WeaponHandling():get_field("_UseUIShellType")
+            if not use_ui_shell_type then return retval end
+
+            -- Get the shell recoil type
             local value = sdk.to_int64(retval)
-            if value ~= 2 then
-                return sdk.to_ptr(5)
+
+            -- 1 = No shoot
+            -- 2 = 3 shot burst
+            -- 3 = No shoot
+            -- 4 = Burst
+            -- 5 = Burst Middle
+            -- 6 = Burst High
+            -- 7 = Middle
+            -- 8 = High
+            -- 9-11 = No shoot
+            if  (value >= 4 and value <= 8) then
+                return sdk.to_ptr(4)
             end
         end
         return retval

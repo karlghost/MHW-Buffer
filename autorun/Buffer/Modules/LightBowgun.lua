@@ -117,10 +117,9 @@ function Module.create_hooks()
     -- On shooting a shell, check if unlimited ammo is enabled, and if no reload is enabled
     local skip_ammo_usage = false
     local no_reload_managed_weapon = nil
-    sdk.hook(sdk.find_type_definition("app.cHunterWpGunHandling"):get_method("shootShell"), function(args) 
+    sdk.hook(sdk.find_type_definition("app.cHunterWp13Handling"):get_method("shootShell"), function(args) 
         local managed = sdk.to_managed_object(args[2])
-        if not Module:weapon_hook_guard(managed, "app.cHunterWpGunHandling") then return end
-        if managed:get_Weapon():get_WpType() ~= 13 then return end
+        if not Module:weapon_hook_guard(managed, "app.cHunterWp13Handling") then return end
         
         -- If unlimited ammo is enabled, set skip ammo usage
         if Module.data.unlimited_ammo then
@@ -153,10 +152,9 @@ function Module.create_hooks()
     end, function(retval) return retval end)
 
     -- On updating the request recoil, check if no recoil is enabled
-    sdk.hook(sdk.find_type_definition("app.cHunterWpGunHandling"):get_method("updateRequestRecoil(app.mcShellPlGun, System.Int32)"), function(args)
+    sdk.hook(sdk.find_type_definition("app.cHunterWp13Handling"):get_method("updateRequestRecoil(app.mcShellPlGun, System.Int32)"), function(args)
         local managed = sdk.to_managed_object(args[2])
-        if not Module:weapon_hook_guard(managed, "app.cHunterWpGunHandling") then return end
-        if managed:get_Weapon():get_WpType() ~= 13 then return end
+        if not Module:weapon_hook_guard(managed, "app.cHunterWp13Handling") then return end
 
         if Module.data.no_recoil then
             return sdk.PreHookResult.SKIP_ORIGINAL
@@ -176,10 +174,24 @@ function Module.create_hooks()
     end, function(retval)
         if skip_shot_knockback then
             skip_shot_knockback = false
-            return sdk.to_ptr(1)
-        else
-            return retval
+
+            -- Get the shell recoil type
+            local value = sdk.to_int64(retval)
+
+            -- 1 = No shoot
+            -- 2 = 3 shot burst
+            -- 3 = No shoot
+            -- 4 = Burst
+            -- 5 = Burst Middle
+            -- 6 = Burst High
+            -- 7 = Middle
+            -- 8 = High
+            -- 9-11 = No shoot
+            if  (value >= 4 and value <= 8) then
+                return sdk.to_ptr(4)
+            end
         end
+        return retval
     end)
 end
 
