@@ -85,6 +85,8 @@ local ITEM_BUFFS_DATA = {
     imunizer =         {field = "_Immunizer_Timer",     duration = 300},
     might_seed =       {field = "_Kairiki_Timer",       duration = 180},
     might_pill =       {field = "_Kairiki_G_Timer",     duration = 90},
+    adamant_seed =     {field = "_Nintai_Timer",       duration = 180},
+    adamant_pill =     {field = "_Nintai_G_Timer",     duration = 90},
     demon_powder =     {field = "_KijinPowder_Timer",   duration = 180},
     hardshell_powder = {field = "_KoukaPowder_Timer",   duration = 180}
     -- Demon Drug, Mega Demondrug, Armor Skin, Mega Armorskin are handled differently
