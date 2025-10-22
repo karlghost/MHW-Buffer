@@ -187,6 +187,9 @@ function Module.create_hooks()
             -- 7 = Middle
             -- 8 = High
             -- 9-11 = No shoot
+            if (value >= 1 and value <= 3) then
+                return sdk.to_ptr(1)
+            end
             if  (value >= 4 and value <= 8) then
                 return sdk.to_ptr(4)
             end
