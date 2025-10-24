@@ -72,7 +72,7 @@ function Module.create_hooks()
 
         -- All Rapid Fire (0 = Normal, 1 = Rapid)
         local ammos = managed:get_field("_Ammos")
-        Module:cache_and_update_array_toggle("ammos", ammos, "_AmmoType", Module.data.all_rapid_fire)
+        Module:cache_and_update_array_value("ammos", ammos, "_AmmoType", Module.data.all_rapid_fire and 1 or -1)
 
 
         --* _Ammos
