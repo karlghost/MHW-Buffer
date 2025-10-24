@@ -235,6 +235,7 @@
         "unlimited_bladescale": "Unlimited bladescale shots(*)",
         "no_reload": "无需装填",
         "no_recoil": "无后座力",
+        "no_knockback": "No knockback (*)",
         "shell_level": "Shell level (*)",
         "all_rapid_fire": "All rapid fire (*)"
     },
@@ -248,6 +249,7 @@
         "unlimited_bladescale": "Unlimited bladescale shots(*)",
         "no_reload": "无需装填",
         "no_recoil": "无后座力",
+        "no_knockback": "No knockback (*)",
         "shell_level": "Shell level (*)"
     },
     "charge_blade": {

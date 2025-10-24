@@ -239,6 +239,7 @@
         "unlimited_bladescale": "Unlimited bladescale shots(*)",
         "no_reload": "無需裝填",
         "no_recoil": "無後座力",
+        "no_knockback": "No knockback (*)",
         "shell_level": "Shell level (*)",
         "all_rapid_fire": "All rapid fire (*)"
     },
@@ -252,6 +253,7 @@
         "unlimited_bladescale": "Unlimited bladescale shots(*)",
         "no_reload": "無需裝填",
         "no_recoil": "無後座力",
+        "no_knockback": "No knockback (*)",
         "shell_level": "Shell level (*)"
     },
 

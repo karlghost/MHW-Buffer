@@ -238,6 +238,7 @@
         "unlimited_bladescale": "Unlimited bladescale shots",
         "no_reload": "No reload",
         "no_recoil": "No recoil",
+        "no_knockback": "No knockback",
         "all_rapid_fire": "All rapid fire",
         "shell_level": "Shell level"
     },
@@ -251,6 +252,7 @@
         "unlimited_bladescale": "Unlimited bladescale shots",
         "no_reload": "No reload",
         "no_recoil": "No recoil",
+        "no_knockback": "No knockback",
         "shell_level": "Shell level"
     },
 

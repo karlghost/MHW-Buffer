@@ -235,6 +235,7 @@
         "unlimited_bladescale": "無限刃鱗増装",
         "no_reload": "リロード不要",
         "no_recoil": "反動なし",
+        "no_knockback": "No knockback (*)",
         "all_rapid_fire": "All rapid fire (*)",
         "shell_level": "Shell level (*)"
     },
@@ -248,6 +249,7 @@
         "unlimited_bladescale": "無限刃鱗増装",
         "no_reload": "リロード不要",
         "no_recoil": "反動なし",
+        "no_knockback": "No knockback (*)",
         "shell_level": "Shell level (*)"
     },
     "charge_blade": {
