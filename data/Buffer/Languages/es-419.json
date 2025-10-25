@@ -129,6 +129,7 @@
             "bonus_attack": "Bono de ataque",
             "bonus_defence": "Bonus de defensa",
             "critical_chance": "Probabilidad crítica",
+            "bonus_elemental": "Bonus elemental (*)",
             "element": {
                 "title": "Elemento",
                 "none": "Ninguno",

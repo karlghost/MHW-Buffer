@@ -129,6 +129,7 @@
             "bonus_attack": "Bonusangriff",
             "bonus_defence": "Bonusverteidigung",
             "critical_chance": "Kritische Trefferchance",
+            "bonus_elemental": "Bonus elemental (*)",
             "element": {
                 "title": "Element",
                 "none": "Keine",
