@@ -9,6 +9,7 @@ local Module = ModuleBase:new("heavy_bowgun", {
     unlimited_ammo = false,
     no_reload = false,
     no_recoil = false,
+    no_knockback = false,
     unlimited_bladescale = false,
     shell_level = -1
 })
@@ -128,7 +129,7 @@ function Module.create_hooks()
         local managed = sdk.to_managed_object(args[2])
         if not Module:weapon_hook_guard(managed, "app.cHunterWp12Handling") then return end
 
-        if Module.data.no_recoil then
+        if Module.data.no_knockback then
             skip_shot_knockback = true
         end
 
@@ -198,8 +199,19 @@ function Module.add_ui()
     changed, Module.data.no_reload = imgui.checkbox(language.get(languagePrefix .. "no_reload"), Module.data.no_reload)
     any_changed = any_changed or changed
 
+    imgui.begin_table(Module.title.."3", 2, nil, nil, nil)
+    imgui.table_next_row()
+    imgui.table_next_column()
+
     changed, Module.data.no_recoil = imgui.checkbox(language.get(languagePrefix .. "no_recoil"), Module.data.no_recoil)
     any_changed = any_changed or changed
+
+    imgui.table_next_column()
+
+    changed, Module.data.no_knockback = imgui.checkbox(language.get(languagePrefix .. "no_knockback"), Module.data.no_knockback)
+    any_changed = any_changed or changed
+
+    imgui.end_table()
 
     return any_changed
 end

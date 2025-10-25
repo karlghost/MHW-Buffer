@@ -10,6 +10,7 @@ local Module = ModuleBase:new("light_bowgun", {
     unlimited_ammo = false,
     no_reload = false,
     no_recoil = false,
+    no_knockback = false,
     unlimited_bladescale = false,
     all_rapid_fire = false,
     shell_level = -1
@@ -72,7 +73,7 @@ function Module.create_hooks()
 
         -- All Rapid Fire (0 = Normal, 1 = Rapid)
         local ammos = managed:get_field("_Ammos")
-        Module:cache_and_update_array_toggle("ammos", ammos, "_AmmoType", Module.data.all_rapid_fire)
+        Module:cache_and_update_array_value("ammos", ammos, "_AmmoType", Module.data.all_rapid_fire and 1 or -1)
 
 
         --* _Ammos
@@ -167,7 +168,7 @@ function Module.create_hooks()
         if not Module:weapon_hook_guard(managed, "app.cHunterWpGunHandling") then return end
         if managed:get_Weapon():get_WpType() ~= 13 then return end
 
-        if Module.data.no_recoil then
+        if Module.data.no_knockback then
             skip_shot_knockback = true
         end
 
@@ -243,8 +244,19 @@ function Module.add_ui()
     changed, Module.data.no_reload = imgui.checkbox(language.get(languagePrefix .. "no_reload"), Module.data.no_reload)
     any_changed = any_changed or changed
 
+    imgui.begin_table(Module.title.."3", 2, nil, nil, nil)
+    imgui.table_next_row()
+    imgui.table_next_column()
+
     changed, Module.data.no_recoil = imgui.checkbox(language.get(languagePrefix .. "no_recoil"), Module.data.no_recoil)
     any_changed = any_changed or changed
+
+    imgui.table_next_column()
+
+    changed, Module.data.no_knockback = imgui.checkbox(language.get(languagePrefix .. "no_knockback"), Module.data.no_knockback)
+    any_changed = any_changed or changed
+
+    imgui.end_table()
 
     changed, Module.data.all_rapid_fire = imgui.checkbox(language.get(languagePrefix .. "all_rapid_fire"), Module.data.all_rapid_fire)
     any_changed = any_changed or changed
