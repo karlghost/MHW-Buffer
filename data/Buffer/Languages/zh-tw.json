@@ -15,7 +15,7 @@
         "version": "版本",
         "options": "選項",
         "disable_all": "全部停用",
-        "view_enabled": "View enabled (*)",
+        "enabled_buffs": "Enabled buffs (*)",
         "nothing_enabled": "Nothing is enabled (*)",
         "disable": "Disable (*)",
         "bindings": {

@@ -14,7 +14,7 @@
         "version": "Version",
         "options": "Options",
         "disable_all": "Disable all",
-        "view_enabled": "View enabled",
+        "enabled_buffs": "Enabled buffs",
         "nothing_enabled": "Nothing is enabled",
         "disable": "Disable",
         "bindings": {

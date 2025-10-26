@@ -166,7 +166,7 @@ re.on_draw_ui(function()
                     local device = bindings.DEVICE_TYPES.KEYBOARD
                     local keyboardBindings = bindings.get_bindings(device)
                     draw_binding_table(device, keyboardBindings, "bindings_keyboard")
-                    if imgui.button("   " .. language.get(languagePrefix .. "add_keyboard"), "", false) then bindings.popup_open(2) end
+                    if imgui.button("   " .. language.get(languagePrefix .. "add_keyboard") .. "   ", "", false) then bindings.popup_open(2) end
                     imgui.spacing()
                     imgui.end_menu()
                 end
@@ -175,7 +175,7 @@ re.on_draw_ui(function()
                     local device = bindings.DEVICE_TYPES.CONTROLLER
                     local gamepadBindings = bindings.get_bindings(device)
                     draw_binding_table(device, gamepadBindings, "bindings_gamepad")
-                    if imgui.button("   " .. language.get(languagePrefix .. "add_gamepad"), "", false) then bindings.popup_open(1) end
+                    if imgui.button("   " .. language.get(languagePrefix .. "add_gamepad") .. "   ", "", false) then bindings.popup_open(1) end
                     imgui.spacing()
                     imgui.end_menu()
                 end
@@ -213,7 +213,7 @@ re.on_draw_ui(function()
 
             if imgui.begin_menu(language.get(languagePrefix .. "options")) then
                 imgui.spacing()
-                 if imgui.begin_menu("   " .. language.get(languagePrefix .. "view_enabled")) then
+                 if imgui.begin_menu("   " .. language.get(languagePrefix .. "enabled_buffs")) then
                     local enabled_buffs = {}
 
                     for _, module in pairs(modules) do
@@ -241,16 +241,19 @@ re.on_draw_ui(function()
                         end
                         imgui.end_table()
                         imgui.spacing()
+                        imgui.separator()
+                        imgui.spacing()
+                        if imgui.button("   " .. language.get(languagePrefix .. "disable_all").. "   ", "", false) then
+                            for _, module in pairs(modules) do
+                                disable_all(module.data)
+                                module:save_config()
+                            end
+                        end
+                        imgui.spacing()
                     else
                         imgui.text("   " .. language.get(languagePrefix .. "nothing_enabled"))
                     end
                     imgui.end_menu()
-                end
-                if imgui.menu_item("   " .. language.get(languagePrefix .. "disable_all"), "", false, true) then
-                    for _, module in pairs(modules) do
-                        disable_all(module.data)
-                        module:save_config()
-                    end
                 end
                
                 imgui.spacing()
