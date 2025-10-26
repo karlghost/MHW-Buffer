@@ -1,6 +1,7 @@
 local version = "1.0.3"
 
 local isWindowOpen, wasOpen = false, false
+local windowHovered = false
 
 -- Utilities and Helpers
 local utils = require("Buffer.Misc.Utils")
@@ -81,7 +82,8 @@ re.on_draw_ui(function()
 
         imgui.push_style_var(imgui.ImGuiStyleVar.WindowRounding, 7.5) -- Rounded window
         imgui.push_style_var(imgui.ImGuiStyleVar.FrameRounding, 5.0) -- Rounded elements
-        imgui.push_style_var(imgui.ImGuiStyleVar.Alpha, 0.9) -- Window transparency
+        local alpha = windowHovered and 0.9 or 0.65
+        imgui.push_style_var(imgui.ImGuiStyleVar.Alpha, alpha) -- Window transparency
 
         imgui.set_next_window_size(Vector2f.new(520, 450), 4)
 
@@ -245,8 +247,15 @@ re.on_draw_ui(function()
             module:draw_module()
         end
         imgui.spacing()
+        
+        -- Manual hover detection since is_window_hovered() is not available
+        local window_pos = imgui.get_window_pos()
+        local window_size = imgui.get_window_size()
+        local mouse_pos = imgui.get_mouse()
+        windowHovered = window_pos.x < mouse_pos.x and window_pos.x + window_size.x > mouse_pos.x and
+                        window_pos.y < mouse_pos.y and window_pos.y + window_size.y > mouse_pos.y
 
-        imgui.spacing()
+
         imgui.end_window()
         imgui.pop_style_var(3)
 
