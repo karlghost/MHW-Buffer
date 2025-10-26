@@ -97,10 +97,10 @@ local ITEM_BUFFS_DATA = {
 local CONDITIONS_DATA = {
     poison =        {field = "_Poison",  duration_field = "_DurationTimer",     method = "forceDeactivate"},
     stench =        {field = "_Stench",  duration_field = "_DurationTimer",     method = "forceDeactivate"},
-    blast =         {field = "_Blast",   duration_field = "_CureAccumulator",   method = "forceDeactivate"},
+    blast =         {field = "_Blast",   duration_field = "_CureAccumerator",   method = "forceDeactivate"},
     bleed =         {field = "_Bleed",   duration_field = "_CureTimer",         method = "forceDeactivate"},
     def_down =      {field = "_DefDown", duration_field = "_DurationTimer",     method = "forceDeactivate"},
-    sleep =         {field = "_Sleep",   duration_field = "_DurationTime",     method = "forceDeactivate"},
+    sleep =         {field = "_Sleep",   duration_field = "_DurationTime",      method = "forceDeactivate"},
     bubble =        {field = "_Ex00",    duration_field = "_DurationTimer",     method = "forceDeactivate"},
     hp_reduction =  {field = "_Ex01",    duration_field = "_DurationTimer",     method = "forceDeactivate"},
     fire =          {field = "_Fire",    duration_field = "_DurationTimer",     method = "forceDeactivate"},
