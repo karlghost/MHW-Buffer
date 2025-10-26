@@ -64,6 +64,7 @@ local Module = ModuleBase:new("character", {
         bonus_attack = -1,
         bonus_defence = -1,
         critical_chance = -1,
+        bonus_elemental = -1,
         element = -1
     },
     invincible = false,
@@ -319,6 +320,7 @@ function Module.create_hooks()
         updateDahliaFloatBox("bonus_attack",    "_WeaponAttackPower",           managed:get_AttackPower(),  Module.data.stats.bonus_attack, false)
         updateDahliaFloatBox("bonus_defence",   "_OriginalArmorDefencePower",   managed:get_DefencePower(), Module.data.stats.bonus_defence, false)
         updateDahliaFloatBox("critical_chance", "_OriginalCritical",            managed:get_CriticalRate(), Module.data.stats.critical_chance, true)
+        updateDahliaFloatBox("elemental_attack", "_WeaponAttrPower",            managed:get_AttackPower(), Module.data.stats.bonus_elemental > 0 and Module.data.stats.bonus_elemental / 10 or Module.data.stats.bonus_elemental, false)
 
         -- Element
         if Module.data.stats.element ~= -1 then
@@ -465,7 +467,6 @@ function Module.add_ui()
         languagePrefix = Module.title .. ".blights_and_conditions."
 
         if imgui.tree_node(language.get(languagePrefix .. "title")) then
-            utils.tooltip(language.get(languagePrefix .. "tooltip"))
 
             languagePrefix = Module.title .. ".blights_and_conditions.blights."
             if imgui.tree_node(language.get(languagePrefix .. "title")) then
@@ -554,6 +555,9 @@ function Module.add_ui()
             any_changed = any_changed or changed
 
             changed, Module.data.stats.critical_chance = imgui.slider_int(language.get(languagePrefix .. "critical_chance"), Module.data.stats.critical_chance, -1, 100, Module.data.stats.critical_chance == -1 and language.get("base.disabled") or "%d%%")
+            any_changed = any_changed or changed
+
+            changed, Module.data.stats.bonus_elemental = imgui.drag_int(language.get(languagePrefix .. "bonus_elemental"), Module.data.stats.bonus_elemental, 1, 0, 2000, Module.data.stats.bonus_elemental <= 0 and language.get("base.disabled") or "%d")
             any_changed = any_changed or changed
 
             languagePrefix = languagePrefix .. "element."

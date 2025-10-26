@@ -124,6 +124,7 @@
             "bonus_attack": "攻撃力ボーナス",
             "bonus_defence": "防御力ボーナス",
             "critical_chance": "クリティカルチャンス",
+            "bonus_elemental": "Bonus elemental (*)",
             "element": {
             "title": "属性",
             "none": "なし",
