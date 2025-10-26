@@ -4,7 +4,6 @@ local language = require("Buffer.Misc.Language")
 local Module = ModuleBase:new("lance", {
     counter_charge_level = -1,
     rush_level = -1,
-    infinite_backstep = false,
 })
 
 function Module.create_hooks()
