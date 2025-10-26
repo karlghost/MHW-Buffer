@@ -99,16 +99,18 @@ local CONDITIONS_DATA = {
     stench =        {field = "_Stench",  duration_field = "_DurationTimer",     method = "forceDeactivate"},
     blast =         {field = "_Blast",   duration_field = "_CureAccumerator",   method = "forceDeactivate"},
     bleed =         {field = "_Bleed",   duration_field = "_CureTimer",         method = "forceDeactivate"},
-    def_down =      {field = "_DefDown", duration_field = "_DurationTimer",     method = "forceDeactivate"},
+    defense_down =  {field = "_DefDown", duration_field = "_DurationTimer",     method = "forceDeactivate"},
     sleep =         {field = "_Sleep",   duration_field = "_DurationTime",      method = "forceDeactivate"},
     bubble =        {field = "_Ex00",    duration_field = "_DurationTimer",     method = "forceDeactivate"},
     hp_reduction =  {field = "_Ex01",    duration_field = "_DurationTimer",     method = "forceDeactivate"},
+    -- Frenzy, Stun, Paralyze, Sticky, Frozen are handled differently
+}
+local BLIGHTS_DATA = {
     fire =          {field = "_Fire",    duration_field = "_DurationTimer",     method = "forceDeactivate"},
     thunder =       {field = "_Elec",    duration_field = "_DurationTimer",     method = "forceDeactivate"},
     water =         {field = "_Water",   duration_field = "_DurationTimer",     method = "forceDeactivate"},
     ice =           {field = "_Ice",     duration_field = "_DurationTimer",     method = "forceDeactivate"},
     dragon =        {field = "_Dragon",  duration_field = "_DurationTimer",     method = "forceDeactivate"},
-    -- Frenzy, Stun, Paralyze, Sticky, Frozen are handled differently
 }
 
 --- Updates a float field value with caching and restoration support
@@ -261,6 +263,15 @@ function Module.create_hooks()
                 local condition = conditions:get_field(condition_data.field)
                 if condition:get_field(condition_data.duration_field) > 0 then
                     condition:call(condition_data.method)
+                end
+            end
+        end
+        -- Blights
+        for blight_name, blight_data in pairs(BLIGHTS_DATA) do
+            if Module.data.blights_and_conditions.blights[blight_name] or Module.data.blights_and_conditions.blights.all then
+                local blight = conditions:get_field(blight_data.field)
+                if blight:get_field(blight_data.duration_field) > 0 then
+                    blight:call(blight_data.method)
                 end
             end
         end
