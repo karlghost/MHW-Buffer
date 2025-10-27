@@ -14,7 +14,10 @@
         "translator": "번역자",
         "version": "버전",
         "options": "옵션",
-        "disable_all": "전체 비활성화",
+        "disable_all": "모두 비활성화",
+        "enabled_buffs": "Enabled buffs (*)",
+        "nothing_enabled": "Nothing is enabled (*)",
+        "disable": "Disable (*)",
         "bindings": {
             "title": "키 설정",
             "keyboard": "키보드",

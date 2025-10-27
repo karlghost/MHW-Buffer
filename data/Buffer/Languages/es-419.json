@@ -15,6 +15,9 @@
         "version": "Versión",
         "options": "Opciones",
         "disable_all": "Desactivar todo",
+        "enabled_buffs": "Enabled buffs (*)",
+        "nothing_enabled": "Nothing is enabled (*)",
+        "disable": "Disable (*)",
         "bindings": {
             "title": "Asignaciones",
             "keyboard": "Teclado",
@@ -239,7 +242,7 @@
         "unlimited_bladescale": "Disparos Filoescama ilimitados",
         "no_reload": "Sin recarga",
         "no_recoil": "Sin retroceso",
-        "no_knockback": "No knockback (*)",
+        "no_knockback": "Sin derribo",
         "all_rapid_fire": "Todos disparo rápido",
         "shell_level": "Nivel de cargas"
     },
@@ -253,7 +256,7 @@
         "unlimited_bladescale": "Disparos Filoescama ilimitados",
         "no_reload": "Sin recarga",
         "no_recoil": "Sin retroceso",
-        "no_knockback": "No knockback (*)",
+        "no_knockback": "Sin derribo",
         "shell_level": "Nivel de cargas"
     },
 

@@ -5,7 +5,6 @@ local utils = require("Buffer.Misc.Utils")
 local Module = ModuleBase:new("gunlance", {
     shell_level = -1,
     infinite_wyvern_fire = false,
-    infinite_backstep = false,
     instant_charge = false,
     unlimited_ammo = false,
 })

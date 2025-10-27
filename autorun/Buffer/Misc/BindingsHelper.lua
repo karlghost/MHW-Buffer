@@ -17,6 +17,39 @@ setmetatable(helper, {
     __index = bindings
 })
 
+--- Sets a value in a module's data structure using a dot-separated path
+--- @param path string The path to the setting (e.g., "character.health")
+--- @param value any The value to set
+--- @return boolean success Whether the operation was successful
+function helper.set_module_value(path, value)
+    local path_parts = utils.split(path, ".")
+    local module_name = path_parts[1]
+
+    -- Find the module by title
+    local module_index
+    for key, mod in pairs(modules) do
+        if mod.title == module_name then
+            module_index = key
+            break
+        end
+    end
+    if not module_index then return false end
+
+    -- Traverse to the target value
+    table.remove(path_parts, 1)
+    local target = modules[module_index].data
+    for i = 1, #path_parts - 1 do
+        if not target[path_parts[i]] then
+            target[path_parts[i]] = {}
+        end
+        target = target[path_parts[i]]
+    end
+
+    -- Set the value directly
+    target[path_parts[#path_parts]] = value
+    return true
+end
+
 function helper.convert_old_format()
     local file = json.load_file(file_path)
     if file then
@@ -120,13 +153,13 @@ function helper.add(device, input, path, value)
         -- Handle boolean values
         if type(target_value) == "boolean" then
             target_value = not target_value
-            target[path_parts[#path_parts]] = target_value
+            helper.set_module_value(path, target_value)
             value_text = target_value and enabled_text or disabled_text
 
         -- Handle number values
         elseif type(target_value) == "number" then
             target_value = target_value > -1 and -1 or value
-            target[path_parts[#path_parts]] = target_value
+            helper.set_module_value(path, target_value)
             value_text = target_value == -1 and disabled_text or
                 string.gsub(language.get("window.bindings.set_to"), "%%d", tostring(target_value))
         end
