@@ -109,20 +109,6 @@ local function check_for_enabled(data_layer, parent_key, enabled_buffs)
     end
 end
 
--- Helper function to recursively disable all settings
-local function disable_all(data_layer)
-    for key, value in pairs(data_layer) do
-        if type(value) == "boolean" then
-            data_layer[key] = false
-        elseif type(value) == "number" then
-            data_layer[key] = -1
-        elseif type(value) == "table" then
-            disable_all(value)
-        end
-    end
-end
-
-
 -- Init the modules
 for _, module in pairs(modules) do
     if module.init then module:init() end
@@ -224,34 +210,45 @@ re.on_draw_ui(function()
                         imgui.spacing()
                         imgui.begin_table("enabled_buffs", 3, nil, nil, nil)
                         for i, buff in pairs(enabled_buffs) do
-                            imgui.push_id(i)
-                            imgui.table_next_row()
-                            imgui.table_next_column()
-                            imgui.text(bindings.get_setting_name_from_path(buff[1]))
-                            imgui.table_next_column()
-                            imgui.text("  " .. tostring(buff[2]) .. "  ")
-                            imgui.table_next_column()
-                            if imgui.button(language.get(languagePrefix .. "disable")) then
-                                local off_state = type(buff[2]) == "boolean" and false or -1
-                                bindings.set_module_value(buff[1], off_state)
+                            -- Skip over bonus stats with zero value as they are disabled
+                            if not (string.find(buff[1], "bonus_") and buff[2] == 0) then
+                                imgui.spacing()
+                                imgui.push_id(i)
+                                imgui.table_next_row()
+                                imgui.table_next_column()
+                                imgui.text(" " .. bindings.get_setting_name_from_path(buff[1]))
+                                imgui.table_next_column()
+                                imgui.text("  " .. tostring(buff[2]) .. "  ")
+                                imgui.table_next_column()
+                                if imgui.button(language.get(languagePrefix .. "disable")) then
+                                    local off_state
+                                    if type(buff[2]) == "boolean" then
+                                        off_state = false
+                                    else
+                                        off_state = -1
+                                    end
+                                    bindings.set_module_value(buff[1], off_state)
+                                end
+                                imgui.same_line()
+                                imgui.text("  ")
+                                imgui.pop_id()
                             end
-                            imgui.same_line()
-                            imgui.text("  ")
-                            imgui.pop_id()
                         end
-                        imgui.end_table()
                         imgui.spacing()
+                        imgui.end_table()
                         imgui.separator()
                         imgui.spacing()
                         if imgui.button("   " .. language.get(languagePrefix .. "disable_all").. "   ", "", false) then
                             for _, module in pairs(modules) do
-                                disable_all(module.data)
+                                bindings.disable_all(module.data)
                                 module:save_config()
                             end
                         end
                         imgui.spacing()
                     else
-                        imgui.text("   " .. language.get(languagePrefix .. "nothing_enabled"))
+                        imgui.spacing()
+                        imgui.text(" " .. language.get(languagePrefix .. "nothing_enabled").. " ")
+                        imgui.spacing()
                     end
                     imgui.end_menu()
                 end
