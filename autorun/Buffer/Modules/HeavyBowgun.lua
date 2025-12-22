@@ -71,8 +71,8 @@ function Module.create_hooks()
         end
 
         -- Shell Level (Valid values are 0, 1, 2. Anything over 2 does 1 damage)
-        local equip_shell_info = managed:get_field("<EquipShellInfo>k__BackingField")
-        Module:cache_and_update_array_value("equip_shell_info", equip_shell_info, "_ShellLv", Module.data.shell_level)
+        local equip_shell_list = managed:get_EquipShellInfo()
+        Module:cache_and_update_array_value("equip_shell_list", equip_shell_list, "_ShellLv", Module.data.shell_level)
 
     end, function(retval) end)
 
