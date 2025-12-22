@@ -76,7 +76,7 @@ local Module = ModuleBase:new("character", {
 
 -- Local variables
 local skip_consumable_use = false
-local skip_slinger_use = false
+local slinger_skip_active = false
 
 -- Item Buffs
 local ITEM_BUFFS_DATA = {
@@ -390,34 +390,60 @@ function Module.create_hooks()
         skip_consumable_use = false
         return retval
     end)
+    
 
-    -- Unlimited Slingers
+    -- Weapon holstered slinger shot
+    sdk. hook(sdk.find_type_definition("app.HunterCharacter"):get_method("shootSlinger(app.HunterDef.SLINGER_AMMO_TYPE, via.vec3, System.Nullable`1<via.vec2>)"), function(args)
+        local managed = sdk. to_managed_object(args[2])
+        if not managed: get_IsMaster() then return end
+
+        if Module.data. unlimited_slingers then
+            slinger_skip_active = true
+        end
+    end, function(retval)
+        return retval
+    end)
+
+    -- Weapon out slinger shot
+    sdk.hook(sdk.find_type_definition("app.HunterCharacter"):get_method("shootSlinger(app.HunterDef.SLINGER_AMMO_TYPE, via.vec3, via.vec3, System.Nullable`1<via.vec2>)"), function(args)
+        local managed = sdk. to_managed_object(args[2])
+        if not managed: get_IsMaster() then return end
+
+        if Module.data. unlimited_slingers then
+            slinger_skip_active = true
+        end
+    end, function(retval)
+        return retval
+    end)
+
+    -- Weapon holstered slinger use (called after shootSlinger for holstered weapon)
     sdk.hook(sdk.find_type_definition("app.HunterCharacter"):get_method("useSlinger"), function(args)
         local managed = sdk.to_managed_object(args[2])
         if not managed:get_IsMaster() then return end
-
-        if Module.data.unlimited_slingers then
-            skip_slinger_use = true
-        end
+        -- Skip flag already set by shootSlinger if needed
     end, function(retval)
-        skip_slinger_use = false
+        slinger_skip_active = false
         return retval
     end)
-    
-    -- Used for consumables in both the slinger and item pouch
-    sdk.hook(sdk.find_type_definition("app.savedata.cItemParam"):get_method("changeItemPouchNum(app.ItemDef.ID, System.Int16, app.savedata.cItemParam.POUCH_CHANGE_TYPE)"), function(args)
-        if skip_consumable_use or skip_slinger_use then
-            return sdk.PreHookResult.SKIP_ORIGINAL
-        end
-    end, function(retval) return retval end)
-    
-    -- Pickupable slinger ammo
-    sdk.hook(sdk.find_type_definition("app.cSlingerAmmo"):get_method("useAmmo"), function(args)
-        if skip_slinger_use then
-            return sdk.PreHookResult.SKIP_ORIGINAL
-        end
-    end, function(retval) return retval end)
 
+    -- Pickupable slinger ammo consumption (thorngrass, burst, etc.)
+    sdk.hook(sdk.find_type_definition("app.cSlingerAmmo"):get_method("useAmmo"), function(args)
+        if Module.data.unlimited_slingers then
+            return sdk.PreHookResult. SKIP_ORIGINAL
+        end
+    end, function(retval) 
+        return retval 
+    end)
+
+    -- Item pouch changes (handles consumable items like dung pods, lightning pods)
+    sdk.hook(sdk.find_type_definition("app.savedata.cItemParam"):get_method("changeItemPouchNum(app.ItemDef.ID, System.Int16, app.savedata.cItemParam.POUCH_CHANGE_TYPE)"), function(args)
+        if skip_consumable_use or slinger_skip_active then
+            return sdk.PreHookResult.SKIP_ORIGINAL
+        end
+    end, function(retval)
+        slinger_skip_active = false
+        return retval 
+    end)
 
     -- Mantles
     sdk.hook(sdk.find_type_definition("app.mcActiveSkillController"):get_method("updateMain"), function(args)
@@ -617,6 +643,7 @@ end
 
 function Module.reset()
     -- Implement reset functionality if needed
+    log.debug("\n")
 end
 
 return Module
