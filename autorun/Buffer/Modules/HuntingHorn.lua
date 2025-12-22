@@ -7,7 +7,7 @@ local Module = ModuleBase:new("hunting_horn", {
 
 function Module.create_hooks()
     
-    sdk.hook(sdk.find_type_definition("app.cHunterWp05Handling"):get_method("update"), function(args) 
+    sdk.hook(sdk.find_type_definition("app.cHunterWp05Handling"):get_method("doUpdate"), function(args) 
         local managed = sdk.to_managed_object(args[2])
         if not Module:weapon_hook_guard(managed, "app.cHunterWp05Handling") then return end
 

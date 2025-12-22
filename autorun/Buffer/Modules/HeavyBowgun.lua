@@ -25,7 +25,7 @@ function Module.create_hooks()
         Module:reset()
     end, function(retval) end)
     
-    sdk.hook(sdk.find_type_definition("app.cHunterWp12Handling"):get_method("update"), function(args) 
+    sdk.hook(sdk.find_type_definition("app.cHunterWp12Handling"):get_method("doUpdate"), function(args) 
         local managed = sdk.to_managed_object(args[2])
         if not Module:weapon_hook_guard(managed, "app.cHunterWp12Handling") then return end
 
