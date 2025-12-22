@@ -12,7 +12,7 @@ local Module = ModuleBase:new("light_bowgun", {
     no_recoil = false,
     no_knockback = false,
     unlimited_bladescale = false,
-    all_rapid_fire = false,
+    -- all_rapid_fire = false,
     shell_level = -1
 })
 
@@ -72,8 +72,9 @@ function Module.create_hooks()
         end
 
         -- All Rapid Fire (0 = Normal, 1 = Rapid)
-        local ammos = managed:get_field("_Ammos")
-        Module:cache_and_update_array_value("ammos", ammos, "_AmmoType", Module.data.all_rapid_fire and 1 or -1)
+        -- Currently broken. For some reason this now returns nil, and the Weapon Param field returns the ammos...
+        -- local ammos = managed:get_field("_Ammos")
+        -- Module:cache_and_update_array_value("ammos", ammos, "_AmmoType", Module.data.all_rapid_fire and 1 or -1)
 
 
         --* _Ammos
@@ -99,8 +100,8 @@ function Module.create_hooks()
         -- 19 = Tranq
 
         -- Shell Level (Valid values are 0, 1, 2. Anything over 2 does 1 damage)
-        local equip_shell_info = managed:get_field("<EquipShellInfo>k__BackingField")
-        Module:cache_and_update_array_value("equip_shell_info", equip_shell_info, "_ShellLv", Module.data.shell_level)
+        local equip_shell_list = managed:get_EquipShellInfo()
+        Module:cache_and_update_array_value("equip_shell_list", equip_shell_list, "_ShellLv", Module.data.shell_level)
 
         --* Can't force ammo into the bowgun, need to explore this more
         -- for i = 0, #managed:get_field("_Ammos") do
@@ -258,8 +259,8 @@ function Module.add_ui()
 
     imgui.end_table()
 
-    changed, Module.data.all_rapid_fire = imgui.checkbox(language.get(languagePrefix .. "all_rapid_fire"), Module.data.all_rapid_fire)
-    any_changed = any_changed or changed
+    -- changed, Module.data.all_rapid_fire = imgui.checkbox(language.get(languagePrefix .. "all_rapid_fire"), Module.data.all_rapid_fire)
+    -- any_changed = any_changed or changed
 
     return any_changed
 end
