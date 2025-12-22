@@ -67,7 +67,9 @@ function Module.create_hooks()
         -- Bladescale Loading
         if Module.data.unlimited_bladescale then
             if utils.has_skill(managed:get_Hunter(), 201) then -- Bladescale Loading
-                managed:set_field("<Skill218AdditionalShellNum>k__BackingField", managed:get_field("<Skill218AdditionalShellMaxNum>k__BackingField"))
+                if managed:get_Skill218AdditionalShellNum() < managed:get_Skill218AdditionalShellMaxNum() then
+                    managed:set_Skill218AdditionalShellNum(managed:get_Skill218AdditionalShellMaxNum())
+                end
             end
         end
 
