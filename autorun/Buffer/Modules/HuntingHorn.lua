@@ -14,7 +14,9 @@ function Module.create_hooks()
         -- Unlimited Echo Bubbles
         if Module.data.unlimited_echo_bubbles then
             local echo_bubbles = managed:get_field("_HibikiFloatShellInfo")
-            echo_bubbles:set_field("_ReloadTimer", echo_bubbles:get_field("_MaxReloadTime"))
+            if echo_bubbles:get_Ammo() < echo_bubbles:get_MaxAmmo() then
+                echo_bubbles:reloadAmmo()
+            end
         end
 
     end, function(retval) end)
