@@ -225,8 +225,8 @@ function Module.reset()
     if not Module:weapon_hook_guard(weapon_handling, "app.cHunterWp12Handling") then return end
 
     -- Restore original shell levels
-    local equip_shell_info = weapon_handling:get_field("<EquipShellInfo>k__BackingField")
-    Module:cache_and_update_array_value("equip_shell_info", equip_shell_info, "_ShellLv", -1)
+    local equip_shell_list = weapon_handling:get_EquipShellInfo()
+    Module:cache_and_update_array_value("equip_shell_info", equip_shell_list, "_ShellLv", -1)
 end
 
 return Module
