@@ -95,22 +95,22 @@ local ITEM_BUFFS_DATA = {
 
 -- Conditions
 local CONDITIONS_DATA = {
-    poison =        {field = "_Poison",  duration_field = "_DurationTimer",     method = "forceDeactivate"},
-    stench =        {field = "_Stench",  duration_field = "_DurationTimer",     method = "forceDeactivate"},
-    blast =         {field = "_Blast",   duration_field = "_CureAccumerator",   method = "forceDeactivate"},
-    bleed =         {field = "_Bleed",   duration_field = "_CureTimer",         method = "forceDeactivate"},
-    defense_down =  {field = "_DefDown", duration_field = "_DurationTimer",     method = "forceDeactivate"},
-    sleep =         {field = "_Sleep",   duration_field = "_DurationTime",      method = "forceDeactivate"},
-    bubble =        {field = "_Ex00",    duration_field = "_DurationTimer",     method = "forceDeactivate"},
-    hp_reduction =  {field = "_Ex01",    duration_field = "_DurationTimer",     method = "forceDeactivate"},
+    poison =        "_Poison",
+    stench =        "_Stench",
+    blast =         "_Blast",
+    bleed =         "_Bleed",
+    defense_down =  "_DefDown",
+    sleep =         "_Sleep",
+    bubble =        "_Ex00",
+    hp_reduction =  "_Ex01",
     -- Frenzy, Stun, Paralyze, Sticky, Frozen are handled differently
 }
 local BLIGHTS_DATA = {
-    fire =          {field = "_Fire",    duration_field = "_DurationTimer",     method = "forceDeactivate"},
-    thunder =       {field = "_Elec",    duration_field = "_DurationTimer",     method = "forceDeactivate"},
-    water =         {field = "_Water",   duration_field = "_DurationTimer",     method = "forceDeactivate"},
-    ice =           {field = "_Ice",     duration_field = "_DurationTimer",     method = "forceDeactivate"},
-    dragon =        {field = "_Dragon",  duration_field = "_DurationTimer",     method = "forceDeactivate"},
+    fire =          "_Fire",
+    thunder =       "_Elec",
+    water =         "_Water",
+    ice =           "_Ice",
+    dragon =        "_Dragon",
 }
 
 --- Updates a float field value with caching and restoration support
@@ -258,20 +258,20 @@ function Module.create_hooks()
         end
 
         -- Conditions
-        for condition_name, condition_data in pairs(CONDITIONS_DATA) do
+        for condition_name, field_name in pairs(CONDITIONS_DATA) do
             if Module.data.blights_and_conditions.conditions[condition_name] or Module.data.blights_and_conditions.conditions.all then
-                local condition = conditions:get_field(condition_data.field)
-                if condition:get_field(condition_data.duration_field) > 0 then
-                    condition:call(condition_data.method)
+                local condition = conditions:get_field(field_name)
+                if condition:call("get_IsActive") then
+                    condition:call("forceDeactivate")
                 end
             end
         end
         -- Blights
-        for blight_name, blight_data in pairs(BLIGHTS_DATA) do
+        for blight_name, field_name in pairs(BLIGHTS_DATA) do
             if Module.data.blights_and_conditions.blights[blight_name] or Module.data.blights_and_conditions.blights.all then
-                local blight = conditions:get_field(blight_data.field)
-                if blight:get_field(blight_data.duration_field) > 0 then
-                    blight:call(blight_data.method)
+                local blight = conditions:get_field(field_name)
+                if blight:call("get_IsActive") then
+                    blight:call("forceDeactivate")
                 end
             end
         end
@@ -301,7 +301,7 @@ function Module.create_hooks()
         -- Paralyze is handled differently
         if Module.data.blights_and_conditions.conditions.paralyze or Module.data.blights_and_conditions.conditions.all then
             local paralyze = conditions:get_field("_Paralyze") -- Effect still plays
-            if paralyze:get_field("_DurationTime") > 0 then
+            if paralyze:call("get_IsActive") then
                 paralyze:cure() --* cure stops more of the animation than forceDeactivate
             end
             if paralyze:get_field("_Accumulator") > 0 then
@@ -311,7 +311,7 @@ function Module.create_hooks()
         -- Sticky is handled differently
         if Module.data.blights_and_conditions.conditions.sticky or Module.data.blights_and_conditions.conditions.all then
             local sticky = conditions:get_field("_Sticky") -- Effect probably still plays
-            if sticky:get_field("_DurationTime") > 0 then
+            if sticky:call("get_IsActive") then
                 sticky:set_field("_DurationTime", 0)
                 sticky:set_field("_IsRestrainted", false)
             end
@@ -319,7 +319,7 @@ function Module.create_hooks()
         -- Frozen is handled differently
         if Module.data.blights_and_conditions.conditions.frozen or Module.data.blights_and_conditions.conditions.all then
             local frozen = conditions:get_field("_Frozen") -- Effect still partially plays
-            if frozen:get_field("_DurationTime") > 0 then
+            if frozen:call("get_IsActive") then
                 frozen:cure()
             end
             if frozen:get_field("_Accumulator") > 0 then
@@ -643,7 +643,6 @@ end
 
 function Module.reset()
     -- Implement reset functionality if needed
-    log.debug("\n")
 end
 
 return Module
