@@ -7,14 +7,16 @@ local Module = ModuleBase:new("hunting_horn", {
 
 function Module.create_hooks()
     
-    sdk.hook(sdk.find_type_definition("app.cHunterWp05Handling"):get_method("update"), function(args) 
+    sdk.hook(sdk.find_type_definition("app.cHunterWp05Handling"):get_method("doUpdate"), function(args) 
         local managed = sdk.to_managed_object(args[2])
         if not Module:weapon_hook_guard(managed, "app.cHunterWp05Handling") then return end
 
         -- Unlimited Echo Bubbles
         if Module.data.unlimited_echo_bubbles then
             local echo_bubbles = managed:get_field("_HibikiFloatShellInfo")
-            echo_bubbles:set_field("_ReloadTimer", echo_bubbles:get_field("_MaxReloadTime"))
+            if echo_bubbles:get_Ammo() < echo_bubbles:get_MaxAmmo() then
+                echo_bubbles:reloadAmmo()
+            end
         end
 
     end, function(retval) end)

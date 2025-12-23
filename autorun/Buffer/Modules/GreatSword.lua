@@ -10,7 +10,7 @@ local Module = ModuleBase:new("great_sword", {
 
 function Module.create_hooks()
     
-    sdk.hook(sdk.find_type_definition("app.cHunterWp00Handling"):get_method("update"), function(args) 
+    sdk.hook(sdk.find_type_definition("app.cHunterWp00Handling"):get_method("doUpdate"), function(args) 
         local managed = sdk.to_managed_object(args[2])
         if not Module:weapon_hook_guard(managed, "app.cHunterWp00Handling") then return end
 

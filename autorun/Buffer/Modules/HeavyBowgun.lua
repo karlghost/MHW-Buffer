@@ -25,7 +25,7 @@ function Module.create_hooks()
         Module:reset()
     end, function(retval) end)
     
-    sdk.hook(sdk.find_type_definition("app.cHunterWp12Handling"):get_method("update"), function(args) 
+    sdk.hook(sdk.find_type_definition("app.cHunterWp12Handling"):get_method("doUpdate"), function(args) 
         local managed = sdk.to_managed_object(args[2])
         if not Module:weapon_hook_guard(managed, "app.cHunterWp12Handling") then return end
 
@@ -66,13 +66,15 @@ function Module.create_hooks()
         -- Bladescale Loading
         if Module.data.unlimited_bladescale then
             if utils.has_skill(managed:get_Hunter(), 201) then -- Bladescale Loading
-                managed:set_field("<Skill218AdditionalShellNum>k__BackingField", managed:get_field("<Skill218AdditionalShellMaxNum>k__BackingField"))
+                if managed:get_Skill218AdditionalShellNum() < managed:get_Skill218AdditionalShellMaxNum() then
+                    managed:set_Skill218AdditionalShellNum(managed:get_Skill218AdditionalShellMaxNum())
+                end
             end
         end
 
         -- Shell Level (Valid values are 0, 1, 2. Anything over 2 does 1 damage)
-        local equip_shell_info = managed:get_field("<EquipShellInfo>k__BackingField")
-        Module:cache_and_update_array_value("equip_shell_info", equip_shell_info, "_ShellLv", Module.data.shell_level)
+        local equip_shell_list = managed:get_EquipShellInfo()
+        Module:cache_and_update_array_value("equip_shell_list", equip_shell_list, "_ShellLv", Module.data.shell_level)
 
     end, function(retval) end)
 
@@ -225,8 +227,8 @@ function Module.reset()
     if not Module:weapon_hook_guard(weapon_handling, "app.cHunterWp12Handling") then return end
 
     -- Restore original shell levels
-    local equip_shell_info = weapon_handling:get_field("<EquipShellInfo>k__BackingField")
-    Module:cache_and_update_array_value("equip_shell_info", equip_shell_info, "_ShellLv", -1)
+    local equip_shell_list = weapon_handling:get_EquipShellInfo()
+    Module:cache_and_update_array_value("equip_shell_info", equip_shell_list, "_ShellLv", -1)
 end
 
 return Module
