@@ -32,13 +32,7 @@ function Module.create_hooks()
         if not Module:weapon_hook_guard(managed, "app.cHunterWp13Handling") then return end
 
         -- Special Ammo
-        if Module.data.max_special_ammo and Module.old.special_ammo_heal_rate == nil then
-            Module.old.special_ammo_heal_rate = managed:get_field("_SpecialAmmoHealRate")
-            managed:set_field("_SpecialAmmoHealRate", 100)
-        elseif not Module.data.max_special_ammo and Module.old.special_ammo_heal_rate ~= nil then
-            managed:set_field("_SpecialAmmoHealRate", Module.old.special_ammo_heal_rate)
-            Module.old.special_ammo_heal_rate = nil
-        end
+        Module:cache_and_update_field("special_ammo_heal_rate", managed, "_SpecialAmmoHealRate", Module.data.max_special_ammo and 100 or -1)
         
         -- Rapid Shot
         if Module.data.max_rapid_shot then
@@ -74,9 +68,12 @@ function Module.create_hooks()
         end
 
         -- All Rapid Fire (0 = Normal, 1 = Rapid)
-        -- Currently broken. For some reason this now returns nil, and the Weapon Param field returns the ammos...
-        -- local ammos = managed:get_field("_Ammos")
-        -- Module:cache_and_update_array_value("ammos", ammos, "_AmmoType", Module.data.all_rapid_fire and 1 or -1)
+        local ammo_types = 19
+        for i = 0, ammo_types - 1 do
+            local ammo_info = managed:getAmmo(i)
+            local equip_ammo_info = managed:get_EquipShellInfo()[i]
+            Module:cache_and_update_field("ammo_type_" .. i, ammo_info, "_AmmoType", Module.data.all_rapid_fire and 1 or -1) -- 0 = Normal, 1 = Rapid
+         end
 
 
         --* _Ammos
@@ -261,8 +258,8 @@ function Module.add_ui()
 
     imgui.end_table()
 
-    -- changed, Module.data.all_rapid_fire = imgui.checkbox(language.get(languagePrefix .. "all_rapid_fire"), Module.data.all_rapid_fire)
-    -- any_changed = any_changed or changed
+    changed, Module.data.all_rapid_fire = imgui.checkbox(language.get(languagePrefix .. "all_rapid_fire"), Module.data.all_rapid_fire)
+    any_changed = any_changed or changed
 
     return any_changed
 end
@@ -275,9 +272,16 @@ function Module.reset()
     if not weapon_handling then return end
     if not Module:weapon_hook_guard(weapon_handling, "app.cHunterWp13Handling") then return end
 
+    Module:cache_and_update_field("special_ammo_heal_rate", weapon_handling, "_SpecialAmmoHealRate", -1)
+
     -- Restore original ammo types
-    -- local ammos = weapon_handling:get_field("_Ammos")
-    -- Module:cache_and_update_array_toggle("ammos", ammos, "_AmmoType", false)
+    local ammo_types = 19
+        for i = 0, ammo_types - 1 do
+            local ammo_info = weapon_handling:getAmmo(i)
+            local equip_ammo_info = weapon_handling:get_EquipShellInfo()[i]
+            Module:cache_and_update_field("ammo_type_" .. i, ammo_info, "_AmmoType", -1)
+        end
+
     
     -- Restore original shell levels
     local equip_shell_list = weapon_handling:get_EquipShellInfo()
