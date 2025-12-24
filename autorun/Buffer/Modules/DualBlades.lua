@@ -18,7 +18,8 @@ function Module.create_hooks()
         end
         -- Demon Boost Mode
         if Module.data.demon_boost then 
-            managed:set_field("<IsMikiriBuff>k__BackingField", true) 
+            managed:set_field("<IsMikiriBuff>k__BackingField", true)
+            managed:set_field("_MikiriBuffTimer", 20.0)
         end
 
     end, function(retval) end)
