@@ -99,6 +99,10 @@ end
 -- Helper function to recursively check for enabled buffs
 local function check_for_enabled(data_layer, parent_key, enabled_buffs)
     for key, value in pairs(data_layer) do
+
+        -- Skip internal use keys
+        if key:sub(1,1) == "_" then goto continue end
+
         if type(value) == "boolean" and value == true then
             table.insert(enabled_buffs, {parent_key .. "." .. key, value})
         elseif type(value) == "number" and value ~= -1 then
@@ -106,6 +110,7 @@ local function check_for_enabled(data_layer, parent_key, enabled_buffs)
         elseif type(value) == "table" then
             check_for_enabled(value, parent_key .. "." .. key, enabled_buffs)
         end
+        ::continue::
     end
 end
 
@@ -210,29 +215,32 @@ re.on_draw_ui(function()
                         imgui.spacing()
                         imgui.begin_table("enabled_buffs", 3, nil, nil, nil)
                         for i, buff in pairs(enabled_buffs) do
-                            -- Skip over bonus stats with zero value as they are disabled
-                            if not (string.find(buff[1], "bonus_") and buff[2] == 0) then
-                                imgui.spacing()
-                                imgui.push_id(i)
-                                imgui.table_next_row()
-                                imgui.table_next_column()
-                                imgui.text(" " .. bindings.get_setting_name_from_path(buff[1]))
-                                imgui.table_next_column()
-                                imgui.text("  " .. tostring(buff[2]) .. "  ")
-                                imgui.table_next_column()
-                                if imgui.button(language.get(languagePrefix .. "disable")) then
-                                    local off_state
-                                    if type(buff[2]) == "boolean" then
-                                        off_state = false
-                                    else
-                                        off_state = -1
-                                    end
-                                    bindings.set_module_value(buff[1], off_state)
+
+                            if buff[1]:sub(1,1) == "_" then goto continue end -- Skip private variables
+                            if buff[2] == 0 then goto continue end -- Skip zero values
+                            
+                            imgui.spacing()
+                            imgui.push_id(i)
+                            imgui.table_next_row()
+                            imgui.table_next_column()
+                            imgui.text(" " .. bindings.get_setting_name_from_path(buff[1]))
+                            imgui.table_next_column()
+                            imgui.text("  " .. tostring(buff[2]) .. "  ")
+                            imgui.table_next_column()
+                            if imgui.button(language.get(languagePrefix .. "disable")) then
+                                local off_state
+                                if type(buff[2]) == "boolean" then
+                                    off_state = false
+                                else
+                                    off_state = -1
                                 end
-                                imgui.same_line()
-                                imgui.text("  ")
-                                imgui.pop_id()
+                                bindings.set_module_value(buff[1], off_state)
                             end
+                            imgui.same_line()
+                            imgui.text("  ")
+                            imgui.pop_id()
+
+                            ::continue::
                         end
                         imgui.spacing()
                         imgui.end_table()
