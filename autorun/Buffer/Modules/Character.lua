@@ -334,18 +334,7 @@ function Module.create_hooks()
         updateDahliaFloatBox("elemental_attack", "_WeaponAttrPower",            managed:get_AttackPower(), Module.data.stats.bonus_elemental > 0 and Module.data.stats.bonus_elemental / 10 or Module.data.stats.bonus_elemental, false)
 
         -- Element
-        if Module.data.stats.element ~= -1 then
-            local attack_power = managed:get_field("_AttackPower")
-            if not Module.old.stats then Module.old.stats = {} end
-            if Module.old.stats.element == nil then
-                Module.old.stats.element = attack_power:get_field("_WeaponAttrType")
-            end
-            attack_power:set_field("_WeaponAttrType", Module.data.stats.element)
-        elseif Module.old.stats and Module.old.stats.element ~= nil then
-            local attack_power = managed:get_field("_AttackPower")
-            attack_power:set_field("_WeaponAttrType", Module.old.stats.element)
-            Module.old.stats.element = nil
-        end
+        Module:cache_and_update_field("element", managed:get_field("_AttackPower"), "_WeaponAttrType", Module.data.stats.element)
 
     end, function(retval)
     end)

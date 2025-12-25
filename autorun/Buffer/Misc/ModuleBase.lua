@@ -53,12 +53,33 @@ function ModuleBase:reset() end
 --- @param field_name string The field name to update
 --- @param new_value number The new value to set (-1 or negative to restore original)
 function ModuleBase:cache_and_update_field(cache_key, managed, field_name, new_value)
-    if self.old[cache_key] == nil then
-        self.old[cache_key] = managed:get_field(field_name)
-    end
-    
-    if new_value >= 0 then 
+    if new_value == nil or new_value >= 0 then 
+        if self.old[cache_key] == nil then
+            self.old[cache_key] = managed:get_field(field_name)
+        end
         managed:set_field(field_name, new_value) 
+    else
+        if self.old[cache_key] ~= nil then
+            managed:set_field(field_name, self.old[cache_key])
+            self.old[cache_key] = nil
+        end
+    end
+end
+
+--- Cache and update a single field value based on a toggle state
+--- Caches the original field value when enabled, then updates it to the target value.
+--- Restores the original value when disabled.
+--- @param cache_key string The cache key to store the original value
+--- @param managed userdata The managed object containing the field
+--- @param field_name string The field name to update
+--- @param target_value any The value to set when enabled
+--- @param enabled boolean True to set the value, false to restore original
+function ModuleBase:cache_and_update_toggle(cache_key, managed, field_name, target_value, enabled)
+    if enabled then
+        if self.old[cache_key] == nil then
+            self.old[cache_key] = managed:get_field(field_name)
+        end
+        managed:set_field(field_name, target_value)
     else
         if self.old[cache_key] ~= nil then
             managed:set_field(field_name, self.old[cache_key])

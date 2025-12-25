@@ -22,32 +22,25 @@ function Module.create_hooks()
         local managed = sdk.to_managed_object(args[2])
         if not managed:get_type_definition():is_a("app.HunterCharacter") then return end
         if not managed:get_IsMaster() then return end
-
-        -- Get weapon handling
-        local weapon_handling = managed:get_WeaponHandling()
-        local reserve_weapon_handling = managed:get_ReserveWeaponHandling()
-        if not weapon_handling then return end
-
-        -- Check if the weapon handling for the main or reserve is a bow
-        weapon_handling = (weapon_handling and weapon_handling:get_type_definition():is_a("app.cHunterWp11Handling")) and weapon_handling or nil
-        reserve_weapon_handling = (reserve_weapon_handling and reserve_weapon_handling:get_type_definition():is_a("app.cHunterWp11Handling")) and reserve_weapon_handling or nil
-
-        -- Get the weapon handling
-        local weapon = weapon_handling or reserve_weapon_handling
-        if not weapon then return end
-
-        -- Check if all_arrow_types is enabled and we have the old arrow types
-        if Module.data.all_arrow_types and Module.old.bottle_infos then
-            -- Reset arrow types when weapon changes
-            Module:reset()
-        end
+        
+        Module:reset()
     end, function(retval) end)
     
+    
+    -- Watch for reserve weapon changes
+    sdk.hook(sdk.find_type_definition("app.HunterCharacter"):get_method("changeWeaponFromReserve"), function(args) 
+        local managed = sdk.to_managed_object(args[2])
+        if not managed:get_type_definition():is_a("app.HunterCharacter") then return end
+        if not managed:get_IsMaster() then return end
+
+        Module:reset()
+    end, function(retval) end)
+
     -- Weapon changes
     sdk.hook(sdk.find_type_definition("app.cHunterWp11Handling"):get_method("doUpdate"), function(args) 
         local managed = sdk.to_managed_object(args[2])
         if not Module:weapon_hook_guard(managed, "app.cHunterWp11Handling") then return end
-
+        local weapon_id = managed:get_Hunter():get_WeaponID()
 
         -- Charge Level
         if Module.data.charge_level ~= -1 then
@@ -66,7 +59,7 @@ function Module.create_hooks()
 
         -- All arrow types
         local bottle_infos = managed:get_field("<BottleInfos>k__BackingField")
-        Module:cache_and_update_array_toggle("bottle_infos", bottle_infos, "<CanLoading>k__BackingField", Module.data.all_arrow_types)
+        Module:cache_and_update_array_toggle("bottle_infos_" .. weapon_id, bottle_infos, "<CanLoading>k__BackingField", Module.data.all_arrow_types)
 
         -- Unlimited bottles
         if Module.data.unlimited_bottles then
@@ -128,20 +121,24 @@ function Module.add_ui()
     return any_changed
 end
 
+local function reset_weapon(weapon)
+    local weapon_id = weapon:get_Hunter():get_WeaponID()
+    -- Restore original arrow types
+    local bottle_infos = weapon:get_field("<BottleInfos>k__BackingField")
+    Module:cache_and_update_array_toggle("bottle_infos_" .. weapon_id, bottle_infos, "<CanLoading>k__BackingField", false)
+end
+
 function Module.reset()
     local player = utils.get_master_character()
     if not player then return end
-    
-    local weapon_handling = player:get_WeaponHandling()
-    local reserve_weapon_handling = player:get_ReserveWeaponHandling()
 
-    -- Check if the weapon handling for the main or reserve is a bow
-    local weapon = weapon_handling:get_type_definition():is_a("app.cHunterWp11Handling") and weapon_handling or reserve_weapon_handling:get_type_definition():is_a("app.cHunterWp11Handling") and reserve_weapon_handling or nil
-    if not weapon then return end
+    if player:get_WeaponType() == 11 then 
+        reset_weapon(player:get_WeaponHandling())
+    end
+    if player:get_ReserveWeaponType() == 11 then 
+        reset_weapon(player:get_ReserveWeaponHandling())
+    end
 
-    -- Restore original arrow types
-    local bottle_infos = weapon:get_field("<BottleInfos>k__BackingField")
-    Module:cache_and_update_array_toggle("bottle_infos", bottle_infos, "<CanLoading>k__BackingField", false)
 end
 
 return Module

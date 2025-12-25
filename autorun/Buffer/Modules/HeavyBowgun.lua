@@ -25,9 +25,19 @@ function Module.create_hooks()
         Module:reset()
     end, function(retval) end)
     
+    -- Watch for reserve weapon changes
+    sdk.hook(sdk.find_type_definition("app.HunterCharacter"):get_method("changeWeaponFromReserve"), function(args) 
+        local managed = sdk.to_managed_object(args[2])
+        if not managed:get_type_definition():is_a("app.HunterCharacter") then return end
+        if not managed:get_IsMaster() then return end
+
+        Module:reset()
+    end, function(retval) end)
+    
     sdk.hook(sdk.find_type_definition("app.cHunterWp12Handling"):get_method("doUpdate"), function(args) 
         local managed = sdk.to_managed_object(args[2])
         if not Module:weapon_hook_guard(managed, "app.cHunterWp12Handling") then return end
+        local weapon_id = managed:get_Hunter():get_WeaponID()
 
         -- Energy Bullet Info
         local energy_bullet_info = managed:get_field("_EnergyBulletInfo")
@@ -74,7 +84,7 @@ function Module.create_hooks()
 
         -- Shell Level (Valid values are 0, 1, 2. Anything over 2 does 1 damage)
         local equip_shell_list = managed:get_EquipShellInfo()
-        Module:cache_and_update_array_value("equip_shell_list", equip_shell_list, "_ShellLv", Module.data.shell_level)
+        Module:cache_and_update_array_value("equip_shell_list_" .. weapon_id, equip_shell_list, "_ShellLv", Module.data.shell_level)
 
     end, function(retval) end)
 
@@ -218,17 +228,25 @@ function Module.add_ui()
     return any_changed
 end
 
+local function reset_weapon(weapon)
+    local weapon_id = weapon:get_Hunter():get_WeaponID()
+
+    -- Restore original shell levels
+    local equip_shell_list = weapon:get_EquipShellInfo()
+    Module:cache_and_update_array_value("equip_shell_list_" .. weapon_id, equip_shell_list, "_ShellLv", -1)
+end
+
 function Module.reset()
     local player = utils.get_master_character()
     if not player then return end
-    
-    local weapon_handling = player:get_WeaponHandling()
-    if not weapon_handling then return end
-    if not Module:weapon_hook_guard(weapon_handling, "app.cHunterWp12Handling") then return end
 
-    -- Restore original shell levels
-    local equip_shell_list = weapon_handling:get_EquipShellInfo()
-    Module:cache_and_update_array_value("equip_shell_info", equip_shell_list, "_ShellLv", -1)
+    if player:get_WeaponType() == 13 then 
+        reset_weapon(player:get_WeaponHandling())
+    end
+    if player:get_ReserveWeaponType() == 13 then 
+        reset_weapon(player:get_ReserveWeaponHandling())
+    end
+
 end
 
 return Module
