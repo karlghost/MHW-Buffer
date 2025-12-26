@@ -2,8 +2,6 @@ local ModuleBase = require("Buffer.Misc.ModuleBase")
 local utils = require("Buffer.Misc.Utils")
 local language = require("Buffer.Misc.Language")
 
---TODO: Fast Charge doesn't work, or isn't broken and just says disabled
-
 local Module = ModuleBase:new("insect_glaive", {
     kinsect = {
         power = -1,
@@ -11,14 +9,14 @@ local Module = ModuleBase:new("insect_glaive", {
         recovery = -1,
         unlimited_stamina = false,
         fast_charge = false,
-        charge_time = 0,
+        _charge_time = 0,
     },
     red = false,
     white = false,
     orange = false,
     infinite_air_attacks = false,
     fast_charge = false,
-    charge_time = 0,
+    _charge_time = 0,
     unrestricted_charge = false,
 })
 
@@ -73,7 +71,7 @@ function Module.create_hooks()
         end
         
         -- Kinsect charge
-        if Module.data.kinsect.fast_charge and managed:get_field("InsectChargeTimer") > Module.data.kinsect.charge_time/200 then
+        if Module.data.kinsect.fast_charge and managed:get_field("InsectChargeTimer") > Module.data.kinsect._charge_time/200 then
             managed:set_field("InsectChargeTimer", 100.0)
         end
         
@@ -97,7 +95,7 @@ function Module.create_hooks()
         end
 
         -- Charge attack
-        if Module.data.fast_charge and managed:get_field("_ChargeTimer") > Module.data.charge_time/50 then
+        if Module.data.fast_charge and managed:get_field("_ChargeTimer") > Module.data._charge_time/50 then
             managed:set_field("_ChargeTimer", 100.0)
         end
 
@@ -142,7 +140,7 @@ function Module.add_ui()
             imgui.text("  ")
             imgui.same_line()
             imgui.set_next_item_width(imgui.calc_item_width() - 100)
-            changed, Module.data.kinsect.charge_time = imgui.slider_int(language.get(languagePrefix .. "charge_time"), Module.data.kinsect.charge_time, 0, 100, Module.data.kinsect.charge_time == 0 and language.get("base.disabled") or "%d")
+            changed, Module.data.kinsect._charge_time = imgui.slider_int(language.get(languagePrefix .. "charge_time"), Module.data.kinsect._charge_time >= 0 and Module.data.kinsect._charge_time or 0, 0, 100, "%d")
             utils.tooltip(language.get(languagePrefix.."charge_time_tooltip"))
             any_changed = any_changed or changed
         end
@@ -183,7 +181,7 @@ function Module.add_ui()
         imgui.text("  ")
         imgui.same_line()
         imgui.set_next_item_width(imgui.calc_item_width() - 100)
-        changed, Module.data.charge_time = imgui.slider_int(language.get(languagePrefix .. "charge_time"), Module.data.charge_time, 0, 100, Module.data.charge_time == 0 and language.get("base.disabled") or "%d")
+        changed, Module.data._charge_time = imgui.slider_int(language.get(languagePrefix .. "charge_time"), Module.data._charge_time >= 0 and Module.data._charge_time or 0, 0, 100, "%d")
         utils.tooltip(language.get(languagePrefix .. "charge_time_tooltip"))
         any_changed = any_changed or changed
     end
