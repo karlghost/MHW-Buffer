@@ -125,6 +125,7 @@ function Module.create_hooks()
         if Module.data.no_reload then
             local shell_type = managed:get_ShellType()
             local ammo = managed:getAmmo(shell_type)
+            if ammo == nil then return end
             ammo:reloadAmmo(ammo:get_LimitAmmo())
         end
 
