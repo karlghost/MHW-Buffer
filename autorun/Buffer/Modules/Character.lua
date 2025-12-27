@@ -493,6 +493,8 @@ function Module.add_ui()
         languagePrefix = Module.title .. ".blights_and_conditions."
 
         if imgui.tree_node(language.get(languagePrefix .. "title")) then
+            
+            utils.tooltip(language.get(languagePrefix .. "tooltip"))
 
             languagePrefix = Module.title .. ".blights_and_conditions.blights."
             if imgui.tree_node(language.get(languagePrefix .. "title")) then
@@ -536,8 +538,9 @@ function Module.add_ui()
                 imgui.tree_pop()
             end
             imgui.tree_pop()
+        else
+            utils.tooltip(language.get(Module.title .. ".blights_and_conditions." .. "tooltip"))
         end
-        utils.tooltip(language.get(languagePrefix .. "tooltip"))
 
         languagePrefix = Module.title .. ".item_buffs."
         if imgui.tree_node(language.get(languagePrefix .. "title")) then
