@@ -10,6 +10,22 @@ body:
       description: A clear description of what the bug and/or issue is.
     validations:
       required: true
+  - type: input
+    id: reframework-version
+    attributes:
+      label: REFramework Version
+      description: What version of REFramework are you using?
+      placeholder: e.g., 01208
+    validations:
+      required: true
+  - type: input
+    id: buffer-version
+    attributes:
+      label: Buffer Version
+      description: What version of Buffer are you using?
+      placeholder: e.g., 1.0.0
+    validations:
+      required: true
   - type: textarea
     id: context
     attributes:
