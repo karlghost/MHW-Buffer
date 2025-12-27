@@ -294,8 +294,8 @@ function Module.create_hooks()
             if stun:get_field("_ReduceTimer") < 6 then --? Maybe a Jewel or skill lowers this
                 stun:set_field("_ReduceTimer", 6)
             end
-            if stun:get_field("_Accumulator") > 0 then
-                stun:set_field("_Accumulator", 0)
+            if stun:get_Accumulator() > 0 then
+                stun:resetAccumulator()
             end
         end
         -- Paralyze is handled differently
@@ -304,8 +304,8 @@ function Module.create_hooks()
             if paralyze:call("get_IsActive") then
                 paralyze:cure() --* cure stops more of the animation than forceDeactivate
             end
-            if paralyze:get_field("_Accumulator") > 0 then
-                paralyze:set_field("_Accumulator", 0)
+            if paralyze:get_Accumulator() > 0 then
+                paralyze:resetAccumulator()
             end
         end
         -- Sticky is handled differently
@@ -322,8 +322,8 @@ function Module.create_hooks()
             if frozen:call("get_IsActive") then
                 frozen:cure()
             end
-            if frozen:get_field("_Accumulator") > 0 then
-                frozen:set_field("_Accumulator", 0)
+            if frozen:get_Accumulator() > 0 then
+                frozen:resetAccumulator()
             end
         end
         
