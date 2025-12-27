@@ -86,11 +86,16 @@ function Module.create_hooks()
         local equip_shell_list = managed:get_EquipShellInfo()
         Module:cache_and_update_array_value("equip_shell_list_" .. weapon_id, equip_shell_list, "_ShellLv", Module.data.shell_level)
 
+        if Module.data.no_reload then
+            local shell_type = managed:get_ShellType()
+            local ammo = managed:getAmmo(shell_type)
+            ammo:reloadAmmo(ammo:get_LimitAmmo())
+        end
+
     end, function(retval) end)
 
     -- On shooting a shell, check if unlimited ammo is enabled, and if no reload is enabled
     local skip_ammo_usage = false
-    local no_reload_managed_weapon = nil
     sdk.hook(sdk.find_type_definition("app.cHunterWpGunHandling"):get_method("shootShell"), function(args) 
         local managed = sdk.to_managed_object(args[2])
         if not Module:weapon_hook_guard(managed, "app.cHunterWpGunHandling") then return end
@@ -101,19 +106,9 @@ function Module.create_hooks()
             skip_ammo_usage = true
         end
 
-        -- If no reload is enabled, pass the weapon to the no_reload_managed_weapon variable
-        if Module.data.no_reload then
-            no_reload_managed_weapon = managed
-        end
     end, function(retval)
 
-        -- If no reload is enabled, reload the weapon without an animation
-        if no_reload_managed_weapon and Module.data.no_reload then
-            no_reload_managed_weapon:allReloadAmmo()
-        end
-
         -- Reset variables after the shot
-        no_reload_managed_weapon = nil
         skip_ammo_usage = false
 
         return retval
