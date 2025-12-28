@@ -87,8 +87,7 @@ function Module.create_hooks()
         Module:cache_and_update_array_value("equip_shell_list_" .. weapon_id, equip_shell_list, "_ShellLv", Module.data.shell_level)
 
         if Module.data.no_reload then
-            local shell_type = managed:get_ShellType()
-            local ammo = managed:getAmmo(shell_type)
+            local ammo = managed:getCurrentAmmo()
             if ammo == nil then return end
             ammo:reloadAmmo(ammo:get_LimitAmmo())
         end
