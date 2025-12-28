@@ -12,7 +12,7 @@ local Module = ModuleBase:new("light_bowgun", {
     no_recoil = false,
     no_knockback = false,
     unlimited_bladescale = false,
-    -- all_rapid_fire = false,
+    all_rapid_fire = false,
     shell_level = -1
 })
 
