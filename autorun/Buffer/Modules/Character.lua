@@ -698,6 +698,7 @@ function Module.add_ui()
             changed, attr_index = imgui.combo(language.get(languagePrefix .. "title"), attr_index, attr_type)
             Module.data.stats.element = attr_index - 2
             any_changed = any_changed or changed
+            local row_width = imgui.calc_item_width()
 
             languagePrefix = Module.title .. ".stats.defence_attributes."
             if imgui.tree_node(language.get(languagePrefix .. "title")) then
@@ -712,7 +713,7 @@ function Module.add_ui()
                     longest_text_width = math.max(longest_text_width, imgui.calc_text_size(text).x)
                 end
                 
-                imgui.table_setup_column("Toggle", 16 + 4096, longest_text_width + 30)
+                imgui.table_setup_column("Toggle", 16 + 4096, longest_text_width + 30) -- 30 for additonal column padding
 
                 for _, key in ipairs(DEFENCE_ATTR_KEYS) do
                     local display_name = language.get(element_prefix .. key)
@@ -726,7 +727,7 @@ function Module.add_ui()
 
                     imgui.table_next_column()
                     if Module.data.stats.defence_attributes[key .. "_enable"] then
-                        imgui.set_next_item_width(imgui.calc_item_width() - 100)
+                        imgui.set_next_item_width(row_width - longest_text_width - 30 - 16 - 12) -- 30 for additonal column padding, 16 for checkbox, 12 for additonal padding (Not 100% Sure...)
                         changed, Module.data.stats.defence_attributes["_" .. key .. "_value"] = imgui.slider_int(language.get(languagePrefix .."value"):format(display_name), Module.data.stats.defence_attributes["_" .. key .. "_value"], -100, 100, "%d")
                         any_changed = any_changed or changed
                     end
