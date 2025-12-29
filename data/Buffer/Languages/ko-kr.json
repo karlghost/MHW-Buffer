@@ -128,6 +128,15 @@
             "bonus_defence": "방어 보너스",
             "critical_chance": "최심율 증가",
             "bonus_elemental": "추가 속성 수치",
+            "defence_attributes": {
+                "title": "Elemental Resistances(*)",
+                "value": "%s value(*)",
+                "fire_enable": "Fire elemental resistance(*)",
+                "water_enable": "Water elemental resistance(*)",
+                "ice_enable": "Ice elemental resistance(*)",
+                "thunder_enable": "Thunder elemental resistance(*)",
+                "dragon_enable": "Dragon elemental resistance(*)"
+            },
             "element": {
             "title": "속성",
             "none": "속성 없음",

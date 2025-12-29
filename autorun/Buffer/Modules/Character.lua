@@ -65,7 +65,19 @@ local Module = ModuleBase:new("character", {
         bonus_defence = -1,
         critical_chance = -1,
         bonus_elemental = -1,
-        element = -1
+        element = -1,
+        defence_attributes = {
+            fire_enable = false,
+            _fire_value = 0,
+            water_enable = false,
+            _water_value = 0,
+            ice_enable = false,
+            _ice_value = 0,
+            thunder_enable = false,
+            _thunder_value = 0,
+            dragon_enable = false,
+            _dragon_value = 0
+        }
     },
     invincible = false,
     unlimited_sharpness = false,
@@ -151,7 +163,56 @@ local function updateDahliaFloatBox(key, field_name, managed, new_value, is_over
     field:write(final_value + 0.0)
 end
 
+--- Updates a DahliaFloatBox value directly with caching and toggle support
+--- @param key string Cache key category
+--- @param id string Unique identifier for this box in the cache
+--- @param box userdata The DahliaFloatBox object
+--- @param new_value number The new value to apply
+--- @param enabled boolean Whether to apply the new value
+local function updateDahliaFloatBoxToggle(key, id, box, new_value, enabled)
+    if not box then return end
+
+    -- Ensure cache table exists
+    Module.old[key] = Module.old[key] or {}
+    local cache = Module.old[key]
+
+    if not enabled then
+        -- Restore original value if cached
+        if cache[id] then
+            box:write(cache[id] + 0.0)
+            cache[id] = nil
+        end
+        return
+    end
+
+    -- Cache original value on first use
+    cache[id] = cache[id] or box:read()
+    
+    -- Write new value
+    box:write(new_value + 0.0)
+end
+
 function Module.create_hooks() 
+
+    
+    -- Watch for weapon changes to reset stat changes
+    sdk.hook(sdk.find_type_definition("app.HunterCharacter"):get_method("changeWeapon"), function(args) 
+        local managed = sdk.to_managed_object(args[2])
+        if not managed:get_type_definition():is_a("app.HunterCharacter") then return end
+        if not managed:get_IsMaster() then return end
+
+        Module.reset_stat_changes()
+    end, function(retval) end)
+    
+    -- Watch for reserve weapon changes
+    sdk.hook(sdk.find_type_definition("app.HunterCharacter"):get_method("changeWeaponFromReserve"), function(args) 
+        local managed = sdk.to_managed_object(args[2])
+        if not managed:get_type_definition():is_a("app.HunterCharacter") then return end
+        if not managed:get_IsMaster() then return end
+
+        Module.reset_stat_changes()
+    end, function(retval) end)
+
 
     sdk.hook(sdk.find_type_definition("app.cHunterStatus"):get_method("update"), function(args)
         local managed = sdk.to_managed_object(args[2])
@@ -332,6 +393,18 @@ function Module.create_hooks()
         updateDahliaFloatBox("bonus_defence",   "_OriginalArmorDefencePower",   managed:get_DefencePower(), Module.data.stats.bonus_defence, false)
         updateDahliaFloatBox("critical_chance", "_OriginalCritical",            managed:get_CriticalRate(), Module.data.stats.critical_chance, true)
         updateDahliaFloatBox("elemental_attack", "_WeaponAttrPower",            managed:get_AttackPower(), Module.data.stats.bonus_elemental > 0 and Module.data.stats.bonus_elemental / 10 or Module.data.stats.bonus_elemental, false)
+
+        -- Defence Attributes
+        local def_attrs = Module.data.stats.defence_attributes
+        local defence_power = managed:get_DefencePower()
+        local attribute_defence = defence_power:get_field("_OriginalElementResistPower") -- Array of DahliaFloatBoxes
+        
+        -- Defence attributes seem to be offset by 10
+        updateDahliaFloatBoxToggle("defence_attributes", "fire", attribute_defence[1], def_attrs._fire_value - 10, def_attrs.fire_enable)
+        updateDahliaFloatBoxToggle("defence_attributes", "water", attribute_defence[2], def_attrs._water_value - 10, def_attrs.water_enable)
+        updateDahliaFloatBoxToggle("defence_attributes", "thunder", attribute_defence[3], def_attrs._thunder_value - 10, def_attrs.thunder_enable)
+        updateDahliaFloatBoxToggle("defence_attributes", "ice", attribute_defence[4], def_attrs._ice_value - 10, def_attrs.ice_enable)
+        updateDahliaFloatBoxToggle("defence_attributes", "dragon", attribute_defence[5], def_attrs._dragon_value - 10, def_attrs.dragon_enable)
 
         -- Element
         Module:cache_and_update_field("element", managed:get_field("_AttackPower"), "_WeaponAttrType", Module.data.stats.element)
@@ -583,6 +656,45 @@ function Module.add_ui()
             changed, Module.data.stats.bonus_defence = imgui.drag_int(language.get(languagePrefix .. "bonus_defence"), Module.data.stats.bonus_defence, 1, 0, 5000, Module.data.stats.bonus_defence <= 0 and language.get("base.disabled") or "%d")
             any_changed = any_changed or changed
 
+            languagePrefix = languagePrefix .. ".defence_attributes."
+            if imgui.tree_node(language.get(languagePrefix .. "title")) then
+                local element_prefix = Module.title .. ".stats.element."
+                local DEFENCE_ATTR_KEYS = { "fire", "water", "ice", "thunder", "dragon" }
+
+                imgui.begin_table(Module.title .. "4", 2)
+                
+                local longest_text_width = 0
+                for _, key in ipairs(DEFENCE_ATTR_KEYS) do
+                    local text = language.get(languagePrefix .. key .. "_enable"):format(language.get(element_prefix .. key))
+                    longest_text_width = math.max(longest_text_width, imgui.calc_text_size(text).x)
+                end
+                
+                imgui.table_setup_column("Toggle", 16 + 4096, longest_text_width + 30)
+
+                for _, key in ipairs(DEFENCE_ATTR_KEYS) do
+                    local display_name = language.get(element_prefix .. key)
+                    local enable_text = language.get(languagePrefix .. key .. "_enable"):format(display_name)
+                    
+                    imgui.table_next_column()
+                    imgui.push_id(key)
+                    
+                    changed, Module.data.stats.defence_attributes[key .. "_enable"] = imgui.checkbox(enable_text, Module.data.stats.defence_attributes[key .. "_enable"])
+                    any_changed = any_changed or changed
+
+                    imgui.table_next_column()
+                    if Module.data.stats.defence_attributes[key .. "_enable"] then
+                        imgui.set_next_item_width(imgui.calc_item_width() - 100)
+                        changed, Module.data.stats.defence_attributes["_" .. key .. "_value"] = imgui.slider_int(language.get(languagePrefix .."value"):format(display_name), Module.data.stats.defence_attributes["_" .. key .. "_value"], -100, 100, "%d")
+                        any_changed = any_changed or changed
+                    end
+                    imgui.pop_id()
+                end
+                imgui.end_table()
+                imgui.tree_pop()
+            end
+            
+            languagePrefix = Module.title .. ".stats."
+
             changed, Module.data.stats.critical_chance = imgui.slider_int(language.get(languagePrefix .. "critical_chance"), Module.data.stats.critical_chance, -1, 100, Module.data.stats.critical_chance == -1 and language.get("base.disabled") or "%d%%")
             any_changed = any_changed or changed
 
@@ -633,8 +745,52 @@ function Module.add_ui()
     return any_changed
 end
 
+function Module.reset_stat_changes()
+    local hunter = utils.get_master_character()
+    if not hunter then return end
+    local status = hunter:get_HunterStatus()
+    if not status then return end
+
+    local attack_power = status:get_AttackPower()
+    local defence_power = status:get_DefencePower()
+    local critical_rate = status:get_CriticalRate()
+
+    updateDahliaFloatBox("bonus_attack",    "_WeaponAttackPower",           attack_power, 0, false)
+    updateDahliaFloatBox("bonus_defence",   "_OriginalArmorDefencePower",   defence_power, 0, false)
+    updateDahliaFloatBox("critical_chance", "_OriginalCritical",            critical_rate, 0, true)
+    updateDahliaFloatBox("elemental_attack", "_WeaponAttrPower",            attack_power, 0, false)
+
+    if attack_power then
+        Module:cache_and_update_field("element", attack_power, "_WeaponAttrType", -1)
+    end
+end
+function Module.reset_defence_attributes()
+    
+    local hunter = utils.get_master_character()
+    if not hunter then return end
+    local status = hunter:get_HunterStatus()
+    if not status then return end
+
+    local defence_power = status:get_DefencePower()
+    if not defence_power then return end
+
+    local attribute_defence = defence_power:get_field("_OriginalElementResistPower") -- Array of DahliaFloatBoxes
+    if not attribute_defence then return end
+
+    updateDahliaFloatBoxToggle("defence_attributes", "fire", attribute_defence[1], 0, false)
+    updateDahliaFloatBoxToggle("defence_attributes", "water", attribute_defence[2], 0, false)
+    updateDahliaFloatBoxToggle("defence_attributes", "thunder", attribute_defence[3], 0, false)
+    updateDahliaFloatBoxToggle("defence_attributes", "ice", attribute_defence[4], 0, false)
+    updateDahliaFloatBoxToggle("defence_attributes", "dragon", attribute_defence[5], 0, false)
+end
+
 function Module.reset()
-    -- Implement reset functionality if needed
+
+    -- Disable all stat changes
+    Module.reset_stat_changes()
+
+    -- Disable defence attributes
+    Module.reset_defence_attributes()
 end
 
 return Module

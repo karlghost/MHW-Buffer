@@ -133,6 +133,15 @@
             "bonus_defence": "Bonusverteidigung",
             "critical_chance": "Kritische Trefferchance",
             "bonus_elemental": "Bonus elemental (*)",
+            "defence_attributes": {
+                "title": "Elemental Resistances(*)",
+                "value": "%s value(*)",
+                "fire_enable": "Fire elemental resistance(*)",
+                "water_enable": "Water elemental resistance(*)",
+                "ice_enable": "Ice elemental resistance(*)",
+                "thunder_enable": "Thunder elemental resistance(*)",
+                "dragon_enable": "Dragon elemental resistance(*)"
+            },
             "element": {
                 "title": "Element",
                 "none": "Keine",
