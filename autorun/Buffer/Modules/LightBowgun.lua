@@ -12,7 +12,7 @@ local Module = ModuleBase:new("light_bowgun", {
     no_recoil = false,
     no_knockback = false,
     unlimited_bladescale = false,
-    -- all_rapid_fire = false,
+    all_rapid_fire = false,
     shell_level = -1
 })
 
@@ -123,8 +123,7 @@ function Module.create_hooks()
         -- end
 
         if Module.data.no_reload then
-            local shell_type = managed:get_ShellType()
-            local ammo = managed:getAmmo(shell_type)
+            local ammo = managed:getCurrentAmmo()
             if ammo == nil then return end
             ammo:reloadAmmo(ammo:get_LimitAmmo())
         end

@@ -87,8 +87,7 @@ function Module.create_hooks()
         Module:cache_and_update_array_value("equip_shell_list_" .. weapon_id, equip_shell_list, "_ShellLv", Module.data.shell_level)
 
         if Module.data.no_reload then
-            local shell_type = managed:get_ShellType()
-            local ammo = managed:getAmmo(shell_type)
+            local ammo = managed:getCurrentAmmo()
             if ammo == nil then return end
             ammo:reloadAmmo(ammo:get_LimitAmmo())
         end
@@ -145,25 +144,19 @@ function Module.create_hooks()
         if skip_shot_knockback then
             skip_shot_knockback = false
             
-            -- Check if shooting special ammo
-            local use_ui_shell_type = utils.get_master_character():get_WeaponHandling():get_field("_UseUIShellType")
-            if not use_ui_shell_type then return retval end
-
             -- Get the shell recoil type
             local value = sdk.to_int64(retval)
-
-            -- 1 = No shoot
-            -- 2 = 3 shot burst
-            -- 3 = No shoot
-            -- 4 = Burst
-            -- 5 = Burst Middle
-            -- 6 = Burst High
-            -- 7 = Middle
-            -- 8 = High
-            -- 9-11 = No shoot
+            
+            -- 1 = BURST_RAPID_LIGHT - Doesn't shoot
+            if (value >= 1 and value <= 3) then
+                return sdk.to_ptr(2) -- Set to BURST_RAPID_MIDDLE
+            end
             if  (value >= 4 and value <= 8) then
                 return sdk.to_ptr(4)
             end
+            -- 9 = RAPID_LIGHT - Doesn't shoot
+            -- 10 = RAPID_MIDDLE - Doesn't shoot
+            -- 11 = RAPID_HIGHT - Doesn't shoot
         end
         return retval
     end)
