@@ -673,7 +673,33 @@ function Module.add_ui()
             changed, Module.data.stats.defence = imgui.drag_int(language.get(languagePrefix .. "defence"), Module.data.stats.defence, 1, -1, 5000, Module.data.stats.defence < 0 and language.get("base.disabled") or "%d")
             any_changed = any_changed or changed
 
-            languagePrefix = languagePrefix .. ".defence_attributes."
+
+            changed, Module.data.stats.critical_chance = imgui.slider_int(language.get(languagePrefix .. "critical_chance"), Module.data.stats.critical_chance, -1, 100, Module.data.stats.critical_chance == -1 and language.get("base.disabled") or "%d%%")
+            any_changed = any_changed or changed
+
+            changed, Module.data.stats.elemental_attack = imgui.drag_int(language.get(languagePrefix .. "elemental_attack"), Module.data.stats.elemental_attack, 1, -1, 2000, Module.data.stats.elemental_attack < 0 and language.get("base.disabled") or "%d")
+            any_changed = any_changed or changed
+
+            languagePrefix = languagePrefix .. "element."
+            local attr_type = {
+                language.get("base.disabled"),
+                language.get(languagePrefix .. "none"),
+                language.get(languagePrefix .. "fire"),
+                language.get(languagePrefix .. "water"),
+                language.get(languagePrefix .. "ice"),
+                language.get(languagePrefix .. "thunder"),
+                language.get(languagePrefix .. "dragon"),
+                language.get(languagePrefix .. "poison"),
+                language.get(languagePrefix .. "paralyze"),
+                language.get(languagePrefix .. "sleep"),
+                language.get(languagePrefix .. "blast")
+            }
+            local attr_index = Module.data.stats.element + 2
+            changed, attr_index = imgui.combo(language.get(languagePrefix .. "title"), attr_index, attr_type)
+            Module.data.stats.element = attr_index - 2
+            any_changed = any_changed or changed
+
+            languagePrefix = Module.title .. ".stats.defence_attributes."
             if imgui.tree_node(language.get(languagePrefix .. "title")) then
                 local element_prefix = Module.title .. ".stats.element."
                 local DEFENCE_ATTR_KEYS = { "fire", "water", "ice", "thunder", "dragon" }
@@ -709,33 +735,6 @@ function Module.add_ui()
                 imgui.end_table()
                 imgui.tree_pop()
             end
-            
-            languagePrefix = Module.title .. ".stats."
-
-            changed, Module.data.stats.critical_chance = imgui.slider_int(language.get(languagePrefix .. "critical_chance"), Module.data.stats.critical_chance, -1, 100, Module.data.stats.critical_chance == -1 and language.get("base.disabled") or "%d%%")
-            any_changed = any_changed or changed
-
-            changed, Module.data.stats.elemental_attack = imgui.drag_int(language.get(languagePrefix .. "elemental_attack"), Module.data.stats.elemental_attack, 1, -1, 2000, Module.data.stats.elemental_attack < 0 and language.get("base.disabled") or "%d")
-            any_changed = any_changed or changed
-
-            languagePrefix = languagePrefix .. "element."
-            local attr_type = {
-                language.get("base.disabled"),
-                language.get(languagePrefix .. "none"),
-                language.get(languagePrefix .. "fire"),
-                language.get(languagePrefix .. "water"),
-                language.get(languagePrefix .. "ice"),
-                language.get(languagePrefix .. "thunder"),
-                language.get(languagePrefix .. "dragon"),
-                language.get(languagePrefix .. "poison"),
-                language.get(languagePrefix .. "paralyze"),
-                language.get(languagePrefix .. "sleep"),
-                language.get(languagePrefix .. "blast")
-            }
-            local attr_index = Module.data.stats.element + 2
-            changed, attr_index = imgui.combo(language.get(languagePrefix .. "title"), attr_index, attr_type)
-            Module.data.stats.element = attr_index - 2
-            any_changed = any_changed or changed
 
             imgui.tree_pop()
         end
