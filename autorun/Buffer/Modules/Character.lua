@@ -588,13 +588,23 @@ function Module.add_ui()
             languagePrefix = Module.title .. ".blights_and_conditions.blights."
             if imgui.tree_node(language.get(languagePrefix .. "title")) then
 
-                imgui.begin_table(Module.title .. "1", 2, nil, nil, nil)
-                imgui.table_next_row()
-
                 local BLIGHT_KEYS = {
                     "fire", "thunder", "water", 
                     "ice", "dragon", "all"
                 }
+
+                local max_width = 0
+                for _, key in ipairs(BLIGHT_KEYS) do
+                    local text = language.get(languagePrefix .. key)
+                    max_width = math.max(max_width, imgui.calc_text_size(text).x)
+                end
+                local row_width = imgui.calc_item_width()
+                local col_width = math.max(max_width + 24 + 20, row_width / 2)
+
+                imgui.begin_table(Module.title .. "1", 2, 0)
+                imgui.table_setup_column("1", 16 + 4096, col_width)
+                imgui.table_setup_column("2", 16 + 4096, col_width)
+                imgui.table_next_row()
 
                 for i, key in ipairs(BLIGHT_KEYS) do
                     if i == 1 or i == math.ceil(#BLIGHT_KEYS / 2) + 1 then imgui.table_next_column() end
@@ -609,13 +619,23 @@ function Module.add_ui()
             languagePrefix = Module.title .. ".blights_and_conditions.conditions."
             if imgui.tree_node(language.get(languagePrefix .. "title")) then
 
-                imgui.begin_table(Module.title .. "2", 2, nil, nil, nil)
-                imgui.table_next_row()
-
                 local CONDITION_KEYS = {
                     "poison", "stench", "blast", "bleed", "defense_down", "frenzy", "hp_reduction",
                     "stun", "paralyze", "sleep", "sticky", "frozen", "bubble", "all"
                 }
+
+                local max_width = 0
+                for _, key in ipairs(CONDITION_KEYS) do
+                    local text = language.get(languagePrefix .. key)
+                    max_width = math.max(max_width, imgui.calc_text_size(text).x)
+                end
+                local row_width = imgui.calc_item_width()
+                local col_width = math.max(max_width + 24 + 20, row_width / 2)
+
+                imgui.begin_table(Module.title .. "2", 2, 0)
+                imgui.table_setup_column("1", 16 + 4096, col_width)
+                imgui.table_setup_column("2", 16 + 4096, col_width)
+                imgui.table_next_row()
 
                 for i, key in ipairs(CONDITION_KEYS) do
                    if i == 1 or i == math.ceil(#CONDITION_KEYS / 2) + 1 then imgui.table_next_column() end
@@ -634,13 +654,23 @@ function Module.add_ui()
         languagePrefix = Module.title .. ".item_buffs."
         if imgui.tree_node(language.get(languagePrefix .. "title")) then
 
-            imgui.begin_table(Module.title .. "3", 2, nil, nil, nil)
-            imgui.table_next_row()
-
             local ITEM_KEYS = {
                 "might_seed", "might_pill", "demon_drug", "mega_demondrug", "demon_powder", "hot_drink", "dash_juice",
                 "adamant_seed", "adamant_pill", "armor_skin", "mega_armorskin", "hardshell_powder", "cool_drink", "imunizer"
             }
+
+            local max_width = 0
+            for _, key in ipairs(ITEM_KEYS) do
+                local text = language.get(languagePrefix .. key)
+                max_width = math.max(max_width, imgui.calc_text_size(text).x)
+            end
+            local row_width = imgui.calc_item_width()
+            local col_width = math.max(max_width + 24 + 20, row_width / 2)
+
+            imgui.begin_table(Module.title .. "3", 2, 0)
+            imgui.table_setup_column("1", 16 + 4096, col_width)
+            imgui.table_setup_column("2", 16 + 4096, col_width)
+            imgui.table_next_row()
 
             for i, key in ipairs(ITEM_KEYS) do
                 if i == 1 or i == math.ceil(#ITEM_KEYS / 2) + 1 then imgui.table_next_column() end
@@ -665,7 +695,6 @@ function Module.add_ui()
         
         languagePrefix = Module.title .. ".stats."
         if imgui.tree_node(language.get(languagePrefix .. "title")) then
-
 
             changed, Module.data.stats.attack = imgui.drag_int(language.get(languagePrefix .. "attack"), Module.data.stats.attack, 1, -1, 5000, Module.data.stats.attack < 0 and language.get("base.disabled") or "%d")
             any_changed = any_changed or changed
@@ -698,22 +727,25 @@ function Module.add_ui()
             changed, attr_index = imgui.combo(language.get(languagePrefix .. "title"), attr_index, attr_type)
             Module.data.stats.element = attr_index - 2
             any_changed = any_changed or changed
-            local row_width = imgui.calc_item_width()
+
+            
 
             languagePrefix = Module.title .. ".stats.defence_attributes."
             if imgui.tree_node(language.get(languagePrefix .. "title")) then
                 local element_prefix = Module.title .. ".stats.element."
                 local DEFENCE_ATTR_KEYS = { "fire", "water", "ice", "thunder", "dragon" }
 
-                imgui.begin_table(Module.title .. "4", 2)
-                
+                local row_width = imgui.calc_item_width()
                 local longest_text_width = 0
                 for _, key in ipairs(DEFENCE_ATTR_KEYS) do
                     local text = language.get(languagePrefix .. key .. "_enable"):format(language.get(element_prefix .. key))
                     longest_text_width = math.max(longest_text_width, imgui.calc_text_size(text).x)
                 end
                 
-                imgui.table_setup_column("Toggle", 16 + 4096, longest_text_width + 30) -- 30 for additonal column padding
+                imgui.begin_table(Module.title .. "4", 2, 0)
+
+                local column_1_width = longest_text_width + 24 + 10  -- Text length + Checkbox sizing + padding
+                imgui.table_setup_column("Toggle", 16 + 4096, column_1_width)
 
                 for _, key in ipairs(DEFENCE_ATTR_KEYS) do
                     local display_name = language.get(element_prefix .. key)
@@ -727,7 +759,7 @@ function Module.add_ui()
 
                     imgui.table_next_column()
                     if Module.data.stats.defence_attributes[key .. "_enable"] then
-                        imgui.set_next_item_width(row_width - longest_text_width - 30 - 16 - 12) -- 30 for additonal column padding, 16 for checkbox, 12 for additonal padding (Not 100% Sure...)
+                        imgui.set_next_item_width(row_width - (column_1_width + 20 + 10)) -- Possible row width - (first column + padding) 
                         changed, Module.data.stats.defence_attributes["_" .. key .. "_value"] = imgui.slider_int(language.get(languagePrefix .."value"):format(display_name), Module.data.stats.defence_attributes["_" .. key .. "_value"], -100, 100, "%d")
                         any_changed = any_changed or changed
                     end
@@ -736,6 +768,7 @@ function Module.add_ui()
                 imgui.end_table()
                 imgui.tree_pop()
             end
+            
 
             imgui.tree_pop()
         end
