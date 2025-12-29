@@ -61,10 +61,11 @@ local Module = ModuleBase:new("character", {
         unlimited_duration = false
     },
     stats = {
-        bonus_attack = -1,
-        bonus_defence = -1,
+        use_bonus_mode = false,
+        attack = -1,
+        defence = -1,
         critical_chance = -1,
-        bonus_elemental = -1,
+        elemental_attack = -1,
         element = -1,
         defence_attributes = {
             fire_enable = false,
@@ -125,13 +126,13 @@ local BLIGHTS_DATA = {
     dragon =        "_Dragon",
 }
 
---- Updates a float field value with caching and restoration support
+--- Updates a float field value to reach a target total value
 --- @param key string Cache key for storing original values
 --- @param field_name string Name of the field to update
 --- @param managed userdata The managed object containing the field
---- @param new_value number The new value to apply
---- @param is_override boolean If true, replaces value; if false, adds to original
-local function updateDahliaFloatBox(key, field_name, managed, new_value, is_override)
+--- @param target_value number The desired final value (pass -1 to disable/restore)
+--- @param current_total_value number The current total value from the game (get_Current...)
+local function updateDahliaFloatBox(key, field_name, managed, target_value, current_total_value, use_bonus_mode)
     if not managed then return end
 
     -- Ensure cache table exists
@@ -143,9 +144,7 @@ local function updateDahliaFloatBox(key, field_name, managed, new_value, is_over
     if not field then return end
 
     -- Determine if feature is disabled
-    local disabled = (is_override and new_value < 0) or (not is_override and new_value <= 0)
-
-    if disabled then
+    if target_value < 0 then
         -- Restore original value if cached
         if cache[field_name] then
             field:write(cache[field_name] + 0.0)
@@ -154,13 +153,29 @@ local function updateDahliaFloatBox(key, field_name, managed, new_value, is_over
         return
     end
 
-    -- Cache original value on first use
-    cache[field_name] = cache[field_name] or field:read()
-    local original = cache[field_name]
+    -- Get the value currently in the field (Our contribution + Base)
+    local current_field_value = field:read()
 
-    -- Calculate and write new value (always as float)
-    local final_value = is_override and new_value or (original + new_value)
-    field:write(final_value + 0.0)
+    -- Cache original value on first use
+    if not cache[field_name] then
+        cache[field_name] = current_field_value
+    end
+
+    local new_value
+    if use_bonus_mode then
+        -- Bonus Mode: Add user value to the original field value
+        new_value = cache[field_name] + target_value
+    else
+        -- Target Mode: Calculate offset to reach target total
+        -- Total = FieldValue + Others  =>  Others = Total - FieldValue
+        local other_contributions = current_total_value - current_field_value
+
+        -- Calculate new field value to reach target
+        -- Target = NewFieldValue + Others  =>  NewFieldValue = Target - Others
+        new_value = target_value - other_contributions
+    end
+
+    field:write(new_value + 0.0)
 end
 
 --- Updates a DahliaFloatBox value directly with caching and toggle support
@@ -389,11 +404,12 @@ function Module.create_hooks()
         end
         
         -- Stats
-        updateDahliaFloatBox("bonus_attack",    "_WeaponAttackPower",           managed:get_AttackPower(),  Module.data.stats.bonus_attack, false)
-        updateDahliaFloatBox("bonus_defence",   "_OriginalArmorDefencePower",   managed:get_DefencePower(), Module.data.stats.bonus_defence, false)
-        updateDahliaFloatBox("critical_chance", "_OriginalCritical",            managed:get_CriticalRate(), Module.data.stats.critical_chance, true)
-        updateDahliaFloatBox("elemental_attack", "_WeaponAttrPower",            managed:get_AttackPower(), Module.data.stats.bonus_elemental > 0 and Module.data.stats.bonus_elemental / 10 or Module.data.stats.bonus_elemental, false)
-
+        local user_bonus_mode = Module.data.stats.use_bonus_mode
+        updateDahliaFloatBox("attack",          "_WeaponAttackPower",           managed:get_AttackPower(),  Module.data.stats.attack, managed:get_AttackPower():get_CurrentAttackPower(), user_bonus_mode)
+        updateDahliaFloatBox("defence",         "_OriginalArmorDefencePower",   managed:get_DefencePower(), Module.data.stats.defence, managed:get_DefencePower():get_CurrentDefencePower(), user_bonus_mode)
+        updateDahliaFloatBox("critical_chance", "_OriginalCritical",            managed:get_CriticalRate(), Module.data.stats.critical_chance, managed:get_CriticalRate():get_CurrentCriticalRate(), user_bonus_mode)
+        updateDahliaFloatBox("elemental_attack", "_WeaponAttrPower",            managed:get_AttackPower(), Module.data.stats.elemental_attack > 0 and Module.data.stats.elemental_attack / 10 or Module.data.stats.elemental_attack, managed:get_AttackPower():get_CurrentAttrPower(), user_bonus_mode)
+        
         -- Defence Attributes
         local def_attrs = Module.data.stats.defence_attributes
         local defence_power = managed:get_DefencePower()
@@ -650,10 +666,11 @@ function Module.add_ui()
         languagePrefix = Module.title .. ".stats."
         if imgui.tree_node(language.get(languagePrefix .. "title")) then
 
-            changed, Module.data.stats.bonus_attack = imgui.drag_int(language.get(languagePrefix .. "bonus_attack"), Module.data.stats.bonus_attack, 1, 0, 5000, Module.data.stats.bonus_attack <= 0 and language.get("base.disabled") or "%d")
+
+            changed, Module.data.stats.attack = imgui.drag_int(language.get(languagePrefix .. "attack"), Module.data.stats.attack, 1, -1, 5000, Module.data.stats.attack < 0 and language.get("base.disabled") or "%d")
             any_changed = any_changed or changed
 
-            changed, Module.data.stats.bonus_defence = imgui.drag_int(language.get(languagePrefix .. "bonus_defence"), Module.data.stats.bonus_defence, 1, 0, 5000, Module.data.stats.bonus_defence <= 0 and language.get("base.disabled") or "%d")
+            changed, Module.data.stats.defence = imgui.drag_int(language.get(languagePrefix .. "defence"), Module.data.stats.defence, 1, -1, 5000, Module.data.stats.defence < 0 and language.get("base.disabled") or "%d")
             any_changed = any_changed or changed
 
             languagePrefix = languagePrefix .. ".defence_attributes."
@@ -698,7 +715,7 @@ function Module.add_ui()
             changed, Module.data.stats.critical_chance = imgui.slider_int(language.get(languagePrefix .. "critical_chance"), Module.data.stats.critical_chance, -1, 100, Module.data.stats.critical_chance == -1 and language.get("base.disabled") or "%d%%")
             any_changed = any_changed or changed
 
-            changed, Module.data.stats.bonus_elemental = imgui.drag_int(language.get(languagePrefix .. "bonus_elemental"), Module.data.stats.bonus_elemental, 1, 0, 2000, Module.data.stats.bonus_elemental <= 0 and language.get("base.disabled") or "%d")
+            changed, Module.data.stats.elemental_attack = imgui.drag_int(language.get(languagePrefix .. "elemental_attack"), Module.data.stats.elemental_attack, 1, -1, 2000, Module.data.stats.elemental_attack < 0 and language.get("base.disabled") or "%d")
             any_changed = any_changed or changed
 
             languagePrefix = languagePrefix .. "element."
@@ -755,10 +772,10 @@ function Module.reset_stat_changes()
     local defence_power = status:get_DefencePower()
     local critical_rate = status:get_CriticalRate()
 
-    updateDahliaFloatBox("bonus_attack",    "_WeaponAttackPower",           attack_power, 0, false)
-    updateDahliaFloatBox("bonus_defence",   "_OriginalArmorDefencePower",   defence_power, 0, false)
-    updateDahliaFloatBox("critical_chance", "_OriginalCritical",            critical_rate, 0, true)
-    updateDahliaFloatBox("elemental_attack", "_WeaponAttrPower",            attack_power, 0, false)
+    updateDahliaFloatBox("attack",    "_WeaponAttackPower",           attack_power, -1, 0, false)
+    updateDahliaFloatBox("defence",   "_OriginalArmorDefencePower",   defence_power, -1, 0, false)
+    updateDahliaFloatBox("critical_chance", "_OriginalCritical",            critical_rate, -1, 0, false)
+    updateDahliaFloatBox("elemental_attack", "_WeaponAttrPower",            attack_power, -1, 0, false)
 
     if attack_power then
         Module:cache_and_update_field("element", attack_power, "_WeaponAttrType", -1)

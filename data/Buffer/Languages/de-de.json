@@ -17,6 +17,8 @@
         "disable_all": "Alle deaktivieren",
         "enabled_buffs": "Enabled buffs (*)",
         "nothing_enabled": "Nothing is enabled (*)",
+        "character_bonus_stats": "Use bonus mode for character stats(*)",
+        "character_bonus_stats_tooltip": "In bonus mode, the values set will be treated as bonus values added to the base stats, rather than setting the stats directly.(*)",
         "disable": "Disable (*)",
         "bindings": {
             "title": "Belegung",
@@ -129,10 +131,10 @@
         },
         "stats": {
             "title": "Statistiken",
-            "bonus_attack": "Bonusangriff",
-            "bonus_defence": "Bonusverteidigung",
+            "attack": "Angriff",
+            "defence": "Verteidigung",
             "critical_chance": "Kritische Trefferchance",
-            "bonus_elemental": "Bonus elemental (*)",
+            "elemental_attack": "Elementarangriff",
             "defence_attributes": {
                 "title": "Elemental Resistances(*)",
                 "value": "%s value(*)",

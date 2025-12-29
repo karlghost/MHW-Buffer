@@ -16,6 +16,8 @@
         "disable_all": "Disable all",
         "enabled_buffs": "Enabled buffs",
         "nothing_enabled": "Nothing is enabled",
+        "character_bonus_stats": "Use bonus mode for character stats",
+        "character_bonus_stats_tooltip": "In bonus mode, the values set will be treated as bonus values added to the base stats, rather than setting the stats directly.",
         "disable": "Disable",
         "bindings": {
             "title": "Bindings",
@@ -128,10 +130,10 @@
         },
         "stats": {
             "title": "Stats",
-            "bonus_attack": "Bonus attack",
-            "bonus_defence": "Bonus defence",
+            "attack": "Attack",
+            "defence": "Defence",
             "critical_chance": "Critical chance",
-            "bonus_elemental": "Bonus elemental",
+            "elemental_attack": "Elemental attack",
             "defence_attributes": {
                 "title": "Elemental Resistances",
                 "value": "%s value",

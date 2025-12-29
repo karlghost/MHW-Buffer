@@ -17,6 +17,8 @@
         "disable_all": "すべて無効化",
         "enabled_buffs": "有効なバフ",
         "nothing_enabled": "有効なものはありません",
+        "character_bonus_stats": "Use bonus mode for character stats(*)",
+        "character_bonus_stats_tooltip": "In bonus mode, the values set will be treated as bonus values added to the base stats, rather than setting the stats directly.(*)",
         "disable": "無効化",
         "bindings": {
             "title": "キー設定",
@@ -124,10 +126,10 @@
         },
         "stats": {
             "title": "ステータス",
-            "bonus_attack": "攻撃力ボーナス",
-            "bonus_defence": "防御力ボーナス",
+            "attack": "攻撃力",
+            "defence": "防御力",
             "critical_chance": "クリティカルチャンス",
-            "bonus_elemental": "Bonus elemental (*)",
+            "elemental_attack": "属性攻撃力",
             "defence_attributes": {
                 "title": "Elemental Resistances(*)",
                 "value": "%s value(*)",
