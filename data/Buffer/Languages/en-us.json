@@ -144,7 +144,7 @@
                 "dragon_enable": "Dragon elemental resistance"
             },
             "element": {
-                "title": "Element",
+                "title": "Weapon Element",
                 "none": "None",
                 "fire": "Fire",
                 "water": "Water",
