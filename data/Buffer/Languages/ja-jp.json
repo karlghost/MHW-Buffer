@@ -249,6 +249,7 @@
         "unlimited_ammo": "弾無限",
         "unlimited_bladescale": "無限刃鱗増装",
         "no_reload": "リロード不要",
+        "tetrad_shot_active": "四連射サポート有効",
         "no_recoil": "反動なし",
         "no_knockback": "No knockback (*)",
         "all_rapid_fire": "All rapid fire (*)",
@@ -263,6 +264,7 @@
         "unlimited_ammo": "弾無限",
         "unlimited_bladescale": "無限刃鱗増装",
         "no_reload": "リロード不要",
+        "tetrad_shot_active": "四連射サポート有効",
         "no_recoil": "反動なし",
         "no_knockback": "No knockback (*)",
         "shell_level": "Shell level (*)"

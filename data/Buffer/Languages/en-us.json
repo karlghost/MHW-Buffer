@@ -252,6 +252,7 @@
         "unlimited_ammo": "Unlimited ammo",
         "unlimited_bladescale": "Unlimited bladescale shots",
         "no_reload": "No reload",
+        "tetrad_shot_active": "Tetrad shot support active",
         "no_recoil": "No recoil",
         "no_knockback": "No knockback",
         "all_rapid_fire": "All rapid fire",
@@ -266,6 +267,7 @@
         "unlimited_ammo": "Unlimited ammo",
         "unlimited_bladescale": "Unlimited bladescale shots",
         "no_reload": "No reload",
+        "tetrad_shot_active": "Tetrad shot support active",
         "no_recoil": "No recoil",
         "no_knockback": "No knockback",
         "shell_level": "Shell level"
