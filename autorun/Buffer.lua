@@ -203,8 +203,17 @@ re.on_draw_ui(function()
             end
 
             if imgui.begin_menu(language.get(languagePrefix .. "options")) then
+
                 imgui.spacing()
-                 if imgui.begin_menu("   " .. language.get(languagePrefix .. "enabled_buffs")) then
+                local changed = false
+                changed, character.data.stats.use_bonus_mode = imgui.checkbox("   " .. language.get(languagePrefix .. "character_bonus_stats") .. "   ", character.data.stats.use_bonus_mode)
+                if changed then character:save_config() end
+                if imgui.is_item_hovered() then imgui.set_tooltip("  "..language.get(languagePrefix .. "character_bonus_stats_tooltip").."  ") end
+                    
+                imgui.spacing()
+                imgui.separator()
+                imgui.spacing()
+                if imgui.begin_menu("   " .. language.get(languagePrefix .. "enabled_buffs")) then
                     local enabled_buffs = {}
 
                     for _, module in pairs(modules) do

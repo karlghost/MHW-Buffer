@@ -61,11 +61,24 @@ local Module = ModuleBase:new("character", {
         unlimited_duration = false
     },
     stats = {
-        bonus_attack = -1,
-        bonus_defence = -1,
+        use_bonus_mode = false,
+        attack = -1,
+        defence = -1,
         critical_chance = -1,
-        bonus_elemental = -1,
-        element = -1
+        elemental_attack = -1,
+        element = -1,
+        defence_attributes = {
+            fire_enable = false,
+            _fire_value = 0,
+            water_enable = false,
+            _water_value = 0,
+            ice_enable = false,
+            _ice_value = 0,
+            thunder_enable = false,
+            _thunder_value = 0,
+            dragon_enable = false,
+            _dragon_value = 0
+        }
     },
     invincible = false,
     unlimited_sharpness = false,
@@ -113,13 +126,13 @@ local BLIGHTS_DATA = {
     dragon =        "_Dragon",
 }
 
---- Updates a float field value with caching and restoration support
+--- Updates a float field value to reach a target total value
 --- @param key string Cache key for storing original values
 --- @param field_name string Name of the field to update
 --- @param managed userdata The managed object containing the field
---- @param new_value number The new value to apply
---- @param is_override boolean If true, replaces value; if false, adds to original
-local function updateDahliaFloatBox(key, field_name, managed, new_value, is_override)
+--- @param target_value number The desired final value (pass -1 to disable/restore)
+--- @param current_total_value number The current total value from the game (get_Current...)
+local function updateDahliaFloatBox(key, field_name, managed, target_value, current_total_value, use_bonus_mode)
     if not managed then return end
 
     -- Ensure cache table exists
@@ -131,9 +144,7 @@ local function updateDahliaFloatBox(key, field_name, managed, new_value, is_over
     if not field then return end
 
     -- Determine if feature is disabled
-    local disabled = (is_override and new_value < 0) or (not is_override and new_value <= 0)
-
-    if disabled then
+    if target_value < 0 then
         -- Restore original value if cached
         if cache[field_name] then
             field:write(cache[field_name] + 0.0)
@@ -142,16 +153,81 @@ local function updateDahliaFloatBox(key, field_name, managed, new_value, is_over
         return
     end
 
-    -- Cache original value on first use
-    cache[field_name] = cache[field_name] or field:read()
-    local original = cache[field_name]
+    -- Get the value currently in the field (Our contribution + Base)
+    local current_field_value = field:read()
 
-    -- Calculate and write new value (always as float)
-    local final_value = is_override and new_value or (original + new_value)
-    field:write(final_value + 0.0)
+    -- Cache original value on first use
+    if not cache[field_name] then
+        cache[field_name] = current_field_value
+    end
+
+    local new_value
+    if use_bonus_mode then
+        -- Bonus Mode: Add user value to the original field value
+        new_value = cache[field_name] + target_value
+    else
+        -- Target Mode: Calculate offset to reach target total
+        -- Total = FieldValue + Others  =>  Others = Total - FieldValue
+        local other_contributions = current_total_value - current_field_value
+
+        -- Calculate new field value to reach target
+        -- Target = NewFieldValue + Others  =>  NewFieldValue = Target - Others
+        new_value = target_value - other_contributions
+    end
+
+    field:write(new_value + 0.0)
+end
+
+--- Updates a DahliaFloatBox value directly with caching and toggle support
+--- @param key string Cache key category
+--- @param id string Unique identifier for this box in the cache
+--- @param box userdata The DahliaFloatBox object
+--- @param new_value number The new value to apply
+--- @param enabled boolean Whether to apply the new value
+local function updateDahliaFloatBoxToggle(key, id, box, new_value, enabled)
+    if not box then return end
+
+    -- Ensure cache table exists
+    Module.old[key] = Module.old[key] or {}
+    local cache = Module.old[key]
+
+    if not enabled then
+        -- Restore original value if cached
+        if cache[id] then
+            box:write(cache[id] + 0.0)
+            cache[id] = nil
+        end
+        return
+    end
+
+    -- Cache original value on first use
+    cache[id] = cache[id] or box:read()
+    
+    -- Write new value
+    box:write(new_value + 0.0)
 end
 
 function Module.create_hooks() 
+
+    
+    -- Watch for weapon changes to reset stat changes
+    sdk.hook(sdk.find_type_definition("app.HunterCharacter"):get_method("changeWeapon"), function(args) 
+        local managed = sdk.to_managed_object(args[2])
+        if not managed:get_type_definition():is_a("app.HunterCharacter") then return end
+        if not managed:get_IsMaster() then return end
+
+        Module.reset_stat_changes()
+    end, function(retval) end)
+    
+    -- Watch for reserve weapon changes
+    sdk.hook(sdk.find_type_definition("app.HunterCharacter"):get_method("changeWeaponFromReserve"), function(args) 
+        local managed = sdk.to_managed_object(args[2])
+        if not managed:get_type_definition():is_a("app.HunterCharacter") then return end
+        if not managed:get_IsMaster() then return end
+
+        Module.reset_stat_changes()
+    end, function(retval) end)
+
 
     sdk.hook(sdk.find_type_definition("app.cHunterStatus"):get_method("update"), function(args)
         local managed = sdk.to_managed_object(args[2])
@@ -328,10 +404,23 @@ function Module.create_hooks()
         end
         
         -- Stats
-        updateDahliaFloatBox("bonus_attack",    "_WeaponAttackPower",           managed:get_AttackPower(),  Module.data.stats.bonus_attack, false)
-        updateDahliaFloatBox("bonus_defence",   "_OriginalArmorDefencePower",   managed:get_DefencePower(), Module.data.stats.bonus_defence, false)
-        updateDahliaFloatBox("critical_chance", "_OriginalCritical",            managed:get_CriticalRate(), Module.data.stats.critical_chance, true)
-        updateDahliaFloatBox("elemental_attack", "_WeaponAttrPower",            managed:get_AttackPower(), Module.data.stats.bonus_elemental > 0 and Module.data.stats.bonus_elemental / 10 or Module.data.stats.bonus_elemental, false)
+        local user_bonus_mode = Module.data.stats.use_bonus_mode
+        updateDahliaFloatBox("attack",          "_WeaponAttackPower",           managed:get_AttackPower(),  Module.data.stats.attack, managed:get_AttackPower():get_CurrentAttackPower(), user_bonus_mode)
+        updateDahliaFloatBox("defence",         "_OriginalArmorDefencePower",   managed:get_DefencePower(), Module.data.stats.defence, managed:get_DefencePower():get_CurrentDefencePower(), user_bonus_mode)
+        updateDahliaFloatBox("critical_chance", "_OriginalCritical",            managed:get_CriticalRate(), Module.data.stats.critical_chance, managed:get_CriticalRate():get_CurrentCriticalRate(), user_bonus_mode)
+        updateDahliaFloatBox("elemental_attack", "_WeaponAttrPower",            managed:get_AttackPower(), Module.data.stats.elemental_attack > 0 and Module.data.stats.elemental_attack / 10 or Module.data.stats.elemental_attack, managed:get_AttackPower():get_CurrentAttrPower(), user_bonus_mode)
+        
+        -- Defence Attributes
+        local def_attrs = Module.data.stats.defence_attributes
+        local defence_power = managed:get_DefencePower()
+        local attribute_defence = defence_power:get_field("_OriginalElementResistPower") -- Array of DahliaFloatBoxes
+        
+        -- Defence attributes seem to be offset by 10
+        updateDahliaFloatBoxToggle("defence_attributes", "fire", attribute_defence[1], def_attrs._fire_value - 10, def_attrs.fire_enable)
+        updateDahliaFloatBoxToggle("defence_attributes", "water", attribute_defence[2], def_attrs._water_value - 10, def_attrs.water_enable)
+        updateDahliaFloatBoxToggle("defence_attributes", "thunder", attribute_defence[3], def_attrs._thunder_value - 10, def_attrs.thunder_enable)
+        updateDahliaFloatBoxToggle("defence_attributes", "ice", attribute_defence[4], def_attrs._ice_value - 10, def_attrs.ice_enable)
+        updateDahliaFloatBoxToggle("defence_attributes", "dragon", attribute_defence[5], def_attrs._dragon_value - 10, def_attrs.dragon_enable)
 
         -- Element
         Module:cache_and_update_field("element", managed:get_field("_AttackPower"), "_WeaponAttrType", Module.data.stats.element)
@@ -499,13 +588,23 @@ function Module.add_ui()
             languagePrefix = Module.title .. ".blights_and_conditions.blights."
             if imgui.tree_node(language.get(languagePrefix .. "title")) then
 
-                imgui.begin_table(Module.title .. "1", 2, nil, nil, nil)
-                imgui.table_next_row()
-
                 local BLIGHT_KEYS = {
                     "fire", "thunder", "water", 
                     "ice", "dragon", "all"
                 }
+
+                local max_width = 0
+                for _, key in ipairs(BLIGHT_KEYS) do
+                    local text = language.get(languagePrefix .. key)
+                    max_width = math.max(max_width, imgui.calc_text_size(text).x)
+                end
+                local row_width = imgui.calc_item_width()
+                local col_width = math.max(max_width + 24 + 20, row_width / 2)
+
+                imgui.begin_table(Module.title .. "1", 2, 0)
+                imgui.table_setup_column("1", 16 + 4096, col_width)
+                imgui.table_setup_column("2", 16 + 4096, col_width)
+                imgui.table_next_row()
 
                 for i, key in ipairs(BLIGHT_KEYS) do
                     if i == 1 or i == math.ceil(#BLIGHT_KEYS / 2) + 1 then imgui.table_next_column() end
@@ -520,13 +619,23 @@ function Module.add_ui()
             languagePrefix = Module.title .. ".blights_and_conditions.conditions."
             if imgui.tree_node(language.get(languagePrefix .. "title")) then
 
-                imgui.begin_table(Module.title .. "2", 2, nil, nil, nil)
-                imgui.table_next_row()
-
                 local CONDITION_KEYS = {
                     "poison", "stench", "blast", "bleed", "defense_down", "frenzy", "hp_reduction",
                     "stun", "paralyze", "sleep", "sticky", "frozen", "bubble", "all"
                 }
+
+                local max_width = 0
+                for _, key in ipairs(CONDITION_KEYS) do
+                    local text = language.get(languagePrefix .. key)
+                    max_width = math.max(max_width, imgui.calc_text_size(text).x)
+                end
+                local row_width = imgui.calc_item_width()
+                local col_width = math.max(max_width + 24 + 20, row_width / 2)
+
+                imgui.begin_table(Module.title .. "2", 2, 0)
+                imgui.table_setup_column("1", 16 + 4096, col_width)
+                imgui.table_setup_column("2", 16 + 4096, col_width)
+                imgui.table_next_row()
 
                 for i, key in ipairs(CONDITION_KEYS) do
                    if i == 1 or i == math.ceil(#CONDITION_KEYS / 2) + 1 then imgui.table_next_column() end
@@ -545,13 +654,23 @@ function Module.add_ui()
         languagePrefix = Module.title .. ".item_buffs."
         if imgui.tree_node(language.get(languagePrefix .. "title")) then
 
-            imgui.begin_table(Module.title .. "3", 2, nil, nil, nil)
-            imgui.table_next_row()
-
             local ITEM_KEYS = {
                 "might_seed", "might_pill", "demon_drug", "mega_demondrug", "demon_powder", "hot_drink", "dash_juice",
                 "adamant_seed", "adamant_pill", "armor_skin", "mega_armorskin", "hardshell_powder", "cool_drink", "imunizer"
             }
+
+            local max_width = 0
+            for _, key in ipairs(ITEM_KEYS) do
+                local text = language.get(languagePrefix .. key)
+                max_width = math.max(max_width, imgui.calc_text_size(text).x)
+            end
+            local row_width = imgui.calc_item_width()
+            local col_width = math.max(max_width + 24 + 20, row_width / 2)
+
+            imgui.begin_table(Module.title .. "3", 2, 0)
+            imgui.table_setup_column("1", 16 + 4096, col_width)
+            imgui.table_setup_column("2", 16 + 4096, col_width)
+            imgui.table_next_row()
 
             for i, key in ipairs(ITEM_KEYS) do
                 if i == 1 or i == math.ceil(#ITEM_KEYS / 2) + 1 then imgui.table_next_column() end
@@ -577,16 +696,17 @@ function Module.add_ui()
         languagePrefix = Module.title .. ".stats."
         if imgui.tree_node(language.get(languagePrefix .. "title")) then
 
-            changed, Module.data.stats.bonus_attack = imgui.drag_int(language.get(languagePrefix .. "bonus_attack"), Module.data.stats.bonus_attack, 1, 0, 5000, Module.data.stats.bonus_attack <= 0 and language.get("base.disabled") or "%d")
+            changed, Module.data.stats.attack = imgui.drag_int(language.get(languagePrefix .. "attack"), Module.data.stats.attack, 1, -1, 5000, Module.data.stats.attack < 0 and language.get("base.disabled") or "%d")
             any_changed = any_changed or changed
 
-            changed, Module.data.stats.bonus_defence = imgui.drag_int(language.get(languagePrefix .. "bonus_defence"), Module.data.stats.bonus_defence, 1, 0, 5000, Module.data.stats.bonus_defence <= 0 and language.get("base.disabled") or "%d")
+            changed, Module.data.stats.defence = imgui.drag_int(language.get(languagePrefix .. "defence"), Module.data.stats.defence, 1, -1, 5000, Module.data.stats.defence < 0 and language.get("base.disabled") or "%d")
             any_changed = any_changed or changed
+
 
             changed, Module.data.stats.critical_chance = imgui.slider_int(language.get(languagePrefix .. "critical_chance"), Module.data.stats.critical_chance, -1, 100, Module.data.stats.critical_chance == -1 and language.get("base.disabled") or "%d%%")
             any_changed = any_changed or changed
 
-            changed, Module.data.stats.bonus_elemental = imgui.drag_int(language.get(languagePrefix .. "bonus_elemental"), Module.data.stats.bonus_elemental, 1, 0, 2000, Module.data.stats.bonus_elemental <= 0 and language.get("base.disabled") or "%d")
+            changed, Module.data.stats.elemental_attack = imgui.drag_int(language.get(languagePrefix .. "elemental_attack"), Module.data.stats.elemental_attack, 1, -1, 2000, Module.data.stats.elemental_attack < 0 and language.get("base.disabled") or "%d")
             any_changed = any_changed or changed
 
             languagePrefix = languagePrefix .. "element."
@@ -607,6 +727,48 @@ function Module.add_ui()
             changed, attr_index = imgui.combo(language.get(languagePrefix .. "title"), attr_index, attr_type)
             Module.data.stats.element = attr_index - 2
             any_changed = any_changed or changed
+
+            
+
+            languagePrefix = Module.title .. ".stats.defence_attributes."
+            if imgui.tree_node(language.get(languagePrefix .. "title")) then
+                local element_prefix = Module.title .. ".stats.element."
+                local DEFENCE_ATTR_KEYS = { "fire", "water", "ice", "thunder", "dragon" }
+
+                local row_width = imgui.calc_item_width()
+                local longest_text_width = 0
+                for _, key in ipairs(DEFENCE_ATTR_KEYS) do
+                    local text = language.get(languagePrefix .. key .. "_enable"):format(language.get(element_prefix .. key))
+                    longest_text_width = math.max(longest_text_width, imgui.calc_text_size(text).x)
+                end
+                
+                imgui.begin_table(Module.title .. "4", 2, 0)
+
+                local column_1_width = longest_text_width + 24 + 10  -- Text length + Checkbox sizing + padding
+                imgui.table_setup_column("Toggle", 16 + 4096, column_1_width)
+
+                for _, key in ipairs(DEFENCE_ATTR_KEYS) do
+                    local display_name = language.get(element_prefix .. key)
+                    local enable_text = language.get(languagePrefix .. key .. "_enable"):format(display_name)
+                    
+                    imgui.table_next_column()
+                    imgui.push_id(key)
+                    
+                    changed, Module.data.stats.defence_attributes[key .. "_enable"] = imgui.checkbox(enable_text, Module.data.stats.defence_attributes[key .. "_enable"])
+                    any_changed = any_changed or changed
+
+                    imgui.table_next_column()
+                    if Module.data.stats.defence_attributes[key .. "_enable"] then
+                        imgui.set_next_item_width(row_width - (column_1_width + 20 + 10)) -- Possible row width - (first column + padding) 
+                        changed, Module.data.stats.defence_attributes["_" .. key .. "_value"] = imgui.slider_int(language.get(languagePrefix .."value"):format(display_name), Module.data.stats.defence_attributes["_" .. key .. "_value"], -100, 100, "%d")
+                        any_changed = any_changed or changed
+                    end
+                    imgui.pop_id()
+                end
+                imgui.end_table()
+                imgui.tree_pop()
+            end
+            
 
             imgui.tree_pop()
         end
@@ -633,8 +795,52 @@ function Module.add_ui()
     return any_changed
 end
 
+function Module.reset_stat_changes()
+    local hunter = utils.get_master_character()
+    if not hunter then return end
+    local status = hunter:get_HunterStatus()
+    if not status then return end
+
+    local attack_power = status:get_AttackPower()
+    local defence_power = status:get_DefencePower()
+    local critical_rate = status:get_CriticalRate()
+
+    updateDahliaFloatBox("attack",    "_WeaponAttackPower",           attack_power, -1, 0, false)
+    updateDahliaFloatBox("defence",   "_OriginalArmorDefencePower",   defence_power, -1, 0, false)
+    updateDahliaFloatBox("critical_chance", "_OriginalCritical",            critical_rate, -1, 0, false)
+    updateDahliaFloatBox("elemental_attack", "_WeaponAttrPower",            attack_power, -1, 0, false)
+
+    if attack_power then
+        Module:cache_and_update_field("element", attack_power, "_WeaponAttrType", -1)
+    end
+end
+function Module.reset_defence_attributes()
+    
+    local hunter = utils.get_master_character()
+    if not hunter then return end
+    local status = hunter:get_HunterStatus()
+    if not status then return end
+
+    local defence_power = status:get_DefencePower()
+    if not defence_power then return end
+
+    local attribute_defence = defence_power:get_field("_OriginalElementResistPower") -- Array of DahliaFloatBoxes
+    if not attribute_defence then return end
+
+    updateDahliaFloatBoxToggle("defence_attributes", "fire", attribute_defence[1], 0, false)
+    updateDahliaFloatBoxToggle("defence_attributes", "water", attribute_defence[2], 0, false)
+    updateDahliaFloatBoxToggle("defence_attributes", "thunder", attribute_defence[3], 0, false)
+    updateDahliaFloatBoxToggle("defence_attributes", "ice", attribute_defence[4], 0, false)
+    updateDahliaFloatBoxToggle("defence_attributes", "dragon", attribute_defence[5], 0, false)
+end
+
 function Module.reset()
-    -- Implement reset functionality if needed
+
+    -- Disable all stat changes
+    Module.reset_stat_changes()
+
+    -- Disable defence attributes
+    Module.reset_defence_attributes()
 end
 
 return Module

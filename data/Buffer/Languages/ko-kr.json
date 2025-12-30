@@ -17,6 +17,8 @@
         "disable_all": "모두 비활성화",
         "enabled_buffs": "활성화된 버프",
         "nothing_enabled": "아무것도 활성화되지 않음",
+        "character_bonus_stats": "Use bonus mode for character stats(*)",
+        "character_bonus_stats_tooltip": "In bonus mode, the values set will be treated as bonus values added to the base stats, rather than setting the stats directly.(*)",
         "disable": "비활성화",
         "bindings": {
             "title": "키 설정",
@@ -124,10 +126,19 @@
         },
         "stats": {
             "title": "능력치",
-            "bonus_attack": "공격 보너스",
-            "bonus_defence": "방어 보너스",
+            "attack": "공격력",
+            "defence": "방어력",
             "critical_chance": "최심율 증가",
-            "bonus_elemental": "추가 속성 수치",
+            "elemental_attack": "속성 공격력",
+            "defence_attributes": {
+                "title": "Elemental Resistances(*)",
+                "value": "%s value(*)",
+                "fire_enable": "Fire elemental resistance(*)",
+                "water_enable": "Water elemental resistance(*)",
+                "ice_enable": "Ice elemental resistance(*)",
+                "thunder_enable": "Thunder elemental resistance(*)",
+                "dragon_enable": "Dragon elemental resistance(*)"
+            },
             "element": {
             "title": "속성",
             "none": "속성 없음",

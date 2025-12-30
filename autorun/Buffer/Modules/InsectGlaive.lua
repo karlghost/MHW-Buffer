@@ -115,6 +115,7 @@ end
 function Module.add_ui()
     local changed, any_changed = false, false
     local languagePrefix = Module.title .. "."
+    local row_width = imgui.calc_item_width()
 
     imgui.push_id(Module.title.."kinsect")
     languagePrefix = Module.title .. ".kinsect."
@@ -131,60 +132,80 @@ function Module.add_ui()
         changed, Module.data.kinsect.unlimited_stamina = imgui.checkbox(language.get(languagePrefix .. "unlimited_stamina"), Module.data.kinsect.unlimited_stamina)
         any_changed = any_changed or changed
 
+        local fast_charge_text = language.get(languagePrefix .. "fast_charge")
+        local fast_charge_text_size = imgui.calc_text_size(fast_charge_text).x
+
+        imgui.begin_table(Module.title .. "1", 2, 0)
+
+        local column_1_width = fast_charge_text_size + 24 + 10  -- Text length + Checkbox sizing + padding
+        imgui.table_setup_column("Toggle", 16 + 4096, column_1_width)
+        imgui.table_next_column()
+
         changed, Module.data.kinsect.fast_charge = imgui.checkbox(language.get(languagePrefix .. "fast_charge"), Module.data.kinsect.fast_charge)
         any_changed = any_changed or changed
 
-        if Module.data.kinsect.fast_charge then
+        imgui.table_next_column()
 
-            imgui.same_line()
-            imgui.text("  ")
-            imgui.same_line()
-            imgui.set_next_item_width(imgui.calc_item_width() - 100)
+        if Module.data.kinsect.fast_charge then
+            imgui.set_next_item_width(row_width - (column_1_width + 10)) -- Possible row width - (first column + padding) 
             changed, Module.data.kinsect._charge_time = imgui.slider_int(language.get(languagePrefix .. "charge_time"), Module.data.kinsect._charge_time >= 0 and Module.data.kinsect._charge_time or 0, 0, 100, "%d")
             utils.tooltip(language.get(languagePrefix.."charge_time_tooltip"))
             any_changed = any_changed or changed
         end
+        imgui.end_table()
 
         imgui.tree_pop()
     end
     imgui.pop_id()
 
     languagePrefix = Module.title .. "."
-    imgui.begin_table(Module.title.."1", 3, nil, nil, nil)
+
+    local EXTRACT_KEYS = {"red", "white", "orange"}
+    local max_width = 0
+    for _, key in ipairs(EXTRACT_KEYS) do
+        local text = language.get(languagePrefix .. key)
+        max_width = math.max(max_width, imgui.calc_text_size(text).x)
+    end
+    local col_width = math.max(max_width + 24 + 20, row_width / 3)
+
+    imgui.begin_table(Module.title.."1", 3, 0)
+    imgui.table_setup_column("1", 16 + 4096, col_width)
+    imgui.table_setup_column("2", 16 + 4096, col_width)
+    imgui.table_setup_column("3", 16 + 4096, col_width)
     imgui.table_next_row()
-    imgui.table_next_column()
 
-    changed, Module.data.red = imgui.checkbox(language.get(languagePrefix .. "red"), Module.data.red)
-    any_changed = any_changed or changed
-
-    imgui.table_next_column()
-
-    changed, Module.data.white = imgui.checkbox(language.get(languagePrefix .. "white"), Module.data.white)
-    any_changed = any_changed or changed
-
-    imgui.table_next_column()
-
-    changed, Module.data.orange = imgui.checkbox(language.get(languagePrefix .. "orange"), Module.data.orange)
-    any_changed = any_changed or changed
+    for _, key in ipairs(EXTRACT_KEYS) do
+        imgui.table_next_column()
+        changed, Module.data[key] = imgui.checkbox(language.get(languagePrefix .. key), Module.data[key])
+        any_changed = any_changed or changed
+    end
 
     imgui.end_table()
 
     changed, Module.data.infinite_air_attacks = imgui.checkbox(language.get(languagePrefix .. "infinite_air_attacks"), Module.data.infinite_air_attacks)
     any_changed = any_changed or changed
     
+    local fast_charge_text = language.get(languagePrefix .. "fast_charge")
+    local fast_charge_text_size = imgui.calc_text_size(fast_charge_text).x
+
+    imgui.begin_table(Module.title .. "1", 2, 0)
+
+    local column_1_width = fast_charge_text_size + 24 + 10  -- Text length + Checkbox sizing + padding
+    imgui.table_setup_column("Toggle", 16 + 4096, column_1_width)
+    imgui.table_next_column()
+
     changed, Module.data.fast_charge = imgui.checkbox(language.get(languagePrefix .. "fast_charge"), Module.data.fast_charge)
     any_changed = any_changed or changed
 
-    if Module.data.fast_charge then
+    imgui.table_next_column()
 
-        imgui.same_line()
-        imgui.text("  ")
-        imgui.same_line()
-        imgui.set_next_item_width(imgui.calc_item_width() - 100)
+    if Module.data.fast_charge then
+        imgui.set_next_item_width(row_width - (column_1_width + 10)) -- Possible row width - (first column + padding) 
         changed, Module.data._charge_time = imgui.slider_int(language.get(languagePrefix .. "charge_time"), Module.data._charge_time >= 0 and Module.data._charge_time or 0, 0, 100, "%d")
         utils.tooltip(language.get(languagePrefix .. "charge_time_tooltip"))
         any_changed = any_changed or changed
     end
+    imgui.end_table()
 
     changed, Module.data.unrestricted_charge = imgui.checkbox(language.get(languagePrefix .. "unrestricted_charge"), Module.data.unrestricted_charge)
     utils.tooltip(language.get(languagePrefix .. "unrestricted_charge_tooltip"))

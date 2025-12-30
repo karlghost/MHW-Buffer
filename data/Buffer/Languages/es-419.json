@@ -17,6 +17,8 @@
         "disable_all": "Desactivar todo",
         "enabled_buffs": "Enabled buffs (*)",
         "nothing_enabled": "Nothing is enabled (*)",
+        "character_bonus_stats": "Use bonus mode for character stats(*)",
+        "character_bonus_stats_tooltip": "In bonus mode, the values set will be treated as bonus values added to the base stats, rather than setting the stats directly.(*)",
         "disable": "Disable (*)",
         "bindings": {
             "title": "Asignaciones",
@@ -129,10 +131,19 @@
         },
         "stats": {
             "title": "Estadísticas",
-            "bonus_attack": "Bono de ataque",
-            "bonus_defence": "Bonus de defensa",
+            "attack": "Ataque",
+            "defence": "Defensa",
             "critical_chance": "Probabilidad crítica",
-            "bonus_elemental": "Bonus elemental (*)",
+            "elemental_attack": "Ataque elemental",
+            "defence_attributes": {
+                "title": "Elemental Resistances(*)",
+                "value": "%s value(*)",
+                "fire_enable": "Fire elemental resistance(*)",
+                "water_enable": "Water elemental resistance(*)",
+                "ice_enable": "Ice elemental resistance(*)",
+                "thunder_enable": "Thunder elemental resistance(*)",
+                "dragon_enable": "Dragon elemental resistance(*)"
+            },
             "element": {
                 "title": "Elemento",
                 "none": "Ninguno",

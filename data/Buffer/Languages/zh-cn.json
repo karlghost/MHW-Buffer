@@ -17,6 +17,8 @@
         "disable_all": "全部禁用",
         "enabled_buffs": "启用的增益",
         "nothing_enabled": "无增益被启用",
+        "character_bonus_stats": "Use bonus mode for character stats(*)",
+        "character_bonus_stats_tooltip": "In bonus mode, the values set will be treated as bonus values added to the base stats, rather than setting the stats directly.(*)",
         "disable": "禁用",
         "bindings": {
             "title": "快捷键",
@@ -124,10 +126,19 @@
         },
         "stats": {
             "title": "状态数值",
-            "bonus_attack": "额外攻击力",
-            "bonus_defence": "额外防御力",
+            "attack": "攻击力",
+            "defence": "防御力",
             "critical_chance": "暴击率",
-            "bonus_elemental": "额外属性值",
+            "elemental_attack": "属性攻击力",
+            "defence_attributes": {
+                "title": "Elemental Resistances(*)",
+                "value": "%s value(*)",
+                "fire_enable": "Fire elemental resistance(*)",
+                "water_enable": "Water elemental resistance(*)",
+                "ice_enable": "Ice elemental resistance(*)",
+                "thunder_enable": "Thunder elemental resistance(*)",
+                "dragon_enable": "Dragon elemental resistance(*)"
+            },
             "element": {
                 "title": "武器属性",
                 "none": "无",
