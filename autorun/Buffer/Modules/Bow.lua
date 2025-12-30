@@ -66,7 +66,7 @@ function Module.create_hooks()
             -- Check for Tetrad Shot skill (index 38)
             tetrad_shot_active = utils.has_skill(managed:get_Hunter(), 38)
 
-            local max_bottle_num = tetrad_shot_active and 4 or 10
+            local max_bottle_num = tetrad_shot_active and 7 or 10
 
             managed:set_field("<BottleNum>k__BackingField", max_bottle_num)
             managed:set_field("<BottleShotCount>k__BackingField", 10 - max_bottle_num)
