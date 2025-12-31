@@ -252,6 +252,7 @@
         "unlimited_ammo": "Munición ilimitada",
         "unlimited_bladescale": "Disparos Filoescama ilimitados",
         "no_reload": "Sin recarga",
+        "tetrad_shot_active": "Disparo Tétrado activo",
         "no_recoil": "Sin retroceso",
         "no_knockback": "Sin derribo",
         "all_rapid_fire": "Todos disparo rápido",
@@ -266,6 +267,7 @@
         "unlimited_ammo": "Munición ilimitada",
         "unlimited_bladescale": "Disparos Filoescama ilimitados",
         "no_reload": "Sin recarga",
+        "tetrad_shot_active": "Disparo Tétrado activo",
         "no_recoil": "Sin retroceso",
         "no_knockback": "Sin derribo",
         "shell_level": "Nivel de cargas"

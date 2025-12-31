@@ -236,7 +236,7 @@
         "charge_level": "锁定蓄力等级",
         "all_arrow_types": "全强化瓶解锁",
         "unlimited_bottles": "强化瓶无限使用",
-        "tetrad_shot_active": "Tetrad shot support active",
+        "tetrad_shot_active": "Tetrad shot support active (*)",
         "unlimited_bladescale": "无限刃鳞瓶",
         "max_trick_arrow_gauge": "特殊箭计量槽全满"
     },
@@ -249,6 +249,7 @@
         "unlimited_ammo": "无限弹药",
         "unlimited_bladescale": "无限刃鳞弹",
         "no_reload": "无需装填",
+        "tetrad_shot_active": "Tetrad shot support active (*)",
         "no_recoil": "无后座力",
         "no_knockback": "无后退",
         "shell_level": "弹药等级",
@@ -263,6 +264,7 @@
         "unlimited_ammo": "无限弹药",
         "unlimited_bladescale": "无限刃鳞弹",
         "no_reload": "无需装填",
+        "tetrad_shot_active": "Tetrad shot support active (*)",
         "no_recoil": "无后座力",
         "no_knockback": "无后退",
         "shell_level": "弹药等级"

@@ -241,7 +241,7 @@
         "all_arrow_types": "可填充所有瓶",
         "unlimited_bottles": "無限瓶",
         "tetrad_shot_active": "啟用第四射擊",
-        "unlimited_bladescale": "Unlimited bladescale bottles",
+        "unlimited_bladescale": "Unlimited bladescale bottles (*)",
         "max_trick_arrow_gauge": "無限特殊箭計量表"
     },
     "light_bowgun": {
@@ -253,6 +253,7 @@
         "unlimited_ammo": "無限彈藥",
         "unlimited_bladescale": "Unlimited bladescale shots(*)",
         "no_reload": "無需裝填",
+        "tetrad_shot_active": "啟用第四射擊",
         "no_recoil": "無後座力",
         "no_knockback": "No knockback (*)",
         "shell_level": "Shell level (*)",
@@ -267,6 +268,7 @@
         "unlimited_ammo": "無限彈藥",
         "unlimited_bladescale": "Unlimited bladescale shots(*)",
         "no_reload": "無需裝填",
+        "tetrad_shot_active": "啟用第四射擊",
         "no_recoil": "無後座力",
         "no_knockback": "No knockback (*)",
         "shell_level": "Shell level (*)"
