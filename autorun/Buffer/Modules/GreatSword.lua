@@ -1,6 +1,6 @@
 local ModuleBase = require("Buffer.Misc.ModuleBase")
-local language = require("Buffer.Misc.Language")
-local utils = require("Buffer.Misc.Utils")
+local Language = require("Buffer.Misc.Language")
+local Utils = require("Buffer.Misc.Utils")
 
 local Module = ModuleBase:new("great_sword", {
     true_charge_boost = false,
@@ -40,14 +40,14 @@ function Module.add_ui()
     local changed, any_changed = false, false
     local languagePrefix = Module.title .. "."
 
-    changed, Module.data.charge_level = imgui.slider_int(language.get(languagePrefix .. "charge_level"), Module.data.charge_level, -1, 3, Module.data.charge_level == -1 and language.get("base.disabled") or "%d")
+    changed, Module.data.charge_level = imgui.slider_int(Language.get(languagePrefix .. "charge_level"), Module.data.charge_level, -1, 3, Module.data.charge_level == -1 and Language.get("base.disabled") or "%d")
     any_changed = any_changed or changed  
        
-    changed, Module.data.true_charge_boost = imgui.checkbox(language.get(languagePrefix .. "true_charge_boost"), Module.data.true_charge_boost)
-    utils.tooltip(language.get(languagePrefix .. "true_charge_boost_tooltip"))
+    changed, Module.data.true_charge_boost = imgui.checkbox(Language.get(languagePrefix .. "true_charge_boost"), Module.data.true_charge_boost)
+    Utils.tooltip(Language.get(languagePrefix .. "true_charge_boost_tooltip"))
     any_changed = any_changed or changed
     
-    changed, Module.data.instant_charge = imgui.checkbox(language.get(languagePrefix .. "instant_charge"), Module.data.instant_charge)
+    changed, Module.data.instant_charge = imgui.checkbox(Language.get(languagePrefix .. "instant_charge"), Module.data.instant_charge)
     any_changed = any_changed or changed 
 
     return any_changed

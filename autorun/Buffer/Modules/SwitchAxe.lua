@@ -1,5 +1,5 @@
 local ModuleBase = require("Buffer.Misc.ModuleBase")
-local language = require("Buffer.Misc.Language")
+local Language = require("Buffer.Misc.Language")
 
 local Module = ModuleBase:new("switch_axe", {
     max_charge = false,
@@ -38,13 +38,13 @@ function Module.add_ui()
     local changed, any_changed = false, false
     local languagePrefix = Module.title .. "."
    
-    changed, Module.data.max_charge = imgui.checkbox(language.get(languagePrefix .. "max_charge"), Module.data.max_charge)
+    changed, Module.data.max_charge = imgui.checkbox(Language.get(languagePrefix .. "max_charge"), Module.data.max_charge)
     any_changed = any_changed or changed
 
-    changed, Module.data.max_sword_charge = imgui.checkbox(language.get(languagePrefix .. "max_sword_charge"), Module.data.max_sword_charge)
+    changed, Module.data.max_sword_charge = imgui.checkbox(Language.get(languagePrefix .. "max_sword_charge"), Module.data.max_sword_charge)
     any_changed = any_changed or changed
 
-    changed, Module.data.powered_axe = imgui.checkbox(language.get(languagePrefix .. "powered_axe"), Module.data.powered_axe)
+    changed, Module.data.powered_axe = imgui.checkbox(Language.get(languagePrefix .. "powered_axe"), Module.data.powered_axe)
     any_changed = any_changed or changed
 
     return any_changed

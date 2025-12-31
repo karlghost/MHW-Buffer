@@ -1,5 +1,5 @@
 local ModuleBase = require("Buffer.Misc.ModuleBase")
-local language = require("Buffer.Misc.Language")
+local Language = require("Buffer.Misc.Language")
 
 local Module = ModuleBase:new("charge_blade", {
     max_phials = false,
@@ -55,27 +55,27 @@ function Module.add_ui()
     local changed, any_changed = false, false
     local languagePrefix = Module.title .. "."
        
-    changed, Module.data.max_phials = imgui.checkbox(language.get(languagePrefix .. "max_phials"), Module.data.max_phials)
+    changed, Module.data.max_phials = imgui.checkbox(Language.get(languagePrefix .. "max_phials"), Module.data.max_phials)
     any_changed = any_changed or changed
 
-    changed, Module.data.overcharge_phials = imgui.checkbox(language.get(languagePrefix .. "overcharge_phials"), Module.data.overcharge_phials)
+    changed, Module.data.overcharge_phials = imgui.checkbox(Language.get(languagePrefix .. "overcharge_phials"), Module.data.overcharge_phials)
     any_changed = any_changed or changed
 
     imgui.begin_table(languagePrefix.."title", 3, nil, nil, nil)
     imgui.table_next_row()
     imgui.table_next_column()
 
-    changed, Module.data.shield_enhanced = imgui.checkbox(language.get(languagePrefix .. "shield_enhanced"), Module.data.shield_enhanced)
+    changed, Module.data.shield_enhanced = imgui.checkbox(Language.get(languagePrefix .. "shield_enhanced"), Module.data.shield_enhanced)
     any_changed = any_changed or changed
 
     imgui.table_next_column()
 
-    changed, Module.data.sword_enhanced = imgui.checkbox(language.get(languagePrefix .. "sword_enhanced"), Module.data.sword_enhanced)
+    changed, Module.data.sword_enhanced = imgui.checkbox(Language.get(languagePrefix .. "sword_enhanced"), Module.data.sword_enhanced)
     any_changed = any_changed or changed
 
     imgui.table_next_column()
 
-    changed, Module.data.axe_enhanced = imgui.checkbox(language.get(languagePrefix .. "axe_enhanced"), Module.data.axe_enhanced)
+    changed, Module.data.axe_enhanced = imgui.checkbox(Language.get(languagePrefix .. "axe_enhanced"), Module.data.axe_enhanced)
     any_changed = any_changed or changed
 
     imgui.end_table()

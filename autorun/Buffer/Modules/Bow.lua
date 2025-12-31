@@ -1,6 +1,6 @@
 local ModuleBase = require("Buffer.Misc.ModuleBase")
-local language = require("Buffer.Misc.Language")
-local utils = require("Buffer.Misc.Utils")
+local Language = require("Buffer.Misc.Language")
+local Utils = require("Buffer.Misc.Utils")
 
 local Module = ModuleBase:new("bow", 
     {
@@ -67,7 +67,7 @@ function Module.create_hooks()
         -- Unlimited bottles
         if Module.data.unlimited_bottles then
             -- Check for Tetrad Shot skill (index 38)
-            tetrad_shot_active = utils.has_skill(managed:get_Hunter(), 38)
+            tetrad_shot_active = Utils.has_skill(managed:get_Hunter(), 38)
 
             local max_bottle_num = tetrad_shot_active and 7 or 10
 
@@ -83,7 +83,7 @@ function Module.create_hooks()
         -- Bladescale Loading
         if Module.data.unlimited_bladescale then
             -- Check for Bladescale Loading skill (index 201)
-            if utils.has_skill(managed:get_Hunter(), 201) then
+            if Utils.has_skill(managed:get_Hunter(), 201) then
                 managed:set_field("<Skill218BottleNum>k__BackingField", 3)
             end
         end
@@ -93,7 +93,7 @@ end
 
 function Module:update_cached_modifications(managed)
     if not managed then
-        local player = utils.get_master_character()
+        local player = Utils.get_master_character()
         if not player then return end
         managed = player:get_WeaponHandling()
     end
@@ -111,30 +111,30 @@ function Module.add_ui()
     local changed, any_changed = false, false
     local languagePrefix = Module.title .. "."
 
-    changed, Module.data.charge_level = imgui.slider_int(language.get(languagePrefix .. "charge_level"), Module.data.charge_level, -1, 3, Module.data.charge_level == -1 and language.get("base.disabled") or "%d")
+    changed, Module.data.charge_level = imgui.slider_int(Language.get(languagePrefix .. "charge_level"), Module.data.charge_level, -1, 3, Module.data.charge_level == -1 and Language.get("base.disabled") or "%d")
     any_changed = any_changed or changed
 
-    changed, Module.data.all_arrow_types = imgui.checkbox(language.get(languagePrefix .. "all_arrow_types"), Module.data.all_arrow_types)
+    changed, Module.data.all_arrow_types = imgui.checkbox(Language.get(languagePrefix .. "all_arrow_types"), Module.data.all_arrow_types)
     any_changed = any_changed or changed
 
     imgui.begin_table(Module.title.."1", 2, nil, nil, nil)
     imgui.table_next_row()
     imgui.table_next_column()
 
-    changed, Module.data.unlimited_bottles = imgui.checkbox(language.get(languagePrefix .. "unlimited_bottles"), Module.data.unlimited_bottles)
+    changed, Module.data.unlimited_bottles = imgui.checkbox(Language.get(languagePrefix .. "unlimited_bottles"), Module.data.unlimited_bottles)
     if  tetrad_shot_active then
         imgui.same_line()
-        utils.tooltip(language.get(languagePrefix .. "tetrad_shot_active"))
+        Utils.tooltip(Language.get(languagePrefix .. "tetrad_shot_active"))
     end
 
     imgui.table_next_column()
 
-    changed, Module.data.unlimited_bladescale = imgui.checkbox(language.get(languagePrefix .. "unlimited_bladescale"), Module.data.unlimited_bladescale)
+    changed, Module.data.unlimited_bladescale = imgui.checkbox(Language.get(languagePrefix .. "unlimited_bladescale"), Module.data.unlimited_bladescale)
     any_changed = any_changed or changed
 
     imgui.end_table()
 
-    changed, Module.data.max_trick_arrow_gauge = imgui.checkbox(language.get(languagePrefix .. "max_trick_arrow_gauge"), Module.data.max_trick_arrow_gauge)
+    changed, Module.data.max_trick_arrow_gauge = imgui.checkbox(Language.get(languagePrefix .. "max_trick_arrow_gauge"), Module.data.max_trick_arrow_gauge)
     any_changed = any_changed or changed
 
     if any_changed then
@@ -152,7 +152,7 @@ local function reset_weapon(weapon)
 end
 
 function Module.reset()
-    local player = utils.get_master_character()
+    local player = Utils.get_master_character()
     if not player then return end
 
     if player:get_WeaponType() == 11 then 

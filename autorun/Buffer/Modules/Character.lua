@@ -1,6 +1,6 @@
 local ModuleBase = require("Buffer.Misc.ModuleBase")
-local language = require("Buffer.Misc.Language")
-local utils = require("Buffer.Misc.Utils")
+local Language = require("Buffer.Misc.Language")
+local Utils = require("Buffer.Misc.Utils")
 
 local Module = ModuleBase:new("character", {
     health = {
@@ -413,7 +413,7 @@ function Module.create_hooks()
    --- Update character stats
    function Module:update_cached_modifications(managed)
         if not managed then
-        local player = utils.get_master_character()
+        local player = Utils.get_master_character()
         if not player then return end
         managed = player:get_HunterStatus()
     end
@@ -569,16 +569,16 @@ function Module.add_ui()
     local languagePrefix = Module.title .. "."
 
     languagePrefix = Module.title .. ".health."
-    if imgui.tree_node(language.get(languagePrefix .. "title")) then
+    if imgui.tree_node(Language.get(languagePrefix .. "title")) then
 
-            changed, Module.data.health.max = imgui.checkbox(language.get(languagePrefix .. "max"), Module.data.health.max)
+            changed, Module.data.health.max = imgui.checkbox(Language.get(languagePrefix .. "max"), Module.data.health.max)
             any_changed = any_changed or changed
 
-            changed, Module.data.health.unlimited = imgui.checkbox(language.get(languagePrefix .. "unlimited"), Module.data.health.unlimited)
+            changed, Module.data.health.unlimited = imgui.checkbox(Language.get(languagePrefix .. "unlimited"), Module.data.health.unlimited)
             any_changed = any_changed or changed
 
-            changed, Module.data.health.healing = imgui.checkbox(language.get(languagePrefix .. "healing"), Module.data.health.healing)
-            utils.tooltip(language.get(languagePrefix .. "healing_tooltip"))
+            changed, Module.data.health.healing = imgui.checkbox(Language.get(languagePrefix .. "healing"), Module.data.health.healing)
+            Utils.tooltip(Language.get(languagePrefix .. "healing_tooltip"))
             any_changed = any_changed or changed
 
             imgui.tree_pop()
@@ -586,12 +586,12 @@ function Module.add_ui()
         end
 
         languagePrefix = Module.title .. ".stamina."
-        if imgui.tree_node(language.get(languagePrefix .. "title")) then
+        if imgui.tree_node(Language.get(languagePrefix .. "title")) then
 
-            changed, Module.data.stamina.max = imgui.checkbox(language.get(languagePrefix .. "max"), Module.data.stamina.max)
+            changed, Module.data.stamina.max = imgui.checkbox(Language.get(languagePrefix .. "max"), Module.data.stamina.max)
             any_changed = any_changed or changed
 
-            changed, Module.data.stamina.unlimited = imgui.checkbox(language.get(languagePrefix .. "unlimited"), Module.data.stamina.unlimited)
+            changed, Module.data.stamina.unlimited = imgui.checkbox(Language.get(languagePrefix .. "unlimited"), Module.data.stamina.unlimited)
             any_changed = any_changed or changed
 
             imgui.tree_pop()
@@ -599,12 +599,12 @@ function Module.add_ui()
 
         languagePrefix = Module.title .. ".blights_and_conditions."
 
-        if imgui.tree_node(language.get(languagePrefix .. "title")) then
+        if imgui.tree_node(Language.get(languagePrefix .. "title")) then
             
-            utils.tooltip(language.get(languagePrefix .. "tooltip"))
+            Utils.tooltip(Language.get(languagePrefix .. "tooltip"))
 
             languagePrefix = Module.title .. ".blights_and_conditions.blights."
-            if imgui.tree_node(language.get(languagePrefix .. "title")) then
+            if imgui.tree_node(Language.get(languagePrefix .. "title")) then
 
                 local BLIGHT_KEYS = {
                     "fire", "thunder", "water", 
@@ -613,7 +613,7 @@ function Module.add_ui()
 
                 local max_width = 0
                 for _, key in ipairs(BLIGHT_KEYS) do
-                    local text = language.get(languagePrefix .. key)
+                    local text = Language.get(languagePrefix .. key)
                     max_width = math.max(max_width, imgui.calc_text_size(text).x)
                 end
                 local row_width = imgui.calc_item_width()
@@ -626,7 +626,7 @@ function Module.add_ui()
 
                 for i, key in ipairs(BLIGHT_KEYS) do
                     if i == 1 or i == math.ceil(#BLIGHT_KEYS / 2) + 1 then imgui.table_next_column() end
-                    changed, Module.data.blights_and_conditions.blights[key] = imgui.checkbox(language.get(languagePrefix .. key), Module.data.blights_and_conditions.blights[key])
+                    changed, Module.data.blights_and_conditions.blights[key] = imgui.checkbox(Language.get(languagePrefix .. key), Module.data.blights_and_conditions.blights[key])
                     any_changed = any_changed or changed
                 end
 
@@ -635,7 +635,7 @@ function Module.add_ui()
             end
                 
             languagePrefix = Module.title .. ".blights_and_conditions.conditions."
-            if imgui.tree_node(language.get(languagePrefix .. "title")) then
+            if imgui.tree_node(Language.get(languagePrefix .. "title")) then
 
                 local CONDITION_KEYS = {
                     "poison", "stench", "blast", "bleed", "defense_down", "frenzy", "hp_reduction",
@@ -644,7 +644,7 @@ function Module.add_ui()
 
                 local max_width = 0
                 for _, key in ipairs(CONDITION_KEYS) do
-                    local text = language.get(languagePrefix .. key)
+                    local text = Language.get(languagePrefix .. key)
                     max_width = math.max(max_width, imgui.calc_text_size(text).x)
                 end
                 local row_width = imgui.calc_item_width()
@@ -657,7 +657,7 @@ function Module.add_ui()
 
                 for i, key in ipairs(CONDITION_KEYS) do
                    if i == 1 or i == math.ceil(#CONDITION_KEYS / 2) + 1 then imgui.table_next_column() end
-                   changed, Module.data.blights_and_conditions.conditions[key] = imgui.checkbox(language.get(languagePrefix .. key), Module.data.blights_and_conditions.conditions[key])
+                   changed, Module.data.blights_and_conditions.conditions[key] = imgui.checkbox(Language.get(languagePrefix .. key), Module.data.blights_and_conditions.conditions[key])
                    any_changed = any_changed or changed
                 end
 
@@ -666,11 +666,11 @@ function Module.add_ui()
             end
             imgui.tree_pop()
         else
-            utils.tooltip(language.get(Module.title .. ".blights_and_conditions." .. "tooltip"))
+            Utils.tooltip(Language.get(Module.title .. ".blights_and_conditions." .. "tooltip"))
         end
 
         languagePrefix = Module.title .. ".item_buffs."
-        if imgui.tree_node(language.get(languagePrefix .. "title")) then
+        if imgui.tree_node(Language.get(languagePrefix .. "title")) then
 
             local ITEM_KEYS = {
                 "might_seed", "might_pill", "demon_drug", "mega_demondrug", "demon_powder", "hot_drink", "dash_juice",
@@ -679,7 +679,7 @@ function Module.add_ui()
 
             local max_width = 0
             for _, key in ipairs(ITEM_KEYS) do
-                local text = language.get(languagePrefix .. key)
+                local text = Language.get(languagePrefix .. key)
                 max_width = math.max(max_width, imgui.calc_text_size(text).x)
             end
             local row_width = imgui.calc_item_width()
@@ -692,7 +692,7 @@ function Module.add_ui()
 
             for i, key in ipairs(ITEM_KEYS) do
                 if i == 1 or i == math.ceil(#ITEM_KEYS / 2) + 1 then imgui.table_next_column() end
-               changed, Module.data.item_buffs[key] = imgui.checkbox(language.get(languagePrefix .. key), Module.data.item_buffs[key])
+               changed, Module.data.item_buffs[key] = imgui.checkbox(Language.get(languagePrefix .. key), Module.data.item_buffs[key])
                any_changed = any_changed or changed
             end
 
@@ -701,62 +701,62 @@ function Module.add_ui()
         end
 
         languagePrefix = Module.title .. ".mantles."
-        if imgui.tree_node(language.get(languagePrefix .. "title")) then
+        if imgui.tree_node(Language.get(languagePrefix .. "title")) then
 
-            changed, Module.data.mantles.instant_cooldown = imgui.checkbox(language.get(languagePrefix .. "instant_cooldown"), Module.data.mantles.instant_cooldown)
+            changed, Module.data.mantles.instant_cooldown = imgui.checkbox(Language.get(languagePrefix .. "instant_cooldown"), Module.data.mantles.instant_cooldown)
             any_changed = any_changed or changed
 
-            changed, Module.data.mantles.unlimited_duration = imgui.checkbox(language.get(languagePrefix .. "unlimited_duration"), Module.data.mantles.unlimited_duration)
+            changed, Module.data.mantles.unlimited_duration = imgui.checkbox(Language.get(languagePrefix .. "unlimited_duration"), Module.data.mantles.unlimited_duration)
             any_changed = any_changed or changed
             imgui.tree_pop()
         end
         
         languagePrefix = Module.title .. ".stats."
-        if imgui.tree_node(language.get(languagePrefix .. "title")) then
+        if imgui.tree_node(Language.get(languagePrefix .. "title")) then
 
-            changed, Module.data.stats.attack = imgui.drag_int(language.get(languagePrefix .. "attack"), Module.data.stats.attack, 1, -1, 5000, Module.data.stats.attack < 0 and language.get("base.disabled") or "%d")
+            changed, Module.data.stats.attack = imgui.drag_int(Language.get(languagePrefix .. "attack"), Module.data.stats.attack, 1, -1, 5000, Module.data.stats.attack < 0 and Language.get("base.disabled") or "%d")
             any_changed = any_changed or changed
 
-            changed, Module.data.stats.defence = imgui.drag_int(language.get(languagePrefix .. "defence"), Module.data.stats.defence, 1, -1, 5000, Module.data.stats.defence < 0 and language.get("base.disabled") or "%d")
+            changed, Module.data.stats.defence = imgui.drag_int(Language.get(languagePrefix .. "defence"), Module.data.stats.defence, 1, -1, 5000, Module.data.stats.defence < 0 and Language.get("base.disabled") or "%d")
             any_changed = any_changed or changed
 
 
-            changed, Module.data.stats.critical_chance = imgui.slider_int(language.get(languagePrefix .. "critical_chance"), Module.data.stats.critical_chance, -1, 100, Module.data.stats.critical_chance == -1 and language.get("base.disabled") or "%d%%")
+            changed, Module.data.stats.critical_chance = imgui.slider_int(Language.get(languagePrefix .. "critical_chance"), Module.data.stats.critical_chance, -1, 100, Module.data.stats.critical_chance == -1 and Language.get("base.disabled") or "%d%%")
             any_changed = any_changed or changed
 
-            changed, Module.data.stats.elemental_attack = imgui.drag_int(language.get(languagePrefix .. "elemental_attack"), Module.data.stats.elemental_attack, 1, -1, 2000, Module.data.stats.elemental_attack < 0 and language.get("base.disabled") or "%d")
+            changed, Module.data.stats.elemental_attack = imgui.drag_int(Language.get(languagePrefix .. "elemental_attack"), Module.data.stats.elemental_attack, 1, -1, 2000, Module.data.stats.elemental_attack < 0 and Language.get("base.disabled") or "%d")
             any_changed = any_changed or changed
 
             languagePrefix = languagePrefix .. "element."
             local attr_type = {
-                language.get("base.disabled"),
-                language.get(languagePrefix .. "none"),
-                language.get(languagePrefix .. "fire"),
-                language.get(languagePrefix .. "water"),
-                language.get(languagePrefix .. "ice"),
-                language.get(languagePrefix .. "thunder"),
-                language.get(languagePrefix .. "dragon"),
-                language.get(languagePrefix .. "poison"),
-                language.get(languagePrefix .. "paralyze"),
-                language.get(languagePrefix .. "sleep"),
-                language.get(languagePrefix .. "blast")
+                Language.get("base.disabled"),
+                Language.get(languagePrefix .. "none"),
+                Language.get(languagePrefix .. "fire"),
+                Language.get(languagePrefix .. "water"),
+                Language.get(languagePrefix .. "ice"),
+                Language.get(languagePrefix .. "thunder"),
+                Language.get(languagePrefix .. "dragon"),
+                Language.get(languagePrefix .. "poison"),
+                Language.get(languagePrefix .. "paralyze"),
+                Language.get(languagePrefix .. "sleep"),
+                Language.get(languagePrefix .. "blast")
             }
             local attr_index = Module.data.stats.element + 2
-            changed, attr_index = imgui.combo(language.get(languagePrefix .. "title"), attr_index, attr_type)
+            changed, attr_index = imgui.combo(Language.get(languagePrefix .. "title"), attr_index, attr_type)
             Module.data.stats.element = attr_index - 2
             any_changed = any_changed or changed
 
             
 
             languagePrefix = Module.title .. ".stats.defence_attributes."
-            if imgui.tree_node(language.get(languagePrefix .. "title")) then
+            if imgui.tree_node(Language.get(languagePrefix .. "title")) then
                 local element_prefix = Module.title .. ".stats.element."
                 local DEFENCE_ATTR_KEYS = { "fire", "water", "ice", "thunder", "dragon" }
 
                 local row_width = imgui.calc_item_width()
                 local longest_text_width = 0
                 for _, key in ipairs(DEFENCE_ATTR_KEYS) do
-                    local text = language.get(languagePrefix .. key .. "_enable"):format(language.get(element_prefix .. key))
+                    local text = Language.get(languagePrefix .. key .. "_enable"):format(Language.get(element_prefix .. key))
                     longest_text_width = math.max(longest_text_width, imgui.calc_text_size(text).x)
                 end
                 
@@ -766,8 +766,8 @@ function Module.add_ui()
                 imgui.table_setup_column("Toggle", 16 + 4096, column_1_width)
 
                 for _, key in ipairs(DEFENCE_ATTR_KEYS) do
-                    local display_name = language.get(element_prefix .. key)
-                    local enable_text = language.get(languagePrefix .. key .. "_enable"):format(display_name)
+                    local display_name = Language.get(element_prefix .. key)
+                    local enable_text = Language.get(languagePrefix .. key .. "_enable"):format(display_name)
                     
                     imgui.table_next_column()
                     imgui.push_id(key)
@@ -778,7 +778,7 @@ function Module.add_ui()
                     imgui.table_next_column()
                     if Module.data.stats.defence_attributes[key .. "_enable"] then
                         imgui.set_next_item_width(row_width - (column_1_width + 20 + 10)) -- Possible row width - (first column + padding) 
-                        changed, Module.data.stats.defence_attributes["_" .. key .. "_value"] = imgui.slider_int(language.get(languagePrefix .."value"):format(display_name), Module.data.stats.defence_attributes["_" .. key .. "_value"], -100, 100, "%d")
+                        changed, Module.data.stats.defence_attributes["_" .. key .. "_value"] = imgui.slider_int(Language.get(languagePrefix .."value"):format(display_name), Module.data.stats.defence_attributes["_" .. key .. "_value"], -100, 100, "%d")
                         any_changed = any_changed or changed
                     end
                     imgui.pop_id()
@@ -799,20 +799,20 @@ function Module.add_ui()
         
         languagePrefix = Module.title .. "."
 
-        changed, Module.data.invincible = imgui.checkbox(language.get(languagePrefix .. "invincible"), Module.data.invincible)
-        utils.tooltip(language.get(languagePrefix .. "invincible_tooltip"))
+        changed, Module.data.invincible = imgui.checkbox(Language.get(languagePrefix .. "invincible"), Module.data.invincible)
+        Utils.tooltip(Language.get(languagePrefix .. "invincible_tooltip"))
         any_changed = any_changed or changed
 
-        changed, Module.data.unlimited_sharpness = imgui.checkbox(language.get(languagePrefix .. "unlimited_sharpness"), Module.data.unlimited_sharpness)
+        changed, Module.data.unlimited_sharpness = imgui.checkbox(Language.get(languagePrefix .. "unlimited_sharpness"), Module.data.unlimited_sharpness)
         any_changed = any_changed or changed
 
-        changed, Module.data.unlimited_consumables = imgui.checkbox(language.get(languagePrefix .. "unlimited_consumables"), Module.data.unlimited_consumables)
+        changed, Module.data.unlimited_consumables = imgui.checkbox(Language.get(languagePrefix .. "unlimited_consumables"), Module.data.unlimited_consumables)
         any_changed = any_changed or changed
         
-        changed, Module.data.unlimited_slingers = imgui.checkbox(language.get(languagePrefix .. "unlimited_slingers"), Module.data.unlimited_slingers)
+        changed, Module.data.unlimited_slingers = imgui.checkbox(Language.get(languagePrefix .. "unlimited_slingers"), Module.data.unlimited_slingers)
         any_changed = any_changed or changed
 
-        changed, Module.data.unlimited_meal_timer = imgui.checkbox(language.get(languagePrefix .. "unlimited_meal_timer"), Module.data.unlimited_meal_timer)
+        changed, Module.data.unlimited_meal_timer = imgui.checkbox(Language.get(languagePrefix .. "unlimited_meal_timer"), Module.data.unlimited_meal_timer)
         any_changed = any_changed or changed
             
 
@@ -820,7 +820,7 @@ function Module.add_ui()
 end
 
 function Module.reset_stat_changes()
-    local hunter = utils.get_master_character()
+    local hunter = Utils.get_master_character()
     if not hunter then return end
     local status = hunter:get_HunterStatus()
     if not status then return end
@@ -840,7 +840,7 @@ function Module.reset_stat_changes()
 end
 function Module.reset_defence_attributes()
     
-    local hunter = utils.get_master_character()
+    local hunter = Utils.get_master_character()
     if not hunter then return end
     local status = hunter:get_HunterStatus()
     if not status then return end

@@ -10,9 +10,9 @@ local FRAME_ROUNDING = 5.0
 local WINDOW_ALPHA = 0.9
 
 -- Utilities and Helpers
-local utils = require("Buffer.Misc.Utils")
-local config = require("Buffer.Misc.Config")
-local language = require("Buffer.Misc.Language")
+local Utils = require("Buffer.Misc.Utils")
+local Config = require("Buffer.Misc.Config")
+local Language = require("Buffer.Misc.Language")
 local bindings = require("Buffer.Misc.BindingsHelper")
 
 -- -- Misc Modules
@@ -55,7 +55,7 @@ local modules = {
 }
 
 -- Load the languages
-language.init()
+Language.init()
 
 -- Load the bindings
 bindings.load(modules)
@@ -83,7 +83,7 @@ local function draw_binding_table(device, bindings_list, table_id)
 
             imgui.text("   [ " .. bind_string .. " ]     ")
             imgui.table_next_column()
-            if imgui.button(language.get("window.bindings.remove")) then
+            if imgui.button(Language.get("window.bindings.remove")) then
                 bindings.remove(device, i)
             end
             imgui.same_line()
@@ -120,19 +120,19 @@ for _, module in pairs(modules) do
 end
 
 -- Check if the window was last open
-if config.get("window.is_window_open") then isWindowOpen = true end
+if Config.get("window.is_window_open") then isWindowOpen = true end
 
 -- Add the menu to the REFramework Script Generated UI
 re.on_draw_ui(function()
 
-    if language.font.data ~= nil then imgui.push_font(language.font.data) end
+    if Language.font.data ~= nil then imgui.push_font(Language.font.data) end
     local languagePrefix = "window."
 
     -- Draw button to toggle window state
     imgui.indent(2)
-    if imgui.button(language.get(languagePrefix .. "toggle_button")) then
+    if imgui.button(Language.get(languagePrefix .. "toggle_button")) then
         isWindowOpen = not isWindowOpen
-        config.set("window.is_window_open", isWindowOpen)
+        Config.set("window.is_window_open", isWindowOpen)
     end
     imgui.unindent(2)
 
@@ -145,28 +145,28 @@ re.on_draw_ui(function()
 
         imgui.set_next_window_size(Vector2f.new(WINDOW_WIDTH, WINDOW_HEIGHT), 4)
 
-        isWindowOpen = imgui.begin_window("[Buffer] "..language.get(languagePrefix .. "title"), isWindowOpen, 1024)
+        isWindowOpen = imgui.begin_window("[Buffer] "..Language.get(languagePrefix .. "title"), isWindowOpen, 1024)
         bindings.draw()
         if imgui.begin_menu_bar() then
 
             languagePrefix = "window.bindings."
-            if imgui.begin_menu(language.get(languagePrefix .. "title")) then
+            if imgui.begin_menu(Language.get(languagePrefix .. "title")) then
                 imgui.spacing()
-                if imgui.begin_menu("   " .. language.get(languagePrefix .. "keyboard")) then
+                if imgui.begin_menu("   " .. Language.get(languagePrefix .. "keyboard")) then
                     imgui.spacing()
                     local device = bindings.DEVICE_TYPES.KEYBOARD
                     local keyboardBindings = bindings.get_bindings(device)
                     draw_binding_table(device, keyboardBindings, "bindings_keyboard")
-                    if imgui.button("   " .. language.get(languagePrefix .. "add_keyboard") .. "   ", "", false) then bindings.popup_open(2) end
+                    if imgui.button("   " .. Language.get(languagePrefix .. "add_keyboard") .. "   ", "", false) then bindings.popup_open(2) end
                     imgui.spacing()
                     imgui.end_menu()
                 end
-                if imgui.begin_menu("   " .. language.get(languagePrefix .. "gamepad")) then
+                if imgui.begin_menu("   " .. Language.get(languagePrefix .. "gamepad")) then
                     imgui.spacing()
                     local device = bindings.DEVICE_TYPES.CONTROLLER
                     local gamepadBindings = bindings.get_bindings(device)
                     draw_binding_table(device, gamepadBindings, "bindings_gamepad")
-                    if imgui.button("   " .. language.get(languagePrefix .. "add_gamepad") .. "   ", "", false) then bindings.popup_open(1) end
+                    if imgui.button("   " .. Language.get(languagePrefix .. "add_gamepad") .. "   ", "", false) then bindings.popup_open(1) end
                     imgui.spacing()
                     imgui.end_menu()
                 end
@@ -175,25 +175,25 @@ re.on_draw_ui(function()
                 imgui.end_menu()
             end
             languagePrefix = "window."
-            if imgui.begin_menu(language.get(languagePrefix .. "settings")) then
+            if imgui.begin_menu(Language.get(languagePrefix .. "settings")) then
                 imgui.spacing()
-                if imgui.begin_menu("   " .. language.get(languagePrefix .. "language")) then
+                if imgui.begin_menu("   " .. Language.get(languagePrefix .. "language")) then
                     imgui.spacing()
-                    for _, lang in pairs(language.sorted) do
-                        if imgui.menu_item("   " .. language.getLanguageName(lang) .. "   ", "", lang == language.current, lang ~= language.current) then language.change(lang) end
+                    for _, lang in pairs(Language.sorted) do
+                        if imgui.menu_item("   " .. Language.getLanguageName(lang) .. "   ", "", lang == Language.current, lang ~= Language.current) then Language.change(lang) end
                     end
                     imgui.spacing()
                     imgui.end_menu()
                 end
-                if imgui.begin_menu("   " .. language.get(languagePrefix .. "font_size")) then
+                if imgui.begin_menu("   " .. Language.get(languagePrefix .. "font_size")) then
                     imgui.spacing()
-                    language.font.temp_size = language.font.temp_size or language.font.size
+                    Language.font.temp_size = Language.font.temp_size or Language.font.size
                     local changed = false
-                    changed, language.font.temp_size = imgui.slider_int(language.get(languagePrefix .. "font_size") .. " ", language.font.temp_size, 8, 24)
+                    changed, Language.font.temp_size = imgui.slider_int(Language.get(languagePrefix .. "font_size") .. " ", Language.font.temp_size, 8, 24)
                     imgui.same_line()
-                    if imgui.button(language.get(languagePrefix .. "font_size_apply")) then
-                        language.change(language.current, language.font.temp_size)
-                        language.font.temp_size = nil
+                    if imgui.button(Language.get(languagePrefix .. "font_size_apply")) then
+                        Language.change(Language.current, Language.font.temp_size)
+                        Language.font.temp_size = nil
                     end
                     imgui.spacing()
                     imgui.end_menu()
@@ -202,21 +202,21 @@ re.on_draw_ui(function()
                 imgui.end_menu()
             end
 
-            if imgui.begin_menu(language.get(languagePrefix .. "options")) then
+            if imgui.begin_menu(Language.get(languagePrefix .. "options")) then
 
                 imgui.spacing()
                 imgui.spacing()
                 imgui.indent(4)
                 local changed = false
-                changed, character.data.stats.use_bonus_mode = imgui.checkbox("   " .. language.get(languagePrefix .. "character_bonus_stats") .. "   ", character.data.stats.use_bonus_mode)
+                changed, character.data.stats.use_bonus_mode = imgui.checkbox("   " .. Language.get(languagePrefix .. "character_bonus_stats") .. "   ", character.data.stats.use_bonus_mode)
                 imgui.unindent(4)
                 if changed then character:save_config() end
-                if imgui.is_item_hovered() then imgui.set_tooltip("  "..language.get(languagePrefix .. "character_bonus_stats_tooltip").."  ") end
+                if imgui.is_item_hovered() then imgui.set_tooltip("  "..Language.get(languagePrefix .. "character_bonus_stats_tooltip").."  ") end
                     
                 imgui.spacing()
                 imgui.separator()
                 imgui.spacing()
-                if imgui.begin_menu("   " .. language.get(languagePrefix .. "enabled_buffs")) then
+                if imgui.begin_menu("   " .. Language.get(languagePrefix .. "enabled_buffs")) then
                     local enabled_buffs = {}
 
                     for _, module in pairs(modules) do
@@ -239,7 +239,7 @@ re.on_draw_ui(function()
                             imgui.table_next_column()
                             imgui.text("  " .. tostring(buff[2]) .. "  ")
                             imgui.table_next_column()
-                            if imgui.button(language.get(languagePrefix .. "disable")) then
+                            if imgui.button(Language.get(languagePrefix .. "disable")) then
                                 local off_state
                                 if type(buff[2]) == "boolean" then
                                     off_state = false
@@ -258,7 +258,7 @@ re.on_draw_ui(function()
                         imgui.end_table()
                         imgui.separator()
                         imgui.spacing()
-                        if imgui.button("   " .. language.get(languagePrefix .. "disable_all").. "   ", "", false) then
+                        if imgui.button("   " .. Language.get(languagePrefix .. "disable_all").. "   ", "", false) then
                             for _, module in pairs(modules) do
                                 bindings.disable_all(module.data)
                                 module:save_config()
@@ -267,7 +267,7 @@ re.on_draw_ui(function()
                         imgui.spacing()
                     else
                         imgui.spacing()
-                        imgui.text(" " .. language.get(languagePrefix .. "nothing_enabled").. " ")
+                        imgui.text(" " .. Language.get(languagePrefix .. "nothing_enabled").. " ")
                         imgui.spacing()
                     end
                     imgui.end_menu()
@@ -277,13 +277,13 @@ re.on_draw_ui(function()
                 imgui.end_menu()
             end
 
-            if imgui.begin_menu(language.get(languagePrefix .. "about")) then
+            if imgui.begin_menu(Language.get(languagePrefix .. "about")) then
                 imgui.spacing()
-                imgui.text("   " .. language.get(languagePrefix .. "author") .. ": Bimmr   ")
-                if language.languages[language.current]["_TRANSLATOR"] then
-                    imgui.text("   " .. language.get(languagePrefix .. "translator") .. ": " .. language.languages[language.current]["_TRANSLATOR"] .. "   ")
+                imgui.text("   " .. Language.get(languagePrefix .. "author") .. ": Bimmr   ")
+                if Language.languages[Language.current]["_TRANSLATOR"] then
+                    imgui.text("   " .. Language.get(languagePrefix .. "translator") .. ": " .. Language.languages[Language.current]["_TRANSLATOR"] .. "   ")
                 end
-                imgui.text("   " .. language.get(languagePrefix .. "version") .. ": " .. version .. "   ")
+                imgui.text("   " .. Language.get(languagePrefix .. "version") .. ": " .. version .. "   ")
 
                 imgui.spacing()
                 imgui.end_menu()
@@ -306,10 +306,10 @@ re.on_draw_ui(function()
         -- This is needed because of the close icon on the window not triggering a save to the config
     elseif wasOpen then
         wasOpen = false
-        config.set("window.is_window_open", isWindowOpen)
+        Config.set("window.is_window_open", isWindowOpen)
     end
 
-    if language.font.data ~= nil then imgui.pop_font() end
+    if Language.font.data ~= nil then imgui.pop_font() end
 end)
 
 -- Keybinds

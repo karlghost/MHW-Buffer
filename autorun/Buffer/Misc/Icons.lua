@@ -1,4 +1,4 @@
-local language = require("Buffer.Misc.Language")
+local Language = require("Buffer.Misc.Language")
 
 local Icons = {
     glyphs = {
@@ -33,13 +33,13 @@ local Icons = {
 
 --- Loads the icon font with the current language font size
 function Icons.load_icons()
-    Icons.font = imgui.load_font('Monster-Hunter-Icons.ttf', language.font.size+2, {0xE900, 0xE9FF, 0})
-    Icons.loaded_font_size = language.font.size
+    Icons.font = imgui.load_font('Monster-Hunter-Icons.ttf', Language.font.size+2, {0xE900, 0xE9FF, 0})
+    Icons.loaded_font_size = Language.font.size
 end
 
 --- Reload icons if the language font size has changed
 function Icons.reload_if_needed()
-    if Icons.loaded_font_size ~= language.font.size then
+    if Icons.loaded_font_size ~= Language.font.size then
         Icons.load_icons()
     end
 end

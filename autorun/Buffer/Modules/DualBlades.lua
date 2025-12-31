@@ -1,5 +1,5 @@
 local ModuleBase = require("Buffer.Misc.ModuleBase")
-local language = require("Buffer.Misc.Language")
+local Language = require("Buffer.Misc.Language")
 
 local Module = ModuleBase:new("dual_blades", {
     demon_gauge = false,
@@ -32,9 +32,9 @@ function Module.add_ui()
     local changed, any_changed = false, false
     local languagePrefix = Module.title .. "."
     
-    changed, Module.data.demon_gauge = imgui.checkbox(language.get(languagePrefix .. "demon_gauge"), Module.data.demon_gauge)
+    changed, Module.data.demon_gauge = imgui.checkbox(Language.get(languagePrefix .. "demon_gauge"), Module.data.demon_gauge)
     any_changed = any_changed or changed
-    changed, Module.data.demon_boost = imgui.checkbox(language.get(languagePrefix .. "demon_boost"), Module.data.demon_boost)
+    changed, Module.data.demon_boost = imgui.checkbox(Language.get(languagePrefix .. "demon_boost"), Module.data.demon_boost)
     any_changed = any_changed or changed
 
     return any_changed
