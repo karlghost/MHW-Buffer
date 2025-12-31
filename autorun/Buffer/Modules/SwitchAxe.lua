@@ -9,9 +9,12 @@ local Module = ModuleBase:new("switch_axe", {
 
 function Module.create_hooks()
     
+    Module:init_stagger("switch_axe_handling_update", 10)
     sdk.hook(sdk.find_type_definition("app.cHunterWp08Handling"):get_method("doUpdate"), function(args) 
         local managed = sdk.to_managed_object(args[2])
         if not Module:weapon_hook_guard(managed, "app.cHunterWp08Handling") then return end
+
+        if not Module:should_execute_staggered("switch_axe_handling_update") then return end
 
         -- Max charge
         if Module.data.max_charge then 
@@ -28,7 +31,7 @@ function Module.create_hooks()
             managed:set_field("_AxeEnhancedTimer", 45) 
         end
 
-    end, function(retval) end)
+    end)
 end
 
 function Module.add_ui()

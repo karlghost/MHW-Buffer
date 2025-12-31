@@ -217,7 +217,7 @@ function Module.create_hooks()
         if not managed:get_IsMaster() then return end
 
         Module.reset_stat_changes()
-    end, function(retval) end)
+    end)
     
     -- Watch for reserve weapon changes
     sdk.hook(sdk.find_type_definition("app.HunterCharacter"):get_method("changeWeaponFromReserve"), function(args) 
@@ -226,13 +226,16 @@ function Module.create_hooks()
         if not managed:get_IsMaster() then return end
 
         Module.reset_stat_changes()
-    end, function(retval) end)
+    end)
 
 
+    Module:init_stagger("character_status_update", 5)
     sdk.hook(sdk.find_type_definition("app.cHunterStatus"):get_method("update"), function(args)
         local managed = sdk.to_managed_object(args[2])
         if not managed:get_type_definition():is_a("app.cHunterStatus") then return end
         if managed:get_IsMaster() == false then return end
+
+        if not Module:should_execute_staggered("character_status_update") then return end
 
         -- Managers
         local health = managed:get_field("_Health")
@@ -425,21 +428,20 @@ function Module.create_hooks()
         -- Element
         Module:cache_and_update_field("element", managed:get_field("_AttackPower"), "_WeaponAttrType", Module.data.stats.element)
 
-    end, function(retval)
-    end)
+   end)
 
     -- Unlimited Sharpness
     sdk.hook(sdk.find_type_definition("app.cHunterWeaponHandlingBase"):get_method("consumeKireajiFromAttack(app.HitInfo)"), function(args)
         if Module.data.unlimited_sharpness then
             return sdk.PreHookResult.SKIP_ORIGINAL
         end
-    end, function(retval) end)
+    end)
 
     sdk.hook(sdk.find_type_definition("app.cHunterWeaponHandlingBase"):get_method("consumeKireaji(System.Int32, System.Boolean)"), function(args)
         if Module.data.unlimited_sharpness then
             return sdk.PreHookResult.SKIP_ORIGINAL
         end
-    end, function(retval) end)
+    end)
 
 
     -- Invincibility
@@ -452,7 +454,7 @@ function Module.create_hooks()
             managed:makeInvincible()
         end
 
-    end, function(retval) end)
+    end)
 
 
     -- Unlimited Consumables
@@ -524,10 +526,13 @@ function Module.create_hooks()
     end)
 
     -- Mantles
+    Module:init_stagger("character_mantles_update", 10)
     sdk.hook(sdk.find_type_definition("app.mcActiveSkillController"):get_method("updateMain"), function(args)
         local managed = sdk.to_managed_object(args[2])
         if not managed then return end
         if not managed:get_field("_Hunter"):get_IsMaster() then return end
+
+        if not Module:should_execute_staggered("character_mantles_update") then return end
 
         local mantles = managed:get_field("_ActiveSkills")
         if not mantles or not (Module.data.mantles.instant_cooldown or Module.data.mantles.unlimited_duration) then return end
@@ -542,7 +547,7 @@ function Module.create_hooks()
             end
         end
 
-    end, function(retval) end)
+    end)
 
 end
 

@@ -24,7 +24,7 @@ function Module.create_hooks()
         if not managed:get_IsMaster() then return end
         
         Module:reset()
-    end, function(retval) end)
+    end)
     
     
     -- Watch for reserve weapon changes
@@ -34,13 +34,17 @@ function Module.create_hooks()
         if not managed:get_IsMaster() then return end
 
         Module:reset()
-    end, function(retval) end)
+    end)
 
     -- Weapon changes
+    
+    Module:init_stagger("bow_handling_update", 10)
     sdk.hook(sdk.find_type_definition("app.cHunterWp11Handling"):get_method("doUpdate"), function(args) 
         local managed = sdk.to_managed_object(args[2])
         if not Module:weapon_hook_guard(managed, "app.cHunterWp11Handling") then return end
         local weapon_id = managed:get_Hunter():get_WeaponID()
+
+        if not Module:should_execute_staggered("bow_handling_update") then return end
 
         -- Charge Level
         if Module.data.charge_level ~= -1 then
@@ -85,7 +89,7 @@ function Module.create_hooks()
             end
         end
 
-    end, function(retval) end)
+    end)
 end
 
 function Module.add_ui()

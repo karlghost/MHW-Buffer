@@ -28,7 +28,7 @@ function Module.create_hooks()
         if not managed:get_IsMaster() then return end
 
         Module:reset()
-    end, function(retval) end)
+    end)
 
     -- Watch for reserve weapon changes
     sdk.hook(sdk.find_type_definition("app.HunterCharacter"):get_method("changeWeaponFromReserve"), function(args) 
@@ -37,12 +37,15 @@ function Module.create_hooks()
         if not managed:get_IsMaster() then return end
 
         Module:reset()
-    end, function(retval) end)
+    end)
     
+    Module:init_stagger("light_bowgun_handling_update", 10)
     sdk.hook(sdk.find_type_definition("app.cHunterWp13Handling"):get_method("doUpdate"), function(args) 
         local managed = sdk.to_managed_object(args[2])
         if not Module:weapon_hook_guard(managed, "app.cHunterWp13Handling") then return end
         local weapon_id = managed:get_Hunter():get_WeaponID()
+
+        if not Module:should_execute_staggered("light_bowgun_handling_update") then return end
 
         -- Special Ammo
         Module:cache_and_update_field("special_ammo_heal_rate_"..weapon_id, managed, "_SpecialAmmoHealRate", Module.data.max_special_ammo and 100 or -1)
@@ -139,7 +142,7 @@ function Module.create_hooks()
         end
 
 
-    end, function(retval) end)
+    end)
 
     -- On shooting a shell, check if unlimited ammo is enabled, and if no reload is enabled
     local skip_ammo_usage = false

@@ -50,12 +50,15 @@ function Module.create_hooks()
 
         -- Reset kinsect stats when weapon changes
         Module:reset()
-    end, function(retval) end)
+    end)
 
     -- Weapon modifications
+    Module:init_stagger("insect_glaive_handling_update", 10)
     sdk.hook(sdk.find_type_definition("app.cHunterWp10Handling"):get_method("doUpdate"), function(args) 
         local managed = sdk.to_managed_object(args[2])
         if not Module:weapon_hook_guard(managed, "app.cHunterWp10Handling") then return end
+
+        if not Module:should_execute_staggered("insect_glaive_handling_update") then return end
 
         -- Kinsect
         local kinsect = managed:get_Insect()
@@ -106,7 +109,7 @@ function Module.create_hooks()
             shouldSkip = true
         end
 
-    end, function(retval) end)
+    end)
 
     sdk.hook(sdk.find_type_definition("app.cHunterWp10Handling"):get_method("updateCharge"), updateChargeHook, nil)
 
