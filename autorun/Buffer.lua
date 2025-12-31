@@ -205,8 +205,11 @@ re.on_draw_ui(function()
             if imgui.begin_menu(language.get(languagePrefix .. "options")) then
 
                 imgui.spacing()
+                imgui.spacing()
+                imgui.indent(4)
                 local changed = false
                 changed, character.data.stats.use_bonus_mode = imgui.checkbox("   " .. language.get(languagePrefix .. "character_bonus_stats") .. "   ", character.data.stats.use_bonus_mode)
+                imgui.unindent(4)
                 if changed then character:save_config() end
                 if imgui.is_item_hovered() then imgui.set_tooltip("  "..language.get(languagePrefix .. "character_bonus_stats_tooltip").."  ") end
                     
