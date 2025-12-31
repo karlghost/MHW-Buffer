@@ -47,8 +47,8 @@ function Module.create_hooks()
 
         if not Module:should_execute_staggered("light_bowgun_handling_update") then return end
 
-        -- Special Ammo
-        Module:cache_and_update_field("special_ammo_heal_rate_"..weapon_id, managed, "_SpecialAmmoHealRate", Module.data.max_special_ammo and 100 or -1)
+        -- Update cached values
+        Module:update_cached_modifications(managed)
         
         -- Rapid Shot
         if Module.data.max_rapid_shot then
@@ -83,15 +83,6 @@ function Module.create_hooks()
             end
         end
 
-        -- All Rapid Fire (0 = Normal, 1 = Rapid)
-        local ammo_types = 19
-        for i = 0, ammo_types - 1 do
-            local ammo_info = managed:getAmmo(i)
-            local equip_ammo_info = managed:get_EquipShellInfo()[i]
-            Module:cache_and_update_field("ammo_type_" .. weapon_id  .. "_" .. i, ammo_info, "_AmmoType", Module.data.all_rapid_fire and 1 or -1) -- 0 = Normal, 1 = Rapid
-         end
-
-
         --* _Ammos
         -- 0  = Normal
         -- 1  = Pierce
@@ -113,10 +104,6 @@ function Module.create_hooks()
         -- 17 = Recovery
         -- 18 = Exhaust
         -- 19 = Tranq
-
-        -- Shell Level (Valid values are 0, 1, 2. Anything over 2 does 1 damage)
-        local equip_shell_list = managed:get_EquipShellInfo()
-        Module:cache_and_update_array_value("equip_shell_list_" .. weapon_id, equip_shell_list, "_ShellLv", Module.data.shell_level)
 
         --* Can't force ammo into the bowgun, need to explore this more
         -- for i = 0, #managed:get_field("_Ammos") do
@@ -217,6 +204,33 @@ function Module.create_hooks()
     end)
 end
 
+function Module:update_cached_modifications(managed)
+    if not managed then
+        local player = utils.get_master_character()
+        if not player then return end
+        managed = player:get_WeaponHandling()
+    end
+    
+    if not managed then return end
+    if not Module:weapon_hook_guard(managed, "app.cHunterWp13Handling") then return end
+    local weapon_id = managed:get_Hunter():get_WeaponID()
+
+    -- Special Ammo
+    Module:cache_and_update_field("special_ammo_heal_rate_"..weapon_id, managed, "_SpecialAmmoHealRate", Module.data.max_special_ammo and 100 or -1)
+
+    -- All Rapid Fire (0 = Normal, 1 = Rapid)
+    local ammo_types = 19
+    for i = 0, ammo_types - 1 do
+        local ammo_info = managed:getAmmo(i)
+        local equip_ammo_info = managed:get_EquipShellInfo()[i]
+        Module:cache_and_update_field("ammo_type_" .. weapon_id  .. "_" .. i, ammo_info, "_AmmoType", Module.data.all_rapid_fire and 1 or -1) -- 0 = Normal, 1 = Rapid
+    end
+
+    -- Shell Level (Valid values are 0, 1, 2. Anything over 2 does 1 damage)
+    local equip_shell_list = managed:get_EquipShellInfo()
+    Module:cache_and_update_array_value("equip_shell_list_" .. weapon_id, equip_shell_list, "_ShellLv", Module.data.shell_level)
+end
+
 function Module.add_ui()
     local changed, any_changed = false, false
     local languagePrefix = Module.title .. "."
@@ -282,6 +296,10 @@ function Module.add_ui()
 
     changed, Module.data.all_rapid_fire = imgui.checkbox(language.get(languagePrefix .. "all_rapid_fire"), Module.data.all_rapid_fire)
     any_changed = any_changed or changed
+
+    if any_changed then
+        Module:update_cached_modifications()
+    end
 
     return any_changed
 end

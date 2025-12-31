@@ -46,6 +46,9 @@ function Module.create_hooks()
 
         if not Module:should_execute_staggered("bow_handling_update") then return end
 
+        -- Update cached values
+        Module:update_cached_modifications(managed)
+
         -- Charge Level
         if Module.data.charge_level ~= -1 then
             managed:set_field("<ChargeLv>k__BackingField", Module.data.charge_level)
@@ -60,10 +63,6 @@ function Module.create_hooks()
             -- 6 = Sleep
             -- 7 = Blast
             -- 8 = Exhaust
-
-        -- All arrow types
-        local bottle_infos = managed:get_field("<BottleInfos>k__BackingField")
-        Module:cache_and_update_array_toggle("bottle_infos_" .. weapon_id, bottle_infos, "<CanLoading>k__BackingField", Module.data.all_arrow_types)
 
         -- Unlimited bottles
         if Module.data.unlimited_bottles then
@@ -90,6 +89,22 @@ function Module.create_hooks()
         end
 
     end)
+end
+
+function Module:update_cached_modifications(managed)
+    if not managed then
+        local player = utils.get_master_character()
+        if not player then return end
+        managed = player:get_WeaponHandling()
+    end
+    
+    if not managed then return end
+    if not Module:weapon_hook_guard(managed, "app.cHunterWp11Handling") then return end
+    local weapon_id = managed:get_Hunter():get_WeaponID()
+
+    -- All arrow types
+    local bottle_infos = managed:get_field("<BottleInfos>k__BackingField")
+    Module:cache_and_update_array_toggle("bottle_infos_" .. weapon_id, bottle_infos, "<CanLoading>k__BackingField", Module.data.all_arrow_types)
 end
 
 function Module.add_ui()
@@ -121,6 +136,10 @@ function Module.add_ui()
 
     changed, Module.data.max_trick_arrow_gauge = imgui.checkbox(language.get(languagePrefix .. "max_trick_arrow_gauge"), Module.data.max_trick_arrow_gauge)
     any_changed = any_changed or changed
+
+    if any_changed then
+        Module:update_cached_modifications()
+    end
 
     return any_changed
 end

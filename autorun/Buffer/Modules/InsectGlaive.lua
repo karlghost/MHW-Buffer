@@ -60,14 +60,12 @@ function Module.create_hooks()
 
         if not Module:should_execute_staggered("insect_glaive_handling_update") then return end
 
-        -- Kinsect
+        -- Update cached values
+        Module:update_cached_modifications(managed)
+        
+        -- Kinsect Stamina
         local kinsect = managed:get_Insect()
         if kinsect then
-            Module:cache_and_update_field("kinsect._PowerLv", kinsect, "_PowerLv", Module.data.kinsect.power)
-            Module:cache_and_update_field("kinsect._SpeedLv", kinsect, "_SpeedLv", Module.data.kinsect.speed)
-            Module:cache_and_update_field("kinsect._RecoveryLv", kinsect, "_RecoveryLv", Module.data.kinsect.recovery)
-            
-            -- Kinsect Stamina
             if Module.data.kinsect.unlimited_stamina then 
                 kinsect:get_field("Stamina"):set_field("_Value", 100.0)
             end
@@ -113,6 +111,25 @@ function Module.create_hooks()
 
     sdk.hook(sdk.find_type_definition("app.cHunterWp10Handling"):get_method("updateCharge"), updateChargeHook, nil)
 
+end
+
+function Module:update_cached_modifications(managed)
+    if not managed then
+        local player = utils.get_master_character()
+        if not player then return end
+        managed = player:get_WeaponHandling()
+    end
+    
+    if not managed then return end
+    if not Module:weapon_hook_guard(managed, "app.cHunterWp10Handling") then return end
+
+    -- Kinsect
+    local kinsect = managed:get_Insect()
+    if kinsect then
+        Module:cache_and_update_field("kinsect._PowerLv", kinsect, "_PowerLv", Module.data.kinsect.power)
+        Module:cache_and_update_field("kinsect._SpeedLv", kinsect, "_SpeedLv", Module.data.kinsect.speed)
+        Module:cache_and_update_field("kinsect._RecoveryLv", kinsect, "_RecoveryLv", Module.data.kinsect.recovery)
+    end
 end
 
 function Module.add_ui()
@@ -213,6 +230,10 @@ function Module.add_ui()
     changed, Module.data.unrestricted_charge = imgui.checkbox(language.get(languagePrefix .. "unrestricted_charge"), Module.data.unrestricted_charge)
     utils.tooltip(language.get(languagePrefix .. "unrestricted_charge_tooltip"))
     any_changed = any_changed or changed
+
+    if any_changed then
+        Module:update_cached_modifications()
+    end
 
     return any_changed
 end

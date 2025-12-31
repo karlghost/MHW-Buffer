@@ -45,6 +45,9 @@ function Module.create_hooks()
 
         if not Module:should_execute_staggered("heavy_bowgun_handling_update") then return end
 
+        -- Update cached values
+        Module:update_cached_modifications(managed)
+
         -- Energy Bullet Info
         local energy_bullet_info = managed:get_field("_EnergyBulletInfo")
 
@@ -87,10 +90,6 @@ function Module.create_hooks()
                 end
             end
         end
-
-        -- Shell Level (Valid values are 0, 1, 2. Anything over 2 does 1 damage)
-        local equip_shell_list = managed:get_EquipShellInfo()
-        Module:cache_and_update_array_value("equip_shell_list_" .. weapon_id, equip_shell_list, "_ShellLv", Module.data.shell_level)
 
         if Module.data.no_reload then
             local ammo = managed:getCurrentAmmo()
@@ -175,6 +174,22 @@ function Module.create_hooks()
 
 end
 
+function Module:update_cached_modifications(managed)
+    if not managed then
+        local player = utils.get_master_character()
+        if not player then return end
+        managed = player:get_WeaponHandling()
+    end
+    
+    if not managed then return end
+    if not Module:weapon_hook_guard(managed, "app.cHunterWp12Handling") then return end
+    local weapon_id = managed:get_Hunter():get_WeaponID()
+
+    -- Shell Level (Valid values are 0, 1, 2. Anything over 2 does 1 damage)
+    local equip_shell_list = managed:get_EquipShellInfo()
+    Module:cache_and_update_array_value("equip_shell_list_" .. weapon_id, equip_shell_list, "_ShellLv", Module.data.shell_level)
+end
+
 function Module.add_ui()
     local changed, any_changed = false, false
     local languagePrefix = Module.title .. "."
@@ -229,6 +244,10 @@ function Module.add_ui()
     any_changed = any_changed or changed
 
     imgui.end_table()
+
+    if any_changed then
+        Module:update_cached_modifications()
+    end
 
     return any_changed
 end

@@ -406,7 +406,20 @@ function Module.create_hooks()
             end
         end
         
-        -- Stats
+        -- Run in function so they can be updated from the UI as well
+        Module:update_cached_modifications(managed)
+   end)
+
+   --- Update character stats
+   function Module:update_cached_modifications(managed)
+        if not managed then
+        local player = utils.get_master_character()
+        if not player then return end
+        managed = player:get_HunterStatus()
+    end
+    
+    if not managed then return end
+
         local user_bonus_mode = Module.data.stats.use_bonus_mode
         updateDahliaFloatBox("attack",          "_WeaponAttackPower",           managed:get_AttackPower(),  Module.data.stats.attack, managed:get_AttackPower():get_CurrentAttackPower(), user_bonus_mode)
         updateDahliaFloatBox("defence",         "_OriginalArmorDefencePower",   managed:get_DefencePower(), Module.data.stats.defence, managed:get_DefencePower():get_CurrentDefencePower(), user_bonus_mode)
@@ -428,7 +441,7 @@ function Module.create_hooks()
         -- Element
         Module:cache_and_update_field("element", managed:get_field("_AttackPower"), "_WeaponAttrType", Module.data.stats.element)
 
-   end)
+   end
 
     -- Unlimited Sharpness
     sdk.hook(sdk.find_type_definition("app.cHunterWeaponHandlingBase"):get_method("consumeKireajiFromAttack(app.HitInfo)"), function(args)
@@ -774,6 +787,12 @@ function Module.add_ui()
                 imgui.tree_pop()
             end
             
+            -- If UI is saying something changed, update stats immediately. 
+            -- This is here rather than at the end of the function to ensure it only updates when stats are changed
+            -- I'll move this if needed later
+            if any_changed then 
+                Module:update_cached_modifications()
+            end
 
             imgui.tree_pop()
         end
