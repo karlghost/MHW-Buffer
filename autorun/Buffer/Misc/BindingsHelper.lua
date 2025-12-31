@@ -1,5 +1,5 @@
 -- BindingsHelper module - extends the Bindings module with additional functionality
-local bindings = require("Buffer.Misc.Bindings")
+local Bindings = require("Buffer.Misc.Bindings")
 local Language = require("Buffer.Misc.Language")
 local Utils = require("Buffer.Misc.Utils")
 
@@ -8,13 +8,15 @@ local enabled_text
 local disabled_text
 
 local modules
+local module_lookup = {}
+local path_name_cache = {}
 
 -- Create a new table that inherits all of the original bindings functionality
 local helper = {}
 helper.popup = {} -- Store popup state in helper
 
 setmetatable(helper, {
-    __index = bindings
+    __index = Bindings
 })
 
 --- Sets a value in a module's data structure using a dot-separated path
@@ -26,18 +28,12 @@ function helper.set_module_value(path, value)
     local module_name = path_parts[1]
 
     -- Find the module by title
-    local module_index
-    for key, mod in pairs(modules) do
-        if mod.title == module_name then
-            module_index = key
-            break
-        end
-    end
-    if not module_index then return false end
+    local target_module = module_lookup[module_name]
+    if not target_module then return false end
 
     -- Traverse to the target value
     table.remove(path_parts, 1)
-    local target = modules[module_index].data
+    local target = target_module.data
     for i = 1, #path_parts - 1 do
         if not target[path_parts[i]] then
             target[path_parts[i]] = {}
@@ -72,14 +68,14 @@ function helper.convert_old_format()
             for _, data in pairs(controller) do
                 local inputs = type(data.input) == "table" and data.input or { data.input }
                 local path = string.gsub(data.data.path, "%.data", "")
-                helper.add(bindings.DEVICE_TYPES.CONTROLLER, inputs, path, data.data.on)
+                helper.add(Bindings.DEVICE_TYPES.CONTROLLER, inputs, path, data.data.on)
             end
         end
         if keyboard then
             for _, data in pairs(keyboard) do
                 local inputs = type(data.input) == "table" and data.input or { data.input }
                 local path = string.gsub(data.data.path, "%.data", "")
-                helper.add(bindings.DEVICE_TYPES.KEYBOARD, inputs, path, data.data.on)
+                helper.add(Bindings.DEVICE_TYPES.KEYBOARD, inputs, path, data.data.on)
             end
         end
 
@@ -94,6 +90,13 @@ function helper.load(mods)
     disabled_text = Language.get("window.bindings.disabled")
 
     -- REMOVE AT A LATER DATE
+    module_lookup = {}
+    for _, mod in pairs(modules) do
+        if mod.title then
+            module_lookup[mod.title] = mod
+        end
+    end
+
     local hasOldFormat = helper.convert_old_format() -- Convert old bindings format to new one
     if hasOldFormat then
         helper.save()
@@ -115,7 +118,7 @@ function helper.save()
 
     -- Iterate through both devices (1 for controller, 2 for keyboard)
     for i = 1, 2 do
-        local bindings_list = bindings.get_bindings(i)
+        local bindings_list = Bindings.get_bindings(i)
         for _, bind in pairs(bindings_list) do
             local data = {
                 device = i,
@@ -131,7 +134,7 @@ function helper.save()
 end
 
 -- Override the original add function to include custom functionality
-helper.original_add = bindings.add
+helper.original_add = Bindings.add
 function helper.add(device, input, path, value)
     helper.original_add(device, input, function()
         local path_parts = Utils.split(path, ".")
@@ -152,18 +155,12 @@ function helper.add(device, input, path, value)
         end
 
         -- Find the module by title
-        local module_index
-        for key, mod in pairs(modules) do
-            if mod.title == module_name then
-                module_index = key
-                break
-            end
-        end
-        if not module_index then return end
+        local target_module = module_lookup[module_name]
+        if not target_module then return end
 
         -- Traverse to the target value
         table.remove(path_parts, 1)
-        local target = modules[module_index].data
+        local target = target_module.data
         for i = 1, #path_parts - 1 do
             target = target[path_parts[i]]
         end
@@ -190,17 +187,17 @@ function helper.add(device, input, path, value)
     end)
 
     -- Apply additional data to the bindings
-    bindings.apply_data(device, input, {
+    Bindings.apply_data(device, input, {
         path = path,
         value = value
     })
 end
 
 -- Override the original remove function to include custom functionality
-helper.original_remove = bindings.remove
+helper.original_remove = Bindings.remove
 function helper.remove(device, number)
     -- Find the binding to remove
-    local bindings = bindings.get_bindings(device)
+    local bindings = Bindings.get_bindings(device)
     local binding = bindings[number]
     helper.original_remove(device, binding.input)
     helper.save()
@@ -210,6 +207,8 @@ end
 --- @param path string The path to the setting (e.g., "character.health").
 --- @return string The formatted name of the setting.
 function helper.get_setting_name_from_path(path)
+    if path_name_cache[path] then return path_name_cache[path] end
+
     local path_parts = Utils.split(path, ".")
     local title_parts = {}
     
@@ -221,7 +220,9 @@ function helper.get_setting_name_from_path(path)
         table.insert(title_parts, Language.get(key))
     end
     
-    return table.concat(title_parts, "/")
+    local result = table.concat(title_parts, "/")
+    path_name_cache[path] = result
+    return result
 end
 
 -- Draws the popup for adding a new binding
@@ -241,7 +242,7 @@ function helper.draw()
         imgui.spacing()
 
         -- Change title depending on device
-        if helper.popup.device == bindings.DEVICE_TYPES.CONTROLLER then
+        if helper.popup.device == Bindings.DEVICE_TYPES.CONTROLLER then
             imgui.text(Language.get("window.bindings.add_gamepad"))
         else
             imgui.text(Language.get("window.bindings.add_keyboard"))
@@ -332,7 +333,7 @@ function helper.draw()
             if #listener:get_inputs() ~= 0 then
                 binding_hotkey = ""
                 local inputs = listener:get_inputs()
-                inputs = bindings.get_names(listener:get_device(), inputs)
+                inputs = Bindings.get_names(listener:get_device(), inputs)
                 for _, input in ipairs(inputs) do
                     binding_hotkey = binding_hotkey .. input.name .. " + "
                 end
@@ -343,7 +344,7 @@ function helper.draw()
             -- If not listening, and inputs are available, display the inputs
         elseif #listener:get_inputs() ~= 0 then
             local inputs = listener:get_inputs()
-            inputs = bindings.get_names(listener:get_device(), inputs)
+            inputs = Bindings.get_names(listener:get_device(), inputs)
             for i, input in ipairs(inputs) do
                 binding_hotkey = binding_hotkey .. input.name
                 if i < #listener:get_inputs() then

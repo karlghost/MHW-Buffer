@@ -13,7 +13,7 @@ local WINDOW_ALPHA = 0.9
 local Utils = require("Buffer.Misc.Utils")
 local Config = require("Buffer.Misc.Config")
 local Language = require("Buffer.Misc.Language")
-local bindings = require("Buffer.Misc.BindingsHelper")
+local Bindings = require("Buffer.Misc.BindingsHelper")
 
 -- -- Misc Modules
 local character = require("Buffer.Modules.Character")
@@ -58,7 +58,7 @@ local modules = {
 Language.init()
 
 -- Load the bindings
-bindings.load(modules)
+Bindings.load(modules)
 
 -- Helper function to draw binding tables
 local function draw_binding_table(device, bindings_list, table_id)
@@ -69,9 +69,9 @@ local function draw_binding_table(device, bindings_list, table_id)
             imgui.push_id(i)
             imgui.table_next_row()
             imgui.table_next_column()
-            local btns = bindings.get_names(device, bind.input)
+            local btns = Bindings.get_names(device, bind.input)
 
-            local title = bindings.get_setting_name_from_path(bind.path)
+            local title = Bindings.get_setting_name_from_path(bind.path)
             imgui.text("   " .. title)
             imgui.table_next_column()
             local bind_string = ""
@@ -84,7 +84,7 @@ local function draw_binding_table(device, bindings_list, table_id)
             imgui.text("   [ " .. bind_string .. " ]     ")
             imgui.table_next_column()
             if imgui.button(Language.get("window.bindings.remove")) then
-                bindings.remove(device, i)
+                Bindings.remove(device, i)
             end
             imgui.same_line()
             imgui.text("  ")
@@ -146,7 +146,7 @@ re.on_draw_ui(function()
         imgui.set_next_window_size(Vector2f.new(WINDOW_WIDTH, WINDOW_HEIGHT), 4)
 
         isWindowOpen = imgui.begin_window("[Buffer] "..Language.get(languagePrefix .. "title"), isWindowOpen, 1024)
-        bindings.draw()
+        Bindings.draw()
         if imgui.begin_menu_bar() then
 
             languagePrefix = "window.bindings."
@@ -154,19 +154,19 @@ re.on_draw_ui(function()
                 imgui.spacing()
                 if imgui.begin_menu("   " .. Language.get(languagePrefix .. "keyboard")) then
                     imgui.spacing()
-                    local device = bindings.DEVICE_TYPES.KEYBOARD
-                    local keyboardBindings = bindings.get_bindings(device)
+                    local device = Bindings.DEVICE_TYPES.KEYBOARD
+                    local keyboardBindings = Bindings.get_bindings(device)
                     draw_binding_table(device, keyboardBindings, "bindings_keyboard")
-                    if imgui.button("   " .. Language.get(languagePrefix .. "add_keyboard") .. "   ", "", false) then bindings.popup_open(2) end
+                    if imgui.button("   " .. Language.get(languagePrefix .. "add_keyboard") .. "   ", "", false) then Bindings.popup_open(2) end
                     imgui.spacing()
                     imgui.end_menu()
                 end
                 if imgui.begin_menu("   " .. Language.get(languagePrefix .. "gamepad")) then
                     imgui.spacing()
-                    local device = bindings.DEVICE_TYPES.CONTROLLER
-                    local gamepadBindings = bindings.get_bindings(device)
+                    local device = Bindings.DEVICE_TYPES.CONTROLLER
+                    local gamepadBindings = Bindings.get_bindings(device)
                     draw_binding_table(device, gamepadBindings, "bindings_gamepad")
-                    if imgui.button("   " .. Language.get(languagePrefix .. "add_gamepad") .. "   ", "", false) then bindings.popup_open(1) end
+                    if imgui.button("   " .. Language.get(languagePrefix .. "add_gamepad") .. "   ", "", false) then Bindings.popup_open(1) end
                     imgui.spacing()
                     imgui.end_menu()
                 end
@@ -235,7 +235,7 @@ re.on_draw_ui(function()
                             imgui.push_id(i)
                             imgui.table_next_row()
                             imgui.table_next_column()
-                            imgui.text(" " .. bindings.get_setting_name_from_path(buff[1]))
+                            imgui.text(" " .. Bindings.get_setting_name_from_path(buff[1]))
                             imgui.table_next_column()
                             imgui.text("  " .. tostring(buff[2]) .. "  ")
                             imgui.table_next_column()
@@ -246,7 +246,7 @@ re.on_draw_ui(function()
                                 else
                                     off_state = -1
                                 end
-                                bindings.set_module_value(buff[1], off_state)
+                                Bindings.set_module_value(buff[1], off_state)
                             end
                             imgui.same_line()
                             imgui.text("  ")
@@ -260,7 +260,7 @@ re.on_draw_ui(function()
                         imgui.spacing()
                         if imgui.button("   " .. Language.get(languagePrefix .. "disable_all").. "   ", "", false) then
                             for _, module in pairs(modules) do
-                                bindings.disable_all(module.data)
+                                Bindings.disable_all(module.data)
                                 module:save_config()
                             end
                         end
@@ -314,7 +314,7 @@ end)
 
 -- Keybinds
 re.on_frame(function()
-    bindings.update()
+    Bindings.update()
 end)
 
 -- On script reset, reset anything that needs to be reset
