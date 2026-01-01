@@ -183,7 +183,6 @@
     "long_sword": {
         "title": "太刀",
         "aura_level": "練気レベル",
-        "aura_level_tooltip": "0から1に設定する場合、ゲージを溜める必要があります。",
         "max_aura_gauge": "練気ゲージ最大",
         "max_spirit_gauge": "気刃ゲージ最大"
     },

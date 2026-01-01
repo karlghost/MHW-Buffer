@@ -19,6 +19,11 @@ function Module.create_hooks()
 
         -- Aura level
         if Module.data.aura_level ~= -1 then
+            local current_aura_level = managed:get_field("<AuraLevel>k__BackingField")
+            local target_aura_level = Module.data.aura_level
+            if current_aura_level == 1 and target_aura_level == 1 then -- If setting to 1 from 0, need to fill the gauge to activate
+                managed:get_field("<AuraGauge>k__BackingField"):set_field("_Value", 200)
+            end
             managed:set_field("<AuraLevel>k__BackingField", Module.data.aura_level+1)
         end
 
@@ -43,7 +48,6 @@ function Module.add_ui()
     local languagePrefix = Module.title .. "."
        
     changed, Module.data.aura_level = imgui.slider_int(Language.get(languagePrefix .. "aura_level"), Module.data.aura_level, -1, 3, Module.data.aura_level == -1 and Language.get("base.disabled") or "%d")   
-    Utils.tooltip(Language.get(languagePrefix .. "aura_level_tooltip"))
     any_changed = any_changed or changed
 
     changed, Module.data.max_aura_gauge = imgui.checkbox(Language.get(languagePrefix .. "max_aura_gauge"), Module.data.max_aura_gauge)

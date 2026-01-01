@@ -184,7 +184,6 @@
     "long_sword": {
         "title": "太刀",
         "aura_level": "氣刃等級",
-        "aura_level_tooltip": "如果從0設置為1，你需要手動提升到白刃已啟動此功能",
         "max_aura_gauge": "無限氣刃計量表",
         "max_spirit_gauge": "無限練氣計量表"
     },
