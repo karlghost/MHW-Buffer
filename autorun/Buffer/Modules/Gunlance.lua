@@ -9,7 +9,27 @@ local Module = ModuleBase:new("gunlance", {
     unlimited_ammo = false,
 })
 
+
+
 function Module.create_hooks()
+
+    -- Watch for weapon changes to reset shell levels
+    sdk.hook(sdk.find_type_definition("app.HunterCharacter"):get_method("changeWeapon"), function(args) 
+        local managed = sdk.to_managed_object(args[2])
+        if not managed:get_type_definition():is_a("app.HunterCharacter") then return end
+        if not managed:get_IsMaster() then return end
+
+        Module:reset()
+    end)
+    
+    -- Watch for reserve weapon changes
+    sdk.hook(sdk.find_type_definition("app.HunterCharacter"):get_method("changeWeaponFromReserve"), function(args) 
+        local managed = sdk.to_managed_object(args[2])
+        if not managed:get_type_definition():is_a("app.HunterCharacter") then return end
+        if not managed:get_IsMaster() then return end
+
+        Module:reset()
+    end)
     
     Module:init_stagger("gunlance_handling_update", 10)
     sdk.hook(sdk.find_type_definition("app.cHunterWp07Handling"):get_method("doUpdate"), function(args) 
