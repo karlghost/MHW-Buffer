@@ -43,6 +43,11 @@ function Module.create_hooks()
         if not Module:weapon_hook_guard(managed, "app.cHunterWp12Handling") then return end
         local weapon_id = managed:get_Hunter():get_WeaponID()
 
+        -- Gatling Hit - Only affects Wyvernheart Ignition
+        if Module.data.max_gatling_hits then
+            managed:set_field("_GatlingHitCount", 9) 
+        end
+        
         if not Module:should_execute_staggered("heavy_bowgun_handling_update") then return end
 
         -- Update cached values
@@ -75,11 +80,6 @@ function Module.create_hooks()
             local snipe_ammo = managed:get_field("_SnipeAmmo")
             snipe_ammo:set_field("_ChargeTimer", snipe_ammo:get_field("_ChargeTime")) 
             -- snipe_ammo:set_field("_CurrentAmmo", snipe_ammo:get_field("_MaxAmmo")) -- DOESN'T WORK
-        end
-
-        -- Gatling Hit - Only affects Wyvernheart Ignition
-        if Module.data.max_gatling_hits then
-            managed:set_field("_GatlingHitCount", 9) 
         end
 
         -- Bladescale Loading

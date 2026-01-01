@@ -16,9 +16,16 @@ function Module.create_hooks()
         local managed = sdk.to_managed_object(args[2])
         if not Module:weapon_hook_guard(managed, "app.cHunterWp07Handling") then return end
 
-        if not Module:should_execute_staggered("gunlance_handling_update") then return end
-
         local ammo = managed:get_field("_Ammo")
+
+        -- Instant charge
+        if Module.data.instant_charge then 
+            local max_ammo = ammo:get_LimitAmmo()
+            managed:set_field("_ChargeShotBulletNum", max_ammo)
+            managed:set_field("_ChargeShotElapsedTimer", max_ammo * 1.1)
+        end
+
+        if not Module:should_execute_staggered("gunlance_handling_update") then return end
 
         -- Update cached values
         Module:update_cached_modifications(managed)
@@ -26,13 +33,6 @@ function Module.create_hooks()
         -- Infinite wyvernshots
         if Module.data.infinite_wyvern_fire then 
             managed:get_field("_RyuugekiGauge"):set_field("_Value", 2)
-        end
-
-        -- Instant charge
-        if Module.data.instant_charge then 
-            local max_ammo = ammo:get_LimitAmmo()
-            managed:set_field("_ChargeShotBulletNum", max_ammo)
-            managed:set_field("_ChargeShotElapsedTimer", max_ammo * 1.1)
         end
 
         -- Unlimited ammo

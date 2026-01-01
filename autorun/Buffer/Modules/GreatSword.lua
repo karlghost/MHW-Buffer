@@ -15,6 +15,11 @@ function Module.create_hooks()
         local managed = sdk.to_managed_object(args[2])
         if not Module:weapon_hook_guard(managed, "app.cHunterWp00Handling") then return end
 
+        -- Charge level
+        if Module.data.charge_level >= 0 and managed:get_field("_ChargeTimer") > 0 then
+            managed:set_field("_ChargeLevel", Module.data.charge_level)
+        end
+
         if not Module:should_execute_staggered("great_sword_handling_update") then return end
 
         -- True charge boost
@@ -28,10 +33,6 @@ function Module.create_hooks()
             managed:set_field("_ChargeLevel", 3)
         end
         
-        -- Charge level
-        if Module.data.charge_level >= 0 and managed:get_field("_ChargeTimer") > 0 then
-            managed:set_field("_ChargeLevel", Module.data.charge_level)
-        end
 
     end)
 end
