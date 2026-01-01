@@ -1,6 +1,6 @@
 local ModuleBase = require("Buffer.Misc.ModuleBase")
-local utils = require("Buffer.Misc.Utils")
-local language = require("Buffer.Misc.Language")
+local Utils = require("Buffer.Misc.Utils")
+local Language = require("Buffer.Misc.Language")
 
 local Module = ModuleBase:new("insect_glaive", {
     kinsect = {
@@ -36,7 +36,7 @@ function Module.create_hooks()
         if not managed:get_type_definition():is_a("app.HunterCharacter") then return end
         if not managed:get_IsMaster() then return end
 
-        local player = utils.get_master_character()
+        local player = Utils.get_master_character()
         local weapon_handling = player:get_WeaponHandling()
         local reserve_weapon_handling = player:get_ReserveWeaponHandling()
 
@@ -50,21 +50,22 @@ function Module.create_hooks()
 
         -- Reset kinsect stats when weapon changes
         Module:reset()
-    end, function(retval) end)
+    end)
 
     -- Weapon modifications
+    Module:init_stagger("insect_glaive_handling_update", 10)
     sdk.hook(sdk.find_type_definition("app.cHunterWp10Handling"):get_method("doUpdate"), function(args) 
         local managed = sdk.to_managed_object(args[2])
         if not Module:weapon_hook_guard(managed, "app.cHunterWp10Handling") then return end
 
-        -- Kinsect
+        if not Module:should_execute_staggered("insect_glaive_handling_update") then return end
+
+        -- Update cached values
+        Module:update_cached_modifications(managed)
+        
+        -- Kinsect Stamina
         local kinsect = managed:get_Insect()
         if kinsect then
-            Module:cache_and_update_field("kinsect._PowerLv", kinsect, "_PowerLv", Module.data.kinsect.power)
-            Module:cache_and_update_field("kinsect._SpeedLv", kinsect, "_SpeedLv", Module.data.kinsect.speed)
-            Module:cache_and_update_field("kinsect._RecoveryLv", kinsect, "_RecoveryLv", Module.data.kinsect.recovery)
-            
-            -- Kinsect Stamina
             if Module.data.kinsect.unlimited_stamina then 
                 kinsect:get_field("Stamina"):set_field("_Value", 100.0)
             end
@@ -106,10 +107,29 @@ function Module.create_hooks()
             shouldSkip = true
         end
 
-    end, function(retval) end)
+    end)
 
     sdk.hook(sdk.find_type_definition("app.cHunterWp10Handling"):get_method("updateCharge"), updateChargeHook, nil)
 
+end
+
+function Module:update_cached_modifications(managed)
+    if not managed then
+        local player = Utils.get_master_character()
+        if not player then return end
+        managed = player:get_WeaponHandling()
+    end
+    
+    if not managed then return end
+    if not Module:weapon_hook_guard(managed, "app.cHunterWp10Handling") then return end
+
+    -- Kinsect
+    local kinsect = managed:get_Insect()
+    if kinsect then
+        Module:cache_and_update_field("kinsect._PowerLv", kinsect, "_PowerLv", Module.data.kinsect.power)
+        Module:cache_and_update_field("kinsect._SpeedLv", kinsect, "_SpeedLv", Module.data.kinsect.speed)
+        Module:cache_and_update_field("kinsect._RecoveryLv", kinsect, "_RecoveryLv", Module.data.kinsect.recovery)
+    end
 end
 
 function Module.add_ui()
@@ -119,20 +139,20 @@ function Module.add_ui()
 
     imgui.push_id(Module.title.."kinsect")
     languagePrefix = Module.title .. ".kinsect."
-    if imgui.tree_node(language.get(languagePrefix .. "title")) then
-        changed, Module.data.kinsect.power = imgui.slider_int(language.get(languagePrefix .. "power"), Module.data.kinsect.power, -1, 200, Module.data.kinsect.power == -1 and language.get("base.disabled") or "%d")
+    if imgui.tree_node(Language.get(languagePrefix .. "title")) then
+        changed, Module.data.kinsect.power = imgui.slider_int(Language.get(languagePrefix .. "power"), Module.data.kinsect.power, -1, 200, Module.data.kinsect.power == -1 and Language.get("base.disabled") or "%d")
         any_changed = any_changed or changed
 
-        changed, Module.data.kinsect.speed = imgui.slider_int(language.get(languagePrefix .. "speed"), Module.data.kinsect.speed, -1, 100, Module.data.kinsect.speed == -1 and language.get("base.disabled") or "%d")
+        changed, Module.data.kinsect.speed = imgui.slider_int(Language.get(languagePrefix .. "speed"), Module.data.kinsect.speed, -1, 100, Module.data.kinsect.speed == -1 and Language.get("base.disabled") or "%d")
         any_changed = any_changed or changed
 
-        changed, Module.data.kinsect.recovery = imgui.slider_int(language.get(languagePrefix .. "recovery"), Module.data.kinsect.recovery, -1, 100, Module.data.kinsect.recovery == -1 and language.get("base.disabled") or "%d")
+        changed, Module.data.kinsect.recovery = imgui.slider_int(Language.get(languagePrefix .. "recovery"), Module.data.kinsect.recovery, -1, 100, Module.data.kinsect.recovery == -1 and Language.get("base.disabled") or "%d")
         any_changed = any_changed or changed
 
-        changed, Module.data.kinsect.unlimited_stamina = imgui.checkbox(language.get(languagePrefix .. "unlimited_stamina"), Module.data.kinsect.unlimited_stamina)
+        changed, Module.data.kinsect.unlimited_stamina = imgui.checkbox(Language.get(languagePrefix .. "unlimited_stamina"), Module.data.kinsect.unlimited_stamina)
         any_changed = any_changed or changed
 
-        local fast_charge_text = language.get(languagePrefix .. "fast_charge")
+        local fast_charge_text = Language.get(languagePrefix .. "fast_charge")
         local fast_charge_text_size = imgui.calc_text_size(fast_charge_text).x
 
         imgui.begin_table(Module.title .. "1", 2, 0)
@@ -141,15 +161,15 @@ function Module.add_ui()
         imgui.table_setup_column("Toggle", 16 + 4096, column_1_width)
         imgui.table_next_column()
 
-        changed, Module.data.kinsect.fast_charge = imgui.checkbox(language.get(languagePrefix .. "fast_charge"), Module.data.kinsect.fast_charge)
+        changed, Module.data.kinsect.fast_charge = imgui.checkbox(Language.get(languagePrefix .. "fast_charge"), Module.data.kinsect.fast_charge)
         any_changed = any_changed or changed
 
         imgui.table_next_column()
 
         if Module.data.kinsect.fast_charge then
             imgui.set_next_item_width(row_width - (column_1_width + 10)) -- Possible row width - (first column + padding) 
-            changed, Module.data.kinsect._charge_time = imgui.slider_int(language.get(languagePrefix .. "charge_time"), Module.data.kinsect._charge_time >= 0 and Module.data.kinsect._charge_time or 0, 0, 100, "%d")
-            utils.tooltip(language.get(languagePrefix.."charge_time_tooltip"))
+            changed, Module.data.kinsect._charge_time = imgui.slider_int(Language.get(languagePrefix .. "charge_time"), Module.data.kinsect._charge_time >= 0 and Module.data.kinsect._charge_time or 0, 0, 100, "%d")
+            Utils.tooltip(Language.get(languagePrefix.."charge_time_tooltip"))
             any_changed = any_changed or changed
         end
         imgui.end_table()
@@ -163,7 +183,7 @@ function Module.add_ui()
     local EXTRACT_KEYS = {"red", "white", "orange"}
     local max_width = 0
     for _, key in ipairs(EXTRACT_KEYS) do
-        local text = language.get(languagePrefix .. key)
+        local text = Language.get(languagePrefix .. key)
         max_width = math.max(max_width, imgui.calc_text_size(text).x)
     end
     local col_width = math.max(max_width + 24 + 20, row_width / 3)
@@ -176,16 +196,16 @@ function Module.add_ui()
 
     for _, key in ipairs(EXTRACT_KEYS) do
         imgui.table_next_column()
-        changed, Module.data[key] = imgui.checkbox(language.get(languagePrefix .. key), Module.data[key])
+        changed, Module.data[key] = imgui.checkbox(Language.get(languagePrefix .. key), Module.data[key])
         any_changed = any_changed or changed
     end
 
     imgui.end_table()
 
-    changed, Module.data.infinite_air_attacks = imgui.checkbox(language.get(languagePrefix .. "infinite_air_attacks"), Module.data.infinite_air_attacks)
+    changed, Module.data.infinite_air_attacks = imgui.checkbox(Language.get(languagePrefix .. "infinite_air_attacks"), Module.data.infinite_air_attacks)
     any_changed = any_changed or changed
     
-    local fast_charge_text = language.get(languagePrefix .. "fast_charge")
+    local fast_charge_text = Language.get(languagePrefix .. "fast_charge")
     local fast_charge_text_size = imgui.calc_text_size(fast_charge_text).x
 
     imgui.begin_table(Module.title .. "1", 2, 0)
@@ -194,28 +214,32 @@ function Module.add_ui()
     imgui.table_setup_column("Toggle", 16 + 4096, column_1_width)
     imgui.table_next_column()
 
-    changed, Module.data.fast_charge = imgui.checkbox(language.get(languagePrefix .. "fast_charge"), Module.data.fast_charge)
+    changed, Module.data.fast_charge = imgui.checkbox(Language.get(languagePrefix .. "fast_charge"), Module.data.fast_charge)
     any_changed = any_changed or changed
 
     imgui.table_next_column()
 
     if Module.data.fast_charge then
         imgui.set_next_item_width(row_width - (column_1_width + 10)) -- Possible row width - (first column + padding) 
-        changed, Module.data._charge_time = imgui.slider_int(language.get(languagePrefix .. "charge_time"), Module.data._charge_time >= 0 and Module.data._charge_time or 0, 0, 100, "%d")
-        utils.tooltip(language.get(languagePrefix .. "charge_time_tooltip"))
+        changed, Module.data._charge_time = imgui.slider_int(Language.get(languagePrefix .. "charge_time"), Module.data._charge_time >= 0 and Module.data._charge_time or 0, 0, 100, "%d")
+        Utils.tooltip(Language.get(languagePrefix .. "charge_time_tooltip"))
         any_changed = any_changed or changed
     end
     imgui.end_table()
 
-    changed, Module.data.unrestricted_charge = imgui.checkbox(language.get(languagePrefix .. "unrestricted_charge"), Module.data.unrestricted_charge)
-    utils.tooltip(language.get(languagePrefix .. "unrestricted_charge_tooltip"))
+    changed, Module.data.unrestricted_charge = imgui.checkbox(Language.get(languagePrefix .. "unrestricted_charge"), Module.data.unrestricted_charge)
+    Utils.tooltip(Language.get(languagePrefix .. "unrestricted_charge_tooltip"))
     any_changed = any_changed or changed
+
+    if any_changed then
+        Module:update_cached_modifications()
+    end
 
     return any_changed
 end
 
 function Module.reset()
-    local player = utils.get_master_character()
+    local player = Utils.get_master_character()
     if not player then return end
     
     local weapon_handling = player:get_WeaponHandling()

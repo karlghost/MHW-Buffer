@@ -1,5 +1,5 @@
 local ModuleBase = require("Buffer.Misc.ModuleBase")
-local language = require("Buffer.Misc.Language")
+local Language = require("Buffer.Misc.Language")
 
 local Module = ModuleBase:new("hammer", {
     charge_level = -1,
@@ -9,9 +9,12 @@ local Module = ModuleBase:new("hammer", {
 
 function Module.create_hooks()
     
+    Module:init_stagger("hammer_handling_update", 10)
     sdk.hook(sdk.find_type_definition("app.cHunterWp04Handling"):get_method("doUpdate"), function(args) 
         local managed = sdk.to_managed_object(args[2])
         if not Module:weapon_hook_guard(managed, "app.cHunterWp04Handling") then return end
+
+        if not Module:should_execute_staggered("hammer_handling_update") then return end
 
        -- Charge level
        if Module.data.charge_level >= 0 and managed:get_field("_ChargeTimer") > 0 then
@@ -28,20 +31,20 @@ function Module.create_hooks()
             managed:set_field("_ChargeTimer", 3) 
         end
 
-    end, function(retval) end)
+    end)
 end
 
 function Module.add_ui()
     local changed, any_changed = false, false
     local languagePrefix = Module.title .. "."
 
-    changed, Module.data.charge_level = imgui.slider_int(language.get(languagePrefix .. "charge_level"), Module.data.charge_level, -1, 2, Module.data.charge_level == -1 and language.get("base.disabled") or tostring(Module.data.charge_level + 1))
+    changed, Module.data.charge_level = imgui.slider_int(Language.get(languagePrefix .. "charge_level"), Module.data.charge_level, -1, 2, Module.data.charge_level == -1 and Language.get("base.disabled") or tostring(Module.data.charge_level + 1))
     any_changed = any_changed or changed
 
-    changed, Module.data.super_charge_level = imgui.slider_int(language.get(languagePrefix .. "super_charge_level"), Module.data.super_charge_level, -1, 2, Module.data.super_charge_level == -1 and language.get("base.disabled") or tostring(Module.data.super_charge_level + 1))
+    changed, Module.data.super_charge_level = imgui.slider_int(Language.get(languagePrefix .. "super_charge_level"), Module.data.super_charge_level, -1, 2, Module.data.super_charge_level == -1 and Language.get("base.disabled") or tostring(Module.data.super_charge_level + 1))
     any_changed = any_changed or changed
 
-    changed, Module.data.instant_charge = imgui.checkbox(language.get(languagePrefix .. "instant_charge"), Module.data.instant_charge)
+    changed, Module.data.instant_charge = imgui.checkbox(Language.get(languagePrefix .. "instant_charge"), Module.data.instant_charge)
     any_changed = any_changed or changed
 
     return any_changed

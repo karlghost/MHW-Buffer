@@ -1,5 +1,5 @@
 local ModuleBase = require("Buffer.Misc.ModuleBase")
-local language = require("Buffer.Misc.Language")
+local Language = require("Buffer.Misc.Language")
 
 local Module = ModuleBase:new("switch_axe", {
     max_charge = false,
@@ -9,9 +9,12 @@ local Module = ModuleBase:new("switch_axe", {
 
 function Module.create_hooks()
     
+    Module:init_stagger("switch_axe_handling_update", 10)
     sdk.hook(sdk.find_type_definition("app.cHunterWp08Handling"):get_method("doUpdate"), function(args) 
         local managed = sdk.to_managed_object(args[2])
         if not Module:weapon_hook_guard(managed, "app.cHunterWp08Handling") then return end
+
+        if not Module:should_execute_staggered("switch_axe_handling_update") then return end
 
         -- Max charge
         if Module.data.max_charge then 
@@ -28,20 +31,20 @@ function Module.create_hooks()
             managed:set_field("_AxeEnhancedTimer", 45) 
         end
 
-    end, function(retval) end)
+    end)
 end
 
 function Module.add_ui()
     local changed, any_changed = false, false
     local languagePrefix = Module.title .. "."
    
-    changed, Module.data.max_charge = imgui.checkbox(language.get(languagePrefix .. "max_charge"), Module.data.max_charge)
+    changed, Module.data.max_charge = imgui.checkbox(Language.get(languagePrefix .. "max_charge"), Module.data.max_charge)
     any_changed = any_changed or changed
 
-    changed, Module.data.max_sword_charge = imgui.checkbox(language.get(languagePrefix .. "max_sword_charge"), Module.data.max_sword_charge)
+    changed, Module.data.max_sword_charge = imgui.checkbox(Language.get(languagePrefix .. "max_sword_charge"), Module.data.max_sword_charge)
     any_changed = any_changed or changed
 
-    changed, Module.data.powered_axe = imgui.checkbox(language.get(languagePrefix .. "powered_axe"), Module.data.powered_axe)
+    changed, Module.data.powered_axe = imgui.checkbox(Language.get(languagePrefix .. "powered_axe"), Module.data.powered_axe)
     any_changed = any_changed or changed
 
     return any_changed

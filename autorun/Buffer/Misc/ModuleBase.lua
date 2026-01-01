@@ -1,7 +1,7 @@
 local icons = require("Buffer.Misc.Icons")
-local utils = require("Buffer.Misc.Utils")
-local config = require("Buffer.Misc.Config")
-local language = require("Buffer.Misc.Language")
+local Utils = require("Buffer.Misc.Utils")
+local Config = require("Buffer.Misc.Config")
+local Language = require("Buffer.Misc.Language")
 
 
 --- ModuleBase
@@ -37,6 +37,34 @@ end
 function ModuleBase:init()
     self:load_config()
     self:create_hooks()
+end
+
+--- Initialize a stagger counter for a specific hook
+--- @param hook_name string Unique identifier for the hook
+--- @param threshold number Number of calls to skip before executing (default: 5)
+function ModuleBase:init_stagger(hook_name, threshold)
+    self.stagger_counters = self.stagger_counters or {}
+    self.stagger_counters[hook_name] = {
+        count = 0,
+        threshold = threshold or 5
+    }
+end
+
+--- Check if a staggered hook should execute
+--- Increments the counter and returns true only when threshold is reached
+--- @param hook_name string Unique identifier for the hook
+--- @return boolean True if the hook should execute, false otherwise
+function ModuleBase:should_execute_staggered(hook_name)
+    local counter = self.stagger_counters and self.stagger_counters[hook_name]
+    if not counter then return true end -- No stagger configured, always execute
+    
+    counter.count = counter.count + 1
+    if counter.count < counter.threshold then 
+        return false 
+    end
+    
+    counter.count = 0
+    return true
 end
 
 -- To be overridden in child modules
@@ -216,14 +244,14 @@ end
 
 --- Save current configuration
 function ModuleBase:save_config()
-    config.save_section({
+    Config.save_section({
         [self.title] = self.data
     })
 end
 
 -- Load configuration from the config file
 function ModuleBase:load_config()
-    utils.update_table_with_existing_table(self.data, config.get_section(self.title))
+    Utils.update_table_with_existing_table(self.data, Config.get_section(self.title))
 end
 
 --- Create a standard weapon hook guard
@@ -248,7 +276,7 @@ function ModuleBase:draw_module()
     imgui.push_id(self.title)
 
     -- Draw the header. Add spaces to the left to add space for the icon
-    if imgui.collapsing_header("     " .. language.get(self.title .. ".title")) then
+    if imgui.collapsing_header("     " .. Language.get(self.title .. ".title")) then
 
         -- Draw the module content
         imgui.indent(10)
@@ -260,7 +288,7 @@ function ModuleBase:draw_module()
     -- Draw the icon
     local pos = imgui.get_cursor_pos()
     -- Scale icon x offset based on font size (19 at size 16, 23 at size 24)
-    local icon_x_offset = 11 + (language.font.size * 0.5)
+    local icon_x_offset = 11 + (Language.font.size * 0.5)
     imgui.set_cursor_pos({header_pos.x + icon_x_offset, header_pos.y + 2})
     icons.draw_icon(self.title)
     imgui.set_cursor_pos(pos)

@@ -1,5 +1,5 @@
 local ModuleBase = require("Buffer.Misc.ModuleBase")
-local language = require("Buffer.Misc.Language")
+local Language = require("Buffer.Misc.Language")
 
 local Module = ModuleBase:new("miscellaneous", {
     akuma = {
@@ -17,11 +17,13 @@ local Module = ModuleBase:new("miscellaneous", {
 
 function Module.create_hooks()
 
-
+    Module:init_stagger("misc_hunter_update", 10)
     sdk.hook(sdk.find_type_definition("app.HunterCharacter"):get_method("update"), function(args)
         local managed = sdk.to_managed_object(args[2])
         if not managed:get_type_definition():is_a("app.HunterCharacter") then return end
         if not managed:get_IsMaster() then return end    
+
+        if not Module:should_execute_staggered("misc_hunter_update") then return end
 
         -- Akuma 
         local akuma = managed:get_ExEmote00()
@@ -66,8 +68,7 @@ function Module.create_hooks()
             end
         end
 
-    end, function(retval)
-    end)
+   end)
 end
 
 function Module.add_ui()
@@ -75,42 +76,42 @@ function Module.add_ui()
     local languagePrefix = Module.title .. "."
         
     languagePrefix = Module.title .. ".akuma."
-    if imgui.tree_node(language.get(languagePrefix .. "title")) then            
+    if imgui.tree_node(Language.get(languagePrefix .. "title")) then            
         
-        changed, Module.data.akuma.instant_drive_gauge = imgui.checkbox(language.get(languagePrefix .. "instant_drive_gauge"), Module.data.akuma.instant_drive_gauge)
+        changed, Module.data.akuma.instant_drive_gauge = imgui.checkbox(Language.get(languagePrefix .. "instant_drive_gauge"), Module.data.akuma.instant_drive_gauge)
         any_changed = any_changed or changed
 
-        changed, Module.data.akuma.gou_hadoken_max_level = imgui.checkbox(language.get(languagePrefix .. "gou_hadoken_max_level"), Module.data.akuma.gou_hadoken_max_level)
+        changed, Module.data.akuma.gou_hadoken_max_level = imgui.checkbox(Language.get(languagePrefix .. "gou_hadoken_max_level"), Module.data.akuma.gou_hadoken_max_level)
         any_changed = any_changed or changed
 
         imgui.tree_pop()
     end
 
     languagePrefix = Module.title .. ".water_gun."
-    if imgui.tree_node(language.get(languagePrefix .. "title")) then
+    if imgui.tree_node(Language.get(languagePrefix .. "title")) then
         
-        changed, Module.data.water_gun.unlimited_ammo = imgui.checkbox(language.get(languagePrefix .. "unlimited_ammo"), Module.data.water_gun.unlimited_ammo)
+        changed, Module.data.water_gun.unlimited_ammo = imgui.checkbox(Language.get(languagePrefix .. "unlimited_ammo"), Module.data.water_gun.unlimited_ammo)
         any_changed = any_changed or changed
 
         imgui.tree_pop()
     end
 
     languagePrefix = Module.title .. ".pictomancy."
-    if imgui.tree_node(language.get(languagePrefix .. "title")) then
+    if imgui.tree_node(Language.get(languagePrefix .. "title")) then
         languagePrefix = languagePrefix .. "state."
         local picto_states = {
-            language.get("base.disabled"),
-            language.get(languagePrefix .. "pom"),
-            language.get(languagePrefix .. "wing"),
-            language.get(languagePrefix .. "mog")
+            Language.get("base.disabled"),
+            Language.get(languagePrefix .. "pom"),
+            Language.get(languagePrefix .. "wing"),
+            Language.get(languagePrefix .. "mog")
         }
         local pict_state_index = Module.data.pictomancy.state + 2
-        changed, pict_state_index = imgui.combo(language.get(languagePrefix .. "title"), pict_state_index, picto_states)
+        changed, pict_state_index = imgui.combo(Language.get(languagePrefix .. "title"), pict_state_index, picto_states)
         Module.data.pictomancy.state = pict_state_index - 2
         any_changed = any_changed or changed
 
         languagePrefix = Module.title .. ".pictomancy."
-        changed, Module.data.pictomancy.instant_cooldown = imgui.checkbox(language.get(languagePrefix .. "instant_cooldown"), Module.data.pictomancy.instant_cooldown)
+        changed, Module.data.pictomancy.instant_cooldown = imgui.checkbox(Language.get(languagePrefix .. "instant_cooldown"), Module.data.pictomancy.instant_cooldown)
         any_changed = any_changed or changed
 
         imgui.tree_pop()
