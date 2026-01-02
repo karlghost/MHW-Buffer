@@ -184,7 +184,6 @@
     "long_sword": {
         "title": "Langschwert",
         "aura_level": "Aura level",
-        "aura_level_tooltip": "Wenn Sie den Wert von 0 auf 1 setzen, muessen Sie das Schwert fuellen, um die Aura zu aktivieren.",
         "max_aura_gauge": "Maximale Auraanzeige",
         "max_spirit_gauge": "Max spirituelle Pegel"
     },

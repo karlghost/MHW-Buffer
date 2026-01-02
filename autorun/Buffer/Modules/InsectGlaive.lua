@@ -30,27 +30,24 @@ end
 
 function Module.create_hooks()
 
-    -- Watch for weapon changes, need to re-apply the default kinsect stats 
+    -- Watch for weapon changes
     sdk.hook(sdk.find_type_definition("app.HunterCharacter"):get_method("changeWeapon"), function(args) 
         local managed = sdk.to_managed_object(args[2])
         if not managed:get_type_definition():is_a("app.HunterCharacter") then return end
         if not managed:get_IsMaster() then return end
-
-        local player = Utils.get_master_character()
-        local weapon_handling = player:get_WeaponHandling()
-        local reserve_weapon_handling = player:get_ReserveWeaponHandling()
-
-        -- Check if the weapon handling for the main or reserve is a bow
-        weapon_handling = (weapon_handling and weapon_handling:get_type_definition():is_a("app.cHunterWp10Handling")) and weapon_handling or nil
-        reserve_weapon_handling = (reserve_weapon_handling and reserve_weapon_handling:get_type_definition():is_a("app.cHunterWp10Handling")) and reserve_weapon_handling or nil
-
-        -- Get the weapon handling
-        local weapon = weapon_handling or reserve_weapon_handling
-        if not weapon then return end
-
-        -- Reset kinsect stats when weapon changes
+        
         Module:reset()
     end)
+    
+    -- Watch for reserve weapon changes
+    sdk.hook(sdk.find_type_definition("app.HunterCharacter"):get_method("changeWeaponFromReserve"), function(args) 
+        local managed = sdk.to_managed_object(args[2])
+        if not managed:get_type_definition():is_a("app.HunterCharacter") then return end
+        if not managed:get_IsMaster() then return end
+
+        Module:reset()
+    end)
+
 
     -- Weapon modifications
     Module:init_stagger("insect_glaive_handling_update", 10)
@@ -238,27 +235,25 @@ function Module.add_ui()
     return any_changed
 end
 
-function Module.reset()
-    local player = Utils.get_master_character()
-    if not player then return end
-    
-    local weapon_handling = player:get_WeaponHandling()
-    local reserve_weapon_handling = player:get_ReserveWeaponHandling()
-
-    -- Check if the weapon handling for the main or reserve is an insect glaive
-    weapon_handling = (weapon_handling and weapon_handling:get_type_definition():is_a("app.cHunterWp10Handling")) and weapon_handling or nil
-    reserve_weapon_handling = (reserve_weapon_handling and reserve_weapon_handling:get_type_definition():is_a("app.cHunterWp10Handling")) and reserve_weapon_handling or nil
-
-    -- Get the weapon handling
-    local weapon = weapon_handling or reserve_weapon_handling
-    if not weapon then return end
-    
+local function reset_weapon(weapon)
     local kinsect = weapon:get_Insect()
     if kinsect then
         -- Restore cached kinsect stats
         Module:cache_and_update_field("kinsect._PowerLv", kinsect, "_PowerLv", -1)
         Module:cache_and_update_field("kinsect._SpeedLv", kinsect, "_SpeedLv", -1)
         Module:cache_and_update_field("kinsect._RecoveryLv", kinsect, "_RecoveryLv", -1)
+    end
+end
+
+function Module.reset()
+    local player = Utils.get_master_character()
+    if not player then return end
+
+    if player:get_WeaponType() == 10 then 
+        reset_weapon(player:get_WeaponHandling())
+    end
+    if player:get_ReserveWeaponType() == 10 then 
+        reset_weapon(player:get_ReserveWeaponHandling())
     end
 end
 

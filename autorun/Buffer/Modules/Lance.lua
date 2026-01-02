@@ -13,12 +13,12 @@ function Module.create_hooks()
         local managed = sdk.to_managed_object(args[2])
         if not Module:weapon_hook_guard(managed, "app.cHunterWp06Handling") then return end
 
-        if not Module:should_execute_staggered("lance_handling_update") then return end
-
         -- Counter charge level
         if Module.data.counter_charge_level ~= -1 then 
             managed:set_field("_FinishChargeLevel", Module.data.counter_charge_level) 
         end
+
+        if not Module:should_execute_staggered("lance_handling_update") then return end
 
         -- Rush level
         if Module.data.rush_level ~= -1 then 

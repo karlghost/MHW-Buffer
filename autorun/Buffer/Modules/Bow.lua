@@ -44,15 +44,15 @@ function Module.create_hooks()
         if not Module:weapon_hook_guard(managed, "app.cHunterWp11Handling") then return end
         local weapon_id = managed:get_Hunter():get_WeaponID()
 
-        if not Module:should_execute_staggered("bow_handling_update") then return end
-
-        -- Update cached values
-        Module:update_cached_modifications(managed)
-
         -- Charge Level
         if Module.data.charge_level ~= -1 then
             managed:set_field("<ChargeLv>k__BackingField", Module.data.charge_level)
         end
+
+        if not Module:should_execute_staggered("bow_handling_update") then return end
+
+        -- Update cached values
+        Module:update_cached_modifications(managed)
 
         --* <BottleType>k__BackingField
             -- 1 = Close Range

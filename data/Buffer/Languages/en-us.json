@@ -183,7 +183,6 @@
     "long_sword": {
         "title": "Long Sword",
         "aura_level": "Aura level",
-        "aura_level_tooltip": "If setting to 1 from 0, you will need to fill the gauge to activate the aura",
         "max_aura_gauge": "Max aura gauge",
         "max_spirit_gauge": "Max spirit gauge"
     },

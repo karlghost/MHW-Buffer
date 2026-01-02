@@ -14,19 +14,19 @@ function Module.create_hooks()
         local managed = sdk.to_managed_object(args[2])
         if not Module:weapon_hook_guard(managed, "app.cHunterWp04Handling") then return end
 
-        if not Module:should_execute_staggered("hammer_handling_update") then return end
-
-       -- Charge level
-       if Module.data.charge_level >= 0 and managed:get_field("_ChargeTimer") > 0 then
+        -- Charge level
+        if Module.data.charge_level >= 0 and managed:get_field("_ChargeTimer") > 0 then
             managed:set_field("<ChargeLv>k__BackingField", Module.data.charge_level + 1)
-       end
+        end
 
          -- Super charge level
-       if Module.data.super_charge_level >= 0 and managed:get_field("_SuperChargeTimer") > 0 then
+        if Module.data.super_charge_level >= 0 and managed:get_field("_SuperChargeTimer") > 0 then
             managed:set_field("<SuperChargeLv>k__BackingField", Module.data.super_charge_level + 1)
-       end
+        end
 
-       -- Instant charge
+        if not Module:should_execute_staggered("hammer_handling_update") then return end
+
+        -- Instant charge
         if Module.data.instant_charge then 
             managed:set_field("_ChargeTimer", 3) 
         end

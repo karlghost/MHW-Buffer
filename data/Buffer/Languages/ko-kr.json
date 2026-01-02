@@ -183,7 +183,6 @@
     "long_sword": {
         "title": "태도",
         "aura_level": "연기 게이지 레벨",
-        "aura_level_tooltip": "0에서 1로 설정하려면 연기 게이지가 차야 합니다.",
         "max_aura_gauge": "연기 게이지 최대",
         "max_spirit_gauge": "코팅 레벨 최대"
     },

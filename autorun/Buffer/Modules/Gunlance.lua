@@ -9,16 +9,43 @@ local Module = ModuleBase:new("gunlance", {
     unlimited_ammo = false,
 })
 
+
+
 function Module.create_hooks()
+
+    -- Watch for weapon changes to reset shell levels
+    sdk.hook(sdk.find_type_definition("app.HunterCharacter"):get_method("changeWeapon"), function(args) 
+        local managed = sdk.to_managed_object(args[2])
+        if not managed:get_type_definition():is_a("app.HunterCharacter") then return end
+        if not managed:get_IsMaster() then return end
+
+        Module:reset()
+    end)
+    
+    -- Watch for reserve weapon changes
+    sdk.hook(sdk.find_type_definition("app.HunterCharacter"):get_method("changeWeaponFromReserve"), function(args) 
+        local managed = sdk.to_managed_object(args[2])
+        if not managed:get_type_definition():is_a("app.HunterCharacter") then return end
+        if not managed:get_IsMaster() then return end
+
+        Module:reset()
+    end)
     
     Module:init_stagger("gunlance_handling_update", 10)
     sdk.hook(sdk.find_type_definition("app.cHunterWp07Handling"):get_method("doUpdate"), function(args) 
         local managed = sdk.to_managed_object(args[2])
         if not Module:weapon_hook_guard(managed, "app.cHunterWp07Handling") then return end
 
-        if not Module:should_execute_staggered("gunlance_handling_update") then return end
-
         local ammo = managed:get_field("_Ammo")
+
+        -- Instant charge
+        if Module.data.instant_charge then 
+            local max_ammo = ammo:get_LimitAmmo()
+            managed:set_field("_ChargeShotBulletNum", max_ammo)
+            managed:set_field("_ChargeShotElapsedTimer", max_ammo * 1.1)
+        end
+
+        if not Module:should_execute_staggered("gunlance_handling_update") then return end
 
         -- Update cached values
         Module:update_cached_modifications(managed)
@@ -26,13 +53,6 @@ function Module.create_hooks()
         -- Infinite wyvernshots
         if Module.data.infinite_wyvern_fire then 
             managed:get_field("_RyuugekiGauge"):set_field("_Value", 2)
-        end
-
-        -- Instant charge
-        if Module.data.instant_charge then 
-            local max_ammo = ammo:get_LimitAmmo()
-            managed:set_field("_ChargeShotBulletNum", max_ammo)
-            managed:set_field("_ChargeShotElapsedTimer", max_ammo * 1.1)
         end
 
         -- Unlimited ammo

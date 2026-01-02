@@ -184,7 +184,6 @@
     "long_sword": {
         "title": "Espada Larga",
         "aura_level": "Nivel de aura",
-        "aura_level_tooltip": "Si lo configuras de 0 a 1, deberás llenar el medidor para activar el aura",
         "max_aura_gauge": "Medidor de aura máximo",
         "max_spirit_gauge": "Medidor espiritual máximo"
     },
