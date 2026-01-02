@@ -49,6 +49,7 @@ end
 -- Helper function to recursively disable all settings
 function helper.disable_all(data_layer)
     for key, value in pairs(data_layer) do
+        if key:sub(1, 1) == "_" then goto continue end
         if type(value) == "boolean" then
             data_layer[key] = false
         elseif type(value) == "number" then
@@ -56,6 +57,7 @@ function helper.disable_all(data_layer)
         elseif type(value) == "table" then
             helper.disable_all(value)
         end
+        ::continue::
     end
 end
 
