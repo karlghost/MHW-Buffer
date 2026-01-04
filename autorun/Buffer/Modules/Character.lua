@@ -233,7 +233,8 @@ function Module.create_hooks()
     sdk.hook(sdk.find_type_definition("app.cHunterStatus"):get_method("update"), function(args)
         local managed = sdk.to_managed_object(args[2])
         if not managed:get_type_definition():is_a("app.cHunterStatus") then return end
-        if managed:get_IsMaster() == false then return end
+        if managed:get_IsMaster() == false then return end -- Makes sure it's the player but....
+        if managed:get_IsNpc() then return end -- get_IsMaster returns true for NPCs too regardless of player or NPC...
 
         if not Module:should_execute_staggered("character_status_update") then return end
 
