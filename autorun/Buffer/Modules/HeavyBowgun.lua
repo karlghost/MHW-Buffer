@@ -194,20 +194,18 @@ function Module.create_hooks()
             on_trigger_hbg = not on_trigger_hbg
             trigger:set_field("_On", on_trigger_hbg)
             trigger:set_field("_OnTrigger", on_trigger_hbg)
-            trigger:set_field("_Repeat", on_trigger_hbg)
-            trigger:set_field("_OffTrigger", not on_trigger_hbg)
         end
     end
 
-    -- Full Auto for Heavy Bowgun (Controller: R2 trigger)
+    -- Full Auto for Heavy Bowgun (Controller)
     sdk.hook(sdk.find_type_definition('ace.cGameInput'):get_method('applyFromPad'), nil, function(retval)
-        apply_full_auto(2)
+        apply_full_auto(2) -- R2 trigger
         return retval
     end)
     
-    -- Full Auto for Heavy Bowgun (Mouse/Keyboard: Left Mouse Button)
+    -- Full Auto for Heavy Bowgun (Mouse/Keyboard)
     sdk.hook(sdk.find_type_definition('ace.cGameInput'):get_method('applyFromMouseKeyboard'), nil, function(retval)
-        apply_full_auto(15)
+        apply_full_auto(15) -- Left Mouse Button
         return retval
     end)
 
