@@ -207,15 +207,13 @@ function Module.create_hooks()
 
     -- Helper function for full auto logic
     local function apply_full_auto(key_id)
-        if not Module.data.full_auto then return end
-
         local hunter = Utils.get_master_character()
         if not hunter then return end
         if hunter:get_WeaponType() ~= 13 then return end
         if not hunter:get_IsWeaponOn() then return end
         if hunter:get_WeaponHandling():get_field("_IsRapidShotBoost") then return end -- Don't allow on rapid shot (Full auto makes it shoot slower)
 
-        local _, player_input = Utils.get_player_input()
+        local player_input = Utils.get_player_input()
         if not player_input then return end
 
         local trigger = player_input:call("getKey", key_id)
@@ -231,13 +229,17 @@ function Module.create_hooks()
 
     -- Full Auto for Light Bowgun (Controller)
     sdk.hook(sdk.find_type_definition('ace.cGameInput'):get_method('applyFromPad'), nil, function(retval)
-        apply_full_auto(2) -- R2 trigger
+        if  Module.data.full_auto then
+            apply_full_auto(2) -- R2 trigger
+        end
         return retval
     end)
     
     -- Full Auto for Light Bowgun (Mouse/Keyboard)
     sdk.hook(sdk.find_type_definition('ace.cGameInput'):get_method('applyFromMouseKeyboard'), nil, function(retval)
-        apply_full_auto(15) -- Left Mouse Button
+        if  Module.data.full_auto then
+            apply_full_auto(15) -- Left Mouse Button
+        end
         return retval
     end)
 end
