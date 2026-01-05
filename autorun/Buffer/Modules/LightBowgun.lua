@@ -13,11 +13,13 @@ local Module = ModuleBase:new("light_bowgun", {
     no_knockback = false,
     unlimited_bladescale = false,
     all_rapid_fire = false,
-    shell_level = -1
+    shell_level = -1,
+    full_auto = false,
 })
 
 -- Local variables
 local tetrad_shot_active = false
+local on_trigger_lbg = false
 
 function Module.create_hooks()
 
@@ -202,6 +204,44 @@ function Module.create_hooks()
         end
         return retval
     end)
+
+    -- Helper function for full auto logic
+    local function apply_full_auto(key_id)
+        local hunter = Utils.get_master_character()
+        if not hunter then return end
+        if hunter:get_WeaponType() ~= 13 then return end
+        if not hunter:get_IsWeaponOn() then return end
+        if hunter:get_WeaponHandling():get_field("_IsRapidShotBoost") then return end -- Don't allow on rapid shot (Full auto makes it shoot slower)
+
+        local player_input = Utils.get_player_input()
+        if not player_input then return end
+
+        local trigger = player_input:call("getKey", key_id)
+        if not trigger then return end
+        
+        -- Only toggle when trigger is actually being held down
+        if trigger:get_field("_On") then
+            on_trigger_lbg = not on_trigger_lbg
+            trigger:set_field("_On", on_trigger_lbg)
+            trigger:set_field("_OnTrigger", on_trigger_lbg)
+        end
+    end
+
+    -- Full Auto for Light Bowgun (Controller)
+    sdk.hook(sdk.find_type_definition('ace.cGameInput'):get_method('applyFromPad'), nil, function(retval)
+        if  Module.data.full_auto then
+            apply_full_auto(2) -- R2 trigger
+        end
+        return retval
+    end)
+    
+    -- Full Auto for Light Bowgun (Mouse/Keyboard)
+    sdk.hook(sdk.find_type_definition('ace.cGameInput'):get_method('applyFromMouseKeyboard'), nil, function(retval)
+        if  Module.data.full_auto then
+            apply_full_auto(15) -- Left Mouse Button
+        end
+        return retval
+    end)
 end
 
 function Module:update_cached_modifications(managed)
@@ -295,6 +335,9 @@ function Module.add_ui()
     imgui.end_table()
 
     changed, Module.data.all_rapid_fire = imgui.checkbox(Language.get(languagePrefix .. "all_rapid_fire"), Module.data.all_rapid_fire)
+    any_changed = any_changed or changed
+
+    changed, Module.data.full_auto = imgui.checkbox(Language.get(languagePrefix .. "full_auto"), Module.data.full_auto)
     any_changed = any_changed or changed
 
     if any_changed then

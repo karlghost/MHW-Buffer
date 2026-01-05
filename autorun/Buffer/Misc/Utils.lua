@@ -2,6 +2,7 @@ local Utils = {}
 
 local chatManager
 local player_manager
+local game_input_manager
 
 -- ================== Player Utils ==================
 
@@ -68,6 +69,18 @@ function Utils.has_skill(character, skill_index)
     end
     
     return false
+end
+
+--- Get the Game Input Manager and Player Input
+--- @return userdata|nil player_input The player input
+function Utils.get_player_input()
+    if not game_input_manager then
+        game_input_manager = sdk.get_managed_singleton('app.GameInputManager')
+    end
+    if not game_input_manager then return nil end
+    
+    local player_input = game_input_manager:get_PlayerInput()
+    return player_input
 end
 
 -- ================== General Utils ==================
