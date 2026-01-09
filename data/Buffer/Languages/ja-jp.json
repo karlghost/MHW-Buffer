@@ -253,7 +253,7 @@
         "no_knockback": "のけぞり無効",
         "all_rapid_fire": "全弾速射",
         "shell_level": "砲撃レベル",
-        "full_auto": "Full auto (*)"
+        "full_auto": "フルオート"
     },
     "heavy_bowgun": {
         "title": "ヘビィボウガン",
@@ -268,7 +268,7 @@
         "no_recoil": "反動なし",
         "no_knockback": "のけぞり無効",
         "shell_level": "砲撃レベル",
-        "full_auto": "Full auto (*)"
+        "full_auto": "フルオート"
     },
     "charge_blade": {
         "title": "チャージアックス",
@@ -285,3 +285,4 @@
         "powered_axe": "斧モード強化"
     }
 }
+
