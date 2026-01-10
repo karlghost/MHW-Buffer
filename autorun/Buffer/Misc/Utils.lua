@@ -79,8 +79,10 @@ function Utils.get_player_input()
     end
     if not game_input_manager then return nil end
     
-    local player_input = game_input_manager:get_PlayerInput()
-    return player_input
+    local controller_player_input = game_input_manager:get_PlayerInput()
+    local mouse_player_input = game_input_manager:get_PcPlayerInput()
+
+    return mouse_player_input, controller_player_input
 end
 
 -- ================== General Utils ==================
