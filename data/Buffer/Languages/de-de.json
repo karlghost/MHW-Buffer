@@ -158,12 +158,17 @@
                 "blast": "Explosion"
             }
         },
+        "meals": {
+            "title": "Meals(*)",
+            "no_ticket_consumption": "No ticket consumption(*)",
+            "no_ingredient_consumption": "No ingredient consumption(*)",
+            "unlimited_timer": "Unbegrenzter Essens-Timer"
+        },
         "invincible": "Unverwundbar",
         "invincible_tooltip": "Unverwundbar gegen Schaden, aber nicht gegen Sturzschaden.",
         "unlimited_sharpness": "Unbegrenzte Schaerfe",
         "unlimited_consumables": "Unbegrenzte Verbrauchsmaterialien",
-        "unlimited_slingers": "Unbegrenzte Schleudermunition",
-        "unlimited_meal_timer": "Unbegrenzter Essens-Timer"
+        "unlimited_slingers": "Unbegrenzte Schleudermunition"
     },
 
     "great_sword": {

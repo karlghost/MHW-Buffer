@@ -80,11 +80,15 @@ local Module = ModuleBase:new("character", {
             _dragon_value = 0
         }
     },
+    meals = {
+        no_ticket_consumption = false,
+        no_ingredient_consumption = false,
+        unlimited_timer = false
+    },
     invincible = false,
     unlimited_sharpness = false,
     unlimited_consumables = false,
     unlimited_slingers = false,
-    unlimited_meal_timer = false,
 })
 
 -- Local variables
@@ -289,7 +293,7 @@ function Module.create_hooks()
         end
 
         -- Meal Timer
-        if Module.data.unlimited_meal_timer then
+        if Module.data.meals.unlimited_timer then
             if hunter_meal_effect ~= nil then
                 if hunter_meal_effect:get_field("_IsTimerActive") then
                     hunter_meal_effect:set_field("_DurationTimer", hunter_meal_effect:get_field("_TimerMax"))
@@ -563,6 +567,37 @@ function Module.create_hooks()
 
     end)
 
+
+
+    -- Canteen voucher consumption
+    sdk.hook(sdk.find_type_definition("app.FacilityDining"):get_method("executeLobbyCore(app.DiningDef.LOBBY_MENU_ID)"), function(args)
+        local managed = sdk.to_managed_object(args[2])
+        if Module.data.meals.no_ticket_consumption then
+            managed:set_field("<TicketItem>k__BackingField", -1) -- Doesn't take the voucher until after the cutscene
+        end
+    end)
+
+    -- Ingredient consumption
+    local prevent_item_consumption = false
+    -- Meal cutscene start, set flag to prevent item consumption
+    sdk.hook(sdk.find_type_definition("app.FacilityDining"):get_method("execute(app.cMealEffect, System.Int32)"), function(args)
+        if Module.data.meals.no_ingredient_consumption then
+            prevent_item_consumption = true
+        end
+    end)
+    -- Remove items after cutscene ends, but this may be called multiple times depending on ingredient usage
+    sdk.hook(sdk.find_type_definition("app.ItemUtil"):get_method("changeItemNum(app.ItemDef.ID, System.Int16, app.ItemUtil.STOCK_TYPE)"), function(args)
+        if prevent_item_consumption then
+            return sdk.PreHookResult.SKIP_ORIGINAL
+        end
+    end)
+    -- Meal cutscene end, reset flag
+    sdk.hook(sdk.find_type_definition("app.DemoMediator"):get_method("endEndFsm(ace.DemoMediatorBase.cParamBase)"), nil, function(retval)
+        prevent_item_consumption = false
+        return retval
+    end)
+
+
 end
 
 function Module.add_ui()
@@ -797,6 +832,21 @@ function Module.add_ui()
 
             imgui.tree_pop()
         end
+
+        languagePrefix = Module.title .. ".meals."
+        if imgui.tree_node(Language.get(languagePrefix .. "title")) then
+
+            changed, Module.data.meals.no_ticket_consumption = imgui.checkbox(Language.get(languagePrefix .. "no_ticket_consumption"), Module.data.meals.no_ticket_consumption)
+            any_changed = any_changed or changed
+
+            changed, Module.data.meals.no_ingredient_consumption = imgui.checkbox(Language.get(languagePrefix .. "no_ingredient_consumption"), Module.data.meals.no_ingredient_consumption)
+            any_changed = any_changed or changed
+            
+            changed, Module.data.meals.unlimited_timer = imgui.checkbox(Language.get(languagePrefix .. "unlimited_timer"), Module.data.meals.unlimited_timer)
+            any_changed = any_changed or changed
+
+            imgui.tree_pop()
+        end
         
         languagePrefix = Module.title .. "."
 
@@ -811,9 +861,6 @@ function Module.add_ui()
         any_changed = any_changed or changed
         
         changed, Module.data.unlimited_slingers = imgui.checkbox(Language.get(languagePrefix .. "unlimited_slingers"), Module.data.unlimited_slingers)
-        any_changed = any_changed or changed
-
-        changed, Module.data.unlimited_meal_timer = imgui.checkbox(Language.get(languagePrefix .. "unlimited_meal_timer"), Module.data.unlimited_meal_timer)
         any_changed = any_changed or changed
             
 

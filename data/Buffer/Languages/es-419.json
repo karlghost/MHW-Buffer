@@ -158,12 +158,17 @@
                 "blast": "Nitro"
             }
         },
+        "meals": {
+            "title": "Meals(*)",
+            "no_ticket_consumption": "No ticket consumption(*)",
+            "no_ingredient_consumption": "No ingredient consumption(*)",
+            "unlimited_timer": "Bono de comida ilimitado"
+        },
         "invincible": "Invencible",
         "invincible_tooltip": "No recibirás ningún daño, ni sufrirás retroceso, ni te estremecerás, ni serás afectado por ningún estado alterado.",
         "unlimited_sharpness": "Filo ilimitado",
         "unlimited_consumables": "Consumibles ilimitados",
-        "unlimited_slingers": "Munición de eslinga ilimitada",
-        "unlimited_meal_timer": "Bono de comida ilimitado"
+        "unlimited_slingers": "Munición de eslinga ilimitada"
     },
 
     "great_sword": {
