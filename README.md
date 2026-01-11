@@ -1,6 +1,6 @@
 # 🛡️ Buffer – Monster Hunter: Wilds Mod
 
-![REFramework](https://img.shields.io/badge/REFramework-Required-red) ![Version](https://img.shields.io/badge/Version-1.1.4-blue)
+![REFramework](https://img.shields.io/badge/REFramework-Required-red)
 
 Buffs, modifications, and cheats for weapons, stats, items, and monsters in **Monster Hunter: Wilds** using **REFramework**.
 
