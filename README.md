@@ -2,7 +2,7 @@
 
 ![REFramework](https://img.shields.io/badge/REFramework-Required-red)
 
-Buffs, modifications, and cheats for weapons, stats, items, and monsters in **Monster Hunter: Wilds** using **REFramework**.
+Supercharge gameplay with max health, stamina, invincibility, instant cooldowns, and endless items. Buff weapons, unlock infinite ammo, power up gauges, and remove limits for every weapon type.
 
 ---
 
