@@ -157,12 +157,17 @@
                 "blast": "Blast"
             }
         },
+        "meals": {
+            "title": "Meals",
+            "no_ticket_consumption": "No ticket consumption",
+            "no_ingredient_consumption": "No ingredient consumption",
+            "unlimited_timer": "Unlimited Timer"
+        },
         "invincible": "Invincible",
         "invincible_tooltip": "You will not take any damage, knockback, flinch, or be affected by any status ailments.",
         "unlimited_sharpness": "Unlimited Sharpness",
         "unlimited_consumables": "Unlimited Consumables",
-        "unlimited_slingers": "Unlimited Slinger Ammo",
-        "unlimited_meal_timer": "Unlimited Meal Timer"
+        "unlimited_slingers": "Unlimited Slinger Ammo"
     },
 
     "great_sword": {

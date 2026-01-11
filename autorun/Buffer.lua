@@ -1,4 +1,4 @@
-local version = "1.1.2"
+local version = "1.1.3"
 
 local isWindowOpen, wasOpen = false, false
 
@@ -16,43 +16,45 @@ local Language = require("Buffer.Misc.Language")
 local Bindings = require("Buffer.Misc.BindingsHelper")
 
 -- -- Misc Modules
-local character = require("Buffer.Modules.Character")
-local miscellaneous = require("Buffer.Modules.Miscellaneous")
+local _, character = pcall(require, "Buffer.Modules.Character")
+local _, miscellaneous = pcall(require, "Buffer.Modules.Miscellaneous")
 
 -- Weapon Modules
-local greatSword = require("Buffer.Modules.GreatSword")
---local swordAndShield = require("Buffer.Modules.SwordAndShield")
-local dualBlades = require("Buffer.Modules.DualBlades")
-local longSword = require("Buffer.Modules.LongSword")
-local hammer = require("Buffer.Modules.Hammer")
-local huntingHorn = require("Buffer.Modules.HuntingHorn")
-local lance = require("Buffer.Modules.Lance")
-local gunlance = require("Buffer.Modules.Gunlance")
-local switchAxe = require("Buffer.Modules.SwitchAxe")
-local chargeBlade = require("Buffer.Modules.ChargeBlade")
-local insectGlaive = require("Buffer.Modules.InsectGlaive")
-local bow = require("Buffer.Modules.Bow")
-local lightBowgun = require("Buffer.Modules.LightBowgun")
-local heavyBowgun = require("Buffer.Modules.HeavyBowgun")
+local _, greatSword = pcall(require, "Buffer.Modules.GreatSword")
+-- local swordAndShield = require("Buffer.Modules.SwordAndShield")
+local _, dualBlades = pcall(require, "Buffer.Modules.DualBlades")
+local _, longSword = pcall(require, "Buffer.Modules.LongSword")
+local _, hammer = pcall(require, "Buffer.Modules.Hammer")
+local _, huntingHorn = pcall(require, "Buffer.Modules.HuntingHorn")
+local _, lance = pcall(require, "Buffer.Modules.Lance")
+local _, gunlance = pcall(require, "Buffer.Modules.Gunlance")
+local _, switchAxe = pcall(require, "Buffer.Modules.SwitchAxe")
+local _, chargeBlade = pcall(require, "Buffer.Modules.ChargeBlade")
+local _, insectGlaive = pcall(require, "Buffer.Modules.InsectGlaive")
+local _, bow = pcall(require, "Buffer.Modules.Bow")
+local _, lightBowgun = pcall(require, "Buffer.Modules.LightBowgun")
+local _, heavyBowgun = pcall(require, "Buffer.Modules.HeavyBowgun")
 
-local modules = {
-    character,
-    miscellaneous,
-    greatSword,
-    -- swordAndShield,
-    dualBlades,
-    longSword,
-    hammer,
-    huntingHorn,
-    lance,
-    gunlance,
-    switchAxe,
-    chargeBlade,
-    insectGlaive,
-    bow,
-    lightBowgun,
-    heavyBowgun
-}
+local modules = {}
+
+-- Add the modules that loaded successfully
+if type(character) == "table" then table.insert(modules, character) end
+if type(miscellaneous) == "table" then table.insert(modules, miscellaneous) end
+
+if type(greatSword) == "table" then table.insert(modules, greatSword) end
+-- if type(swordAndShield) == "table" then table.insert(modules, swordAndShield) end
+if type(dualBlades) == "table" then table.insert(modules, dualBlades) end
+if type(longSword) == "table" then table.insert(modules, longSword) end
+if type(hammer) == "table" then table.insert(modules, hammer) end
+if type(huntingHorn) == "table" then table.insert(modules, huntingHorn) end
+if type(lance) == "table" then table.insert(modules, lance) end
+if type(gunlance) == "table" then table.insert(modules, gunlance) end
+if type(switchAxe) == "table" then table.insert(modules, switchAxe) end
+if type(chargeBlade) == "table" then table.insert(modules, chargeBlade) end
+if type(insectGlaive) == "table" then table.insert(modules, insectGlaive) end
+if type(bow) == "table" then table.insert(modules, bow) end
+if type(lightBowgun) == "table" then table.insert(modules, lightBowgun) end
+if type(heavyBowgun) == "table" then table.insert(modules, heavyBowgun) end
 
 -- Load the languages
 Language.init()
