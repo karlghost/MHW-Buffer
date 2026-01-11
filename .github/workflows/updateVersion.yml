@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'modinfo.ini'
+  workflow_dispatch:
 
 jobs:
   update-version:
