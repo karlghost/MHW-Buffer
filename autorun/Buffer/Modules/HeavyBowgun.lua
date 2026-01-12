@@ -86,8 +86,8 @@ function Module.create_hooks()
 
         -- Bladescale Loading
         if Module.data.unlimited_bladescale then
-            if Utils.has_skill(managed:get_Hunter(), 201) then -- Bladescale Loading
-                if managed:get_Skill218AdditionalShellNum() < managed:get_Skill218AdditionalShellMaxNum() then
+            if Utils.has_skill(managed:get_Hunter(), 201) and managed:get_Skill218or217Timer() > 0 then -- Bladescale Loading
+                if not managed:get_IsSkill218AdditionalShellMax() then
                     managed:set_Skill218AdditionalShellNum(managed:get_Skill218AdditionalShellMaxNum())
                 end
             end
