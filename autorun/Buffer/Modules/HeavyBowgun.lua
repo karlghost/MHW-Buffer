@@ -182,6 +182,7 @@ function Module.create_hooks()
         if not hunter then return end
         if hunter:get_WeaponType() ~= 12 then return end
         if not hunter:get_IsWeaponOn() then return end
+        if hunter:get_WeaponHandling():get_IsEnergyMode() then return end
 
         local mouse_player_input, controller_player_input = Utils.get_player_input()
         local player_input = is_controller and controller_player_input or mouse_player_input
