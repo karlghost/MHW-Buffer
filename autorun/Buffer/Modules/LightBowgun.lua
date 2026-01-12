@@ -119,14 +119,15 @@ function Module.create_hooks()
 
         if Module.data.no_reload then
             local ammo = managed:getCurrentAmmo()
-            if ammo == nil then return end
+            if ammo ~= nil then
 
-            -- Check for Tetrad Shot skill (index 38)
-            tetrad_shot_active = Utils.has_skill(managed:get_Hunter(), 38)
-            if tetrad_shot_active and ammo:get_LimitAmmo() > 3 then
-                ammo:setLoadedAmmo(ammo:get_LimitAmmo()-3)
-            else
-                ammo:setLoadedAmmo(ammo:get_LimitAmmo())
+                -- Check for Tetrad Shot skill (index 38)
+                tetrad_shot_active = Utils.has_skill(managed:get_Hunter(), 38)
+                if tetrad_shot_active and ammo:get_LimitAmmo() > 3 then
+                    ammo:setLoadedAmmo(ammo:get_LimitAmmo()-3)
+                else
+                    ammo:setLoadedAmmo(ammo:get_LimitAmmo())
+                end
             end
         end
 
