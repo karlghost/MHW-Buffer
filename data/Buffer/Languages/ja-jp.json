@@ -159,9 +159,9 @@
             "unlimited_duration": "持続時間無制限"
         },
         "meals": {
-            "title": "Meals(*)",
-            "no_ticket_consumption": "No ticket consumption(*)",
-            "no_ingredient_consumption": "No ingredient consumption(*)",
+            "title": "食事",
+            "no_ticket_consumption": "チケット消費なし",
+            "no_ingredient_consumption": "食材消費なし",
             "unlimited_timer": "食事効果時間無制限"
         },
         "invincible": "無敵",
@@ -290,4 +290,5 @@
         "powered_axe": "斧モード強化"
     }
 }
+
 

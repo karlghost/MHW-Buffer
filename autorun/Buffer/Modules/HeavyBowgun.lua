@@ -86,8 +86,8 @@ function Module.create_hooks()
 
         -- Bladescale Loading
         if Module.data.unlimited_bladescale then
-            if Utils.has_skill(managed:get_Hunter(), 201) then -- Bladescale Loading
-                if managed:get_Skill218AdditionalShellNum() < managed:get_Skill218AdditionalShellMaxNum() then
+            if Utils.has_skill(managed:get_Hunter(), 201) and managed:get_Skill218or217Timer() > 0 then -- Bladescale Loading
+                if not managed:get_IsSkill218AdditionalShellMax() then
                     managed:set_Skill218AdditionalShellNum(managed:get_Skill218AdditionalShellMaxNum())
                 end
             end
@@ -95,13 +95,15 @@ function Module.create_hooks()
 
         if Module.data.no_reload then
             local ammo = managed:getCurrentAmmo()
+            if ammo ~= nil then 
 
-            -- Check for Tetrad Shot skill (index 38)
-            tetrad_shot_active = Utils.has_skill(managed:get_Hunter(), 38)
-            if tetrad_shot_active and ammo:get_LimitAmmo() > 3 then
-                ammo:setLoadedAmmo(ammo:get_LimitAmmo()-3)
-            else
-                ammo:setLoadedAmmo(ammo:get_LimitAmmo())
+                -- Check for Tetrad Shot skill (index 38)
+                tetrad_shot_active = Utils.has_skill(managed:get_Hunter(), 38)
+                if tetrad_shot_active and ammo:get_LimitAmmo() > 3 then
+                    ammo:setLoadedAmmo(ammo:get_LimitAmmo()-3)
+                else
+                    ammo:setLoadedAmmo(ammo:get_LimitAmmo())
+                end
             end
         end
 
@@ -180,6 +182,7 @@ function Module.create_hooks()
         if not hunter then return end
         if hunter:get_WeaponType() ~= 12 then return end
         if not hunter:get_IsWeaponOn() then return end
+        if hunter:get_WeaponHandling():get_IsEnergyMode() then return end
 
         local mouse_player_input, controller_player_input = Utils.get_player_input()
         local player_input = is_controller and controller_player_input or mouse_player_input

@@ -1,269 +1,99 @@
-# Buffer
+# 🛡️ Buffer – Monster Hunter: Wilds Mod
 
-Buffs, Modifications, and Cheats for weapons and stats.
+![REFramework](https://img.shields.io/badge/REFramework-Required-red)
 
-<img src="https://staticdelivery.nexusmods.com/mods/6993/images/headers/299_1762869437.jpg" alt="Buffer Mods as of 0.1.3"></td>
+Supercharge gameplay with max health, stamina, invincibility, instant cooldowns, and endless items. Buff weapons, unlock infinite ammo, power up gauges, and remove limits for every weapon type.
 
-## Download Mod
+---
 
-<div style="display:flex;">
-   <img src="https://styles.redditmedia.com/t5_2y0at/styles/communityIcon_7l4gbrorhdia1.png" width=25 height=25 style="padding-right: 2px">
-   <a style="font-size: 1.2em" href="https://www.nexusmods.com/monsterhunterwilds/mods/299" >
-      <sup>Nexus Mods</sup>
-      </a>
-</div>
-   
+![All Buffs & Mods as of 0.1.3 ](https://staticdelivery.nexusmods.com/mods/6993/images/headers/299_1762869437.jpg)  
 
-## Installation Steps
 
-1. Install [REFramework](https://www.nexusmods.com/monsterhunterwilds/mods/93)
-2. Extract the zip archive in your Monster Hunter Wilds folder
-3. Launch your game. <small>(The menu will show up when the "Script Generated UI" tab is open in REFramework.)</small>
+---
 
-## Features
+## ⚡ Features
 
-View screenshots of menu options on the [Nexus page](https://www.nexusmods.com/monsterhunterwilds/mods/299?tab=images).
+### Character
+- **Health** – Max health, unlimited health, instant healing  
+- **Stamina** – Max stamina, unlimited stamina  
+- **Mantles** – Instant cooldown, unlimited duration  
 
-<details>
-<summary><strong>Character</strong></summary>
+### Stats
+- Adjust attack damage  
+- Adjust defense amount  
+- Change element and element value  
+- Adjust critical rate  
 
-<table>
-<tr>
-<td style="vertical-align: top">
-
-**Health**
-- Max health  
-- Unlimited health  
-- Healing  
-
-**Stamina**  
-- Max stamina  
-- Unlimited stamina  
-
-**Mantles**  
-- Instant cooldown  
-- Unlimited duration  
-
-**Stats**
-- Adjust attack damage
-- Adjust defence amount
-- Change element
-- Adjust element value
-- Adjust critical rate
-
-**Other**
+### Other
 - Invincible  
-- Unlimited Sharpness  
-- Unlimited Consumables  
-- Unlimited Slinger Ammo  
-- Unlimited Meal Timer  
+- Unlimited sharpness  
+- Unlimited consumables  
+- Unlimited slinger ammo  
+- Unlimited meal timer  
 
-</td>
-<td style="vertical-align: top">
+### Blights
+- Fire, Thunder, Water, Ice, Dragon, All  
 
-**Blights**  
-- Fire  
-- Thunder  
-- Water  
-- Ice  
-- Dragon  
-- All  
+### Conditions
+- Poison, Stench, Blast, Bleed, Defense Down, Frenzy, Stun, Paralyze, Sleep, Sticky, Frozen, Bubble, HP Reduction, All  
 
-**Conditions**  
-- Poison  
-- Stench  
-- Blast  
-- Bleed  
-- Defense Down  
-- Frenzy  
-- Stun  
-- Paralyze  
-- Sleep  
-- Sticky  
-- Frozen  
-- Bubble
-- HP Reduction
-- All  
+### Item Buffs
+- Might Seed, Might Pill, Demon Drug, Mega Demondrug, Demon Powder  
+- Hot Drink, Dash Juice, Adamant Seed, Adamant Pill  
+- Armor Skin, Mega Armorskin, Hardshell Powder, Cool Drink, Immunizer  
 
-</td>
-<td style="vertical-align: top">
+### Miscellaneous
+- **Akuma** – Unlimited Drive Impact, Gou Hadoken Max Level  
+- **Watergun** – Unlimited Ammo  
+- **Pictomancy** – State selection (Pom Motif, Wing Motif, Mog of the Ages), Instant cooldown  
 
-**Item Buffs**  
-- Might seed  
-- Might pill  
-- Demon drug  
-- Mega demondrug  
-- Demon powder  
-- Hot drink  
-- Dash juice  
-- Adamant seed  
-- Adamant pill  
-- Armor skin  
-- Mega armorskin  
-- Hardshell powder  
-- Cool drink  
-- Immunizer  
+### Weapon-Specific Buffs
+- **Great Sword** – Charge level, True Charge boost, Instant charge  
+- **Dual Blades** – Full demon gauge, Activate demon boost  
+- **Long Sword** – Aura level, Max aura gauge, Max spirit gauge  
+- **Hammer** – Charge level, Super charge level, Instant charge  
+- **Hunting Horn** – Unlimited echo bubbles  
+- **Lance** – Counter charge level, Rush level  
+- **Gunlance** – Instant charge, Unlimited ammo, Shell level, Infinite Wyvern Fire  
+- **Switch Axe** – Max charge, Max sword charge, Powered axe  
+- **Charge Blade** – Max phials, Overcharge phials, Shield/Sword/Axe enhancements  
+- **Insect Glaive** – Kinsect power/speed/recovery, Unlimited stamina, Fast charge, Extracts, Infinite air attacks, Unrestricted charge  
+- **Bow** – Charge level, All arrow types, Unlimited bottles, Tetrid shot support, Max trick arrow gauge, Bladescale support  
+- **Light Bowgun** – Max special ammo, Max rapid shot, Max eagle shot, Unlimited ammo, No reload/recoil/knockback, Shell level adjustment, Bladescale support  
+- **Heavy Bowgun** – Max special ammo, Max wyvern howl, Max gatling hits, Unlimited ammo, No reload/recoil/knockback, Shell level adjustment, Bladescale support  
 
-</td>
-</tr>
-</table>
+---
 
-</details>
+## 🛠️ Installation
 
+1. Install **REFramework** ([Download Link](https://www.nexusmods.com/monsterhunterwilds/mods/93))  
+2. Extract the zip archive into your **Monster Hunter: Wilds** folder  
+3. Launch the game. Open the **Script Generated UI** tab in REFramework to access the menu.
 
-<details>
-<summary><strong>Miscellaneous</strong></summary>
+---
 
-- **Akuma**
-  - Unlimited Drive Impact  
-  - Gou Hadoken Max Level  
+## 🎮 Usage
 
-- **Watergun**
-  - Unlimited Ammo 
+1. Open the **Script Generated UI** tab in REFramework.  
+2. Enable buffs, mods, or cheats from the menu.  
+3. Adjust settings per weapon, stat, or item as needed.  
 
-- **Pictomancy**
-  - State selection (Pom Motif, Wing Motif, Mog of the Ages)
-  - Instant cooldown
+---
 
-</details>
+## ⚠️ Notes
 
-<details>
-<summary><strong>Great Sword</strong></summary>
+- Buffs and modifications can affect game balance — use responsibly.  
+- Works with all weapon types and most consumables.  
+- Some features may require restarting the game or reloading the UI to take effect.  
 
-- Charge level  
-- True Charge boost  
-- Instant charge  
+---
 
-</details>
+## 👤 Credits
 
-<details>
-<summary><strong>Dual Blades</strong></summary>
+Developed by **Bimmr** using **REFramework** for **Monster Hunter: Wilds**.
 
-- Full demon gauge  
-- Activate demon boost  
+---
 
-</details>
+## 🔗 Links
 
-<details>
-<summary><strong>Long Sword</strong></summary>
-
-- Aura level  
-- Max aura gauge  
-- Max spirit gauge  
-
-</details>
-
-<details>
-<summary><strong>Hammer</strong></summary>
-
-- Charge level  
-- Super charge level  
-- Instant charge  
-
-</details>
-
-<details>
-<summary><strong>Hunting Horn</strong></summary>
-
-- Unlimited echo bubbles  
-
-</details>
-
-<details>
-<summary><strong>Lance</strong></summary>
-
-- Counter charge level  
-- Rush level   
-
-</details>
-
-<details>
-<summary><strong>Gunlance</strong></summary>
-
-- Instant charge  
-- Unlimited ammo
-- Shell level  
-- Infinite wyvern fire
-
-</details>
-
-<details>
-<summary><strong>Switch Axe</strong></summary>
-
-- Max charge  
-- Max sword charge  
-- Powered axe  
-
-</details>
-
-<details>
-<summary><strong>Charge Blade</strong></summary>
-
-- Max phials  
-- Overcharge phials  
-- Shield enhanced  
-- Sword enhanced  
-- Axe enhanced  
-
-</details>
-
-<details>
-<summary><strong>Insect Glaive</strong></summary>
-
-- **Kinsect**
-  - Power  
-  - Speed  
-  - Recovery  
-- Unlimited Stamina  
-- Fast charge  
-- Red Extract  
-- White Extract  
-- Orange Extract  
-- Infinite air attacks  
-- Unrestricted charge  
-
-</details>
-
-<details>
-<summary><strong>Bow</strong></summary>
-
-- Charge level  
-- All arrow types  
-- Unlimited bottles
-- Tetrid shot support
-- Max trick arrow gauge 
-- Bladescale support
-
-</details>
-
-<details>
-<summary><strong>Light Bowgun</strong></summary>
-
-- Max special ammo  
-- Max rapid shot  
-- Max eagle shot  
-- Instant eagle shot charge  
-- Unlimited ammo  
-- No reload  
-- No recoil  
-- No knockback
-- All rapid fire ammo
-- Shell level adjustment
-- Bladescale support
-
-</details>
-
-<details>
-<summary><strong>Heavy Bowgun</strong></summary>
-
-- Max special ammo  
-- Max wyvern howl  
-- Max gatling hits  
-- Unlimited ammo  
-- No reload  
-- No recoil  
-- No knockback
-- Shell level adjustment
-- Bladescale support
-
-</details>
+- [Nexus Mods Page](https://www.nexusmods.com/monsterhunterwilds/mods/299)  
