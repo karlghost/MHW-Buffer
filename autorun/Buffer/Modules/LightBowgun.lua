@@ -205,6 +205,11 @@ function Module.create_hooks()
         end
         return retval
     end)
+    
+    -- Toggle trigger state each frame
+    re.on_frame(function()
+        on_trigger_lbg = not on_trigger_lbg
+    end)
 
     -- Helper function for full auto logic
     local function apply_full_auto(key_id, is_controller)
@@ -221,9 +226,7 @@ function Module.create_hooks()
         local trigger = player_input:call("getKey", key_id)
         if not trigger then return end
         
-        -- Only toggle when trigger is actually being held down
         if trigger:get_field("_On") then
-            on_trigger_lbg = not on_trigger_lbg
             trigger:set_field("_On", on_trigger_lbg)
             trigger:set_field("_OnTrigger", on_trigger_lbg)
         end
