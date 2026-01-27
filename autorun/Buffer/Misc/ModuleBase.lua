@@ -3,6 +3,7 @@ local Utils = require("Buffer.Misc.Utils")
 local Config = require("Buffer.Misc.Config")
 local Language = require("Buffer.Misc.Language")
 
+local cachePath = "Buffer/Cache.json"
 
 --- ModuleBase
 --- Base class for all Buffer modules providing common functionality
@@ -36,6 +37,7 @@ end
 ---   end
 function ModuleBase:init()
     self:load_config()
+    self:load_cache()
     self:create_hooks()
 end
 
@@ -84,12 +86,13 @@ function ModuleBase:cache_and_update_field(cache_key, managed, field_name, new_v
     if new_value == nil or new_value >= 0 then 
         if self.old[cache_key] == nil then
             self.old[cache_key] = managed:get_field(field_name)
+            self:save_cache()
         end
         managed:set_field(field_name, new_value) 
     else
         if self.old[cache_key] ~= nil then
             managed:set_field(field_name, self.old[cache_key])
-            self.old[cache_key] = nil
+            self:clear_cache(cache_key)
         end
     end
 end
@@ -106,12 +109,13 @@ function ModuleBase:cache_and_update_toggle(cache_key, managed, field_name, targ
     if enabled then
         if self.old[cache_key] == nil then
             self.old[cache_key] = managed:get_field(field_name)
+            self:save_cache()
         end
         managed:set_field(field_name, target_value)
     else
         if self.old[cache_key] ~= nil then
             managed:set_field(field_name, self.old[cache_key])
-            self.old[cache_key] = nil
+            self:clear_cache(cache_key)
         end
     end
 end
@@ -142,6 +146,7 @@ function ModuleBase:cache_and_update_array_toggle(cache_key, array, field_name, 
                     end
                 end
             end
+            self:save_cache()
         end
         -- Always update to true
         if type(array) == "table" then
@@ -174,7 +179,7 @@ function ModuleBase:cache_and_update_array_toggle(cache_key, array, field_name, 
                 end
             end
         end
-        self.old[cache_key] = nil
+        self:clear_cache(cache_key)
     end
 end
 
@@ -204,6 +209,7 @@ function ModuleBase:cache_and_update_array_value(cache_key, array, field_name, n
                     end
                 end
             end
+            self:save_cache()
         end
         
         -- Always update to the new value every frame
@@ -237,7 +243,7 @@ function ModuleBase:cache_and_update_array_value(cache_key, array, field_name, n
                 end
             end
         end
-        self.old[cache_key] = nil
+        self:clear_cache(cache_key)
     end
 end
 
@@ -252,6 +258,50 @@ end
 -- Load configuration from the config file
 function ModuleBase:load_config()
     Utils.update_table_with_existing_table(self.data, Config.get_section(self.title))
+end
+
+--- Load cached values from file
+--- This ensures that original values persist across game restarts
+function ModuleBase:load_cache()
+    if json == nil then return end
+    local cache_data = json.load_file(cachePath)
+    if cache_data and cache_data[self.title] then
+        self.old = cache_data[self.title]
+    end
+end
+
+--- Save cached values to file
+--- Called whenever a value is cached to persist across game restarts
+function ModuleBase:save_cache()
+    if json == nil then return end
+    
+    local cache_data = json.load_file(cachePath) or {}
+    
+    -- Only save non-empty cache
+    if next(self.old) ~= nil then
+        cache_data[self.title] = self.old
+    else
+        cache_data[self.title] = nil
+    end
+    
+    json.dump_file(cachePath, cache_data)
+end
+
+--- Clear a specific cache key from the file
+--- Called when cached values are restored to clean up the cache file
+--- @param cache_key string The cache key to clear (nil to clear entire module cache)
+function ModuleBase:clear_cache(cache_key)
+    if json == nil then return end
+    
+    if cache_key then
+        -- Clear specific key completely (used when values are restored)
+        self.old[cache_key] = nil
+    else
+        -- Clear entire module cache
+        self.old = {}
+    end
+    
+    self:save_cache()
 end
 
 --- Create a standard weapon hook guard
