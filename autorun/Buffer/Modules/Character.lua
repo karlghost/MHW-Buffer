@@ -138,10 +138,6 @@ local BLIGHTS_DATA = {
 --- @param current_total_value number The current total value from the game (get_Current...)
 local function updateDahliaFloatBox(key, field_name, managed, target_value, current_total_value, use_bonus_mode)
     if not managed then return end
-
-    -- Ensure cache table exists
-    Module.old[key] = Module.old[key] or {}
-    local cache = Module.old[key]
     
     -- Get field reference
     local field = managed:get_field(field_name)
@@ -149,13 +145,23 @@ local function updateDahliaFloatBox(key, field_name, managed, target_value, curr
 
     -- Determine if feature is disabled
     if target_value < 0 then
-        -- Restore original value if cached
-        if cache[field_name] then
+        -- Only check cache if it exists
+        if Module.old[key] and Module.old[key][field_name] then
+            local cache = Module.old[key]
             field:write(cache[field_name] + 0.0)
             cache[field_name] = nil
+            -- Clean up the cache table if empty
+            if next(cache) == nil then
+                Module.old[key] = nil
+            end
+            Module:save_cache()
         end
         return
     end
+
+    -- Ensure cache table exists only when caching
+    Module.old[key] = Module.old[key] or {}
+    local cache = Module.old[key]
 
     -- Get the value currently in the field (Our contribution + Base)
     local current_field_value = field:read()
@@ -163,6 +169,7 @@ local function updateDahliaFloatBox(key, field_name, managed, target_value, curr
     -- Cache original value on first use
     if not cache[field_name] then
         cache[field_name] = current_field_value
+        Module:save_cache()
     end
 
     local new_value
@@ -191,21 +198,30 @@ end
 local function updateDahliaFloatBoxToggle(key, id, box, new_value, enabled)
     if not box then return end
 
-    -- Ensure cache table exists
-    Module.old[key] = Module.old[key] or {}
-    local cache = Module.old[key]
-
     if not enabled then
-        -- Restore original value if cached
-        if cache[id] then
+        -- Only check cache if it exists
+        if Module.old[key] and Module.old[key][id] then
+            local cache = Module.old[key]
             box:write(cache[id] + 0.0)
             cache[id] = nil
+            -- Clean up the cache table if empty
+            if next(cache) == nil then
+                Module.old[key] = nil
+            end
+            Module:save_cache()
         end
         return
     end
 
+    -- Ensure cache table exists only when caching
+    Module.old[key] = Module.old[key] or {}
+    local cache = Module.old[key]
+
     -- Cache original value on first use
-    cache[id] = cache[id] or box:read()
+    if not cache[id] then
+        cache[id] = box:read()
+        Module:save_cache()
+    end
     
     -- Write new value
     box:write(new_value + 0.0)
